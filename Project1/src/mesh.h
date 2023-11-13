@@ -13,6 +13,13 @@
 
 #include <string>
 #include <vector>
+
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "VertexBufferLayout.h"
+#include "VertexArray.h"
+
+
 #define MAX_BONE_INFLUENCE 4
 struct Vertex
 {
@@ -44,13 +51,19 @@ public:
     std::vector<Vertex>       vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture>      textures;
-    unsigned int VAO;
+    //unsigned int VAO;
 
     Mesh( std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
     void meshDraw(Shader& shader);
+
+    VertexBuffer* VBO;
+    IndexBufferObject* IBO;
+    VertexArray* VAO;
+    VertexBufferLayout* layout;
+    bool isWireFrame = false;
 private:
     
-    unsigned int VBO, EBO;
+    //unsigned int VBO, EBO;
 
     void setupMesh();
 };

@@ -10,7 +10,6 @@ Mesh::Mesh( std::vector<Vertex> vertices, std::vector<unsigned int> indices, std
     this->textures = textures;
 
     setupMesh();
-
 }
 
 void Mesh::meshDraw(Shader& shader)
@@ -24,7 +23,7 @@ void Mesh::meshDraw(Shader& shader)
    // unsigned int heightNr = 1;
     for (unsigned int i = 0; i < textures.size(); i++)
     {
-        glActiveTexture(GL_TEXTURE0 + i);
+       GLCALL(glActiveTexture(GL_TEXTURE0 + i));
         std::string number;
         std::string name = textures[i].type;
         if (name == "material.diffuse")
@@ -35,50 +34,47 @@ void Mesh::meshDraw(Shader& shader)
 
       
 
-         glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
+       GLCALL(  glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i));
          //std::cout << shader.FindUniformLocations((name + number).c_str()) << std::endl;
 
-        glBindTexture(GL_TEXTURE_2D, textures[i].id);
+      GLCALL(  glBindTexture(GL_TEXTURE_2D, textures[i].id));
     }
-    glActiveTexture(GL_TEXTURE0);
+   GLCALL( glActiveTexture(GL_TEXTURE0));
 
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+
+   VAO->Bind();
+   IBO->Bind();
+
+   if (isWireFrame)
+   {
+       GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
+   }
+   else
+   {
+       GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+   }
+
+   GLCALL( glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0));
+   VAO->Unbind();
+
 
 
 }
 
 void Mesh::setupMesh()
 {
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
+    VAO = new VertexArray();
+    void* pVertices = static_cast<void*>(&vertices[0]);
+    unsigned int size = vertices.size() * sizeof(Vertex);
+    VBO = new VertexBuffer(pVertices, size);
+    layout = new VertexBufferLayout();
 
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    layout->Push<float>(3);
+    layout->Push<float>(3);
+    layout->Push<float>(2);
+    layout->Push<float>(4);
 
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
-        &indices[0], GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
-
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
-
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
-
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, vRgb));
-
-    glBindVertexArray(0);
+    VAO->AddBuffer(*VBO, *layout);
+    IBO = new IndexBufferObject(&indices[0], indices.size());
 
 }
