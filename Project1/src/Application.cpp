@@ -196,7 +196,7 @@ int main()
 
    
     Shader defaultShader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader.frag");
-    Shader lightSource("Shaders/lighting.vert", "Shaders/lighting.frag");
+    Shader lightShader("Shaders/lighting.vert", "Shaders/lighting.frag");
 
    
     std::vector<ModelData> modelData = loadModelDataFromFile("../Project1/src/Model.txt");
@@ -927,10 +927,10 @@ int main()
 
 
 
-        lightSource.use();
-        lightSource.setMat4("projection", _projection);
-        lightSource.setVec3("objCol", color[0], color[1], color[2]);
-        lightSource.setMat4("view", _view);
+        lightShader.Bind();
+        lightShader.setMat4("projection", _projection);
+        lightShader.setVec3("objCol", color[0], color[1], color[2]);
+        lightShader.setMat4("view", _view);
 
         PointLightModel->transform.position = glm::vec3 (modelData[44].position.x, modelData[44].position.y, modelData[44].position.z);
         PointLightModel1->transform.position = glm::vec3(modelData[45].position.x, modelData[45].position.y, modelData[45].position.z);
@@ -949,7 +949,7 @@ int main()
        
 
        
-        defaultShader.use();
+        defaultShader.Bind();
         lightManager.UpdateUniformValues(defaultShader.ID);
          material.SetMaterialProperties(defaultShader);
       
