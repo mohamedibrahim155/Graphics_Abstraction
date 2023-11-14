@@ -46,6 +46,7 @@ public:
     bool isWireFrame;
     bool isVisible =true;
     Model();
+    Model(const Model& copyModel);
     Model( std::string const& path, bool isTextureFlip=false);
     
     void Draw(Shader& shader);

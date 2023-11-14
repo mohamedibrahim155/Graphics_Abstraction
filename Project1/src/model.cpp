@@ -12,13 +12,22 @@ Model::Model()
 
 }
 
+Model::Model(const Model& copyModel)
+{
+    meshes = copyModel.meshes;
+    directory = copyModel.directory;
+    isVisible = copyModel.isVisible;
+    isWireFrame = copyModel.isWireFrame;
+    modelPath = copyModel.modelPath;
+
+}
+
 Model::Model( std::string const& path, bool isTextureFlip) 
            
 {
 
     this->modelPath = path;
     this->isTextureFlipped = isTextureFlip;
-   
     loadModel(path);
     std::cout << path << std::endl;
 }
@@ -27,7 +36,7 @@ Model::Model( std::string const& path, bool isTextureFlip)
 
 void Model::Draw(Shader& shader)
 {
-    
+    shader.Bind();
     shader.setMat4("model", transform.GetModelMatrix());
     if (!isVisible)
     {

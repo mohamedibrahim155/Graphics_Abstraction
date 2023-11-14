@@ -46,6 +46,7 @@ public:
 	static void SetViewPort(GLFWwindow* window, int width, int height);
 	void KeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods);
 	void MouseCallBack(GLFWwindow* window, double xposIn, double yposIn);
+	void MouseScroll(GLFWwindow* window, double xoffset, double yoffset);
 	
 	void WindowInitialize(int width, int height,  std::string windowName ="Window");
 	
@@ -60,10 +61,13 @@ public:
 
 private:
 	GLFWwindow* window;
-	GraphicsRender render;
 	Camera camera;
 
+	GraphicsRender render;
+	LightManager lightManager;
+
 	Shader* defaultShader;
+	Shader* lightShader;
 
 	 int windowWidth;
 	 int  WindowHeight;

@@ -49,6 +49,13 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
             static_cast<ApplicationRenderer*>(glfwGetWindowUserPointer(window))->MouseCallBack(window, xposIn, yposIn);
         });
 
+    glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset)
+        {
+            static_cast<ApplicationRenderer*>(glfwGetWindowUserPointer(window))->MouseScroll(window, xoffset, yoffset);
+        });
+   
+    
+    //Init GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
@@ -56,26 +63,46 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     }
 
   
+    defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader.frag");
+    lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
+   
 }
 
 
 
 void ApplicationRenderer::Start()
 {
-     defaultShader= new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader.frag");
 
 
      Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply",true);
-    
+     Sphere->transform.position.x += 2;
 
-   render.AddModelsAndShader(Sphere,defaultShader);
+     Model* dir = new Model(*Sphere);
+
+     Light directionLight;
+     directionLight.lightType = LightType::DIRECTION_LIGHT;
+     directionLight.lightModel = dir;
+     directionLight.ambient = glm::vec3(0.1f);
+     directionLight.diffuse = glm::vec3(0.1f);
+     directionLight.specular = glm::vec3(0.1f);
+
+
+     //Mesh Renderer
+     render.AddModelsAndShader(Sphere,defaultShader);
+     render.AddModelsAndShader(dir,lightShader);
   
+
+     //LightRenderer
+     lightManager.AddNewLight(directionLight);
+
+     lightManager.SetUniforms(defaultShader->ID);
 }
 
 void ApplicationRenderer::Render()
 {
     Start();
-
+    Material material(128.0f);
+    
     while (!glfwWindowShouldClose(window))
     {
         Clear();
@@ -87,13 +114,24 @@ void ApplicationRenderer::Render()
 
         ProcessInput(window);
 
-        defaultShader->Bind();
 
-         glm::mat4 _projection = glm::perspective(glm::radians(camera.Zoom), (float)windowWidth / (float)WindowHeight, 0.1f, 100.0f);
-         glm::mat4 _view = camera.GetViewMatrix();
+        glm::mat4 _projection = glm::perspective(glm::radians(camera.Zoom), (float)windowWidth / (float)WindowHeight, 0.1f, 100.0f);
+        glm::mat4 _view = camera.GetViewMatrix();
+
+
+     
+
+        defaultShader->Bind();
+        lightManager.UpdateUniformValues(defaultShader->ID);
+        material.SetMaterialProperties(*defaultShader);
+       
          defaultShader->setMat4("projection", _projection);
          defaultShader->setMat4("view", _view);
 
+         lightShader->Bind();
+         lightShader->setVec3("objectColor", glm::vec3(1, 1, 1));
+         lightShader->setMat4("projection", _projection);
+         lightShader->setMat4("view", _view);
 
          render.Draw();
         
@@ -107,6 +145,7 @@ void ApplicationRenderer::Render()
 
 void ApplicationRenderer::Clear()
 {
+    GLCALL(glEnable(GL_DEPTH_TEST));
     GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 0.1f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
@@ -184,4 +223,9 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          {
              camera.ProcessMouseMovement(xoffset, yoffset);
          }
+ }
+
+ void ApplicationRenderer::MouseScroll(GLFWwindow* window, double xoffset, double yoffset)
+ {
+     camera.ProcessMouseScroll(static_cast<float>(yoffset));
  }
