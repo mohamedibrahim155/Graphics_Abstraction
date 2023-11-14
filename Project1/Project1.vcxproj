@@ -148,9 +148,12 @@
     <ClCompile Include="Extern\imGui\imgui_tables.cpp" />
     <ClCompile Include="Extern\imGui\imgui_widgets.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\ApplicationRenderer.cpp" />
+    <ClCompile Include="src\GraphicsRender.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\LightManager.cpp" />
+    <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\mesh.cpp" />
     <ClCompile Include="src\Shader.cpp" />
@@ -174,6 +177,8 @@
     <ClInclude Include="Extern\imGui\imstb_textedit.h" />
     <ClInclude Include="Extern\imGui\imstb_truetype.h" />
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\ApplicationRenderer.h" />
+    <ClInclude Include="src\GraphicsRender.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\LightManager.h" />

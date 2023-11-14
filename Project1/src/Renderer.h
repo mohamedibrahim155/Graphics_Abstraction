@@ -2,9 +2,16 @@
 
 #include <iostream>
 #include <glad/glad.h>
-
-#include "Shader.h"
-
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <Windows.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include<vector>
 
 #define ASSERT(x) if(!(x)) __debugbreak();
 #define GLCALL(x) GLClrError();\
@@ -15,18 +22,5 @@ void GLClrError();
 bool GLLogCall(const char* function, const char* file, int line);
 
 
-class Renderer
-{
-  public:
-
-
-	  void Clear();
-
-	  //void Draw(const VertexArray& va, const Shader& shader) const;
-
-
-
-
-};
 
 

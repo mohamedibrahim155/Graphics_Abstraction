@@ -128,13 +128,15 @@ void Shader::setMat4(const std::string& name, const glm::mat4& mat)
 unsigned int Shader::FindUniformLocations(const std::string& name)
 {
     if (m_LocationCache.find(name) != m_LocationCache.end())
+    {
         return m_LocationCache[name];
-
+    }
     GLCALL(int value = glGetUniformLocation(ID, name.c_str()));
 
-   if (value == -1)
-       std::cout << "Warning : uniform '" << name << " ' does'nt exist!" << std::endl;
-
+    if (value == -1)
+    {
+        std::cout << "Warning : uniform '" << name << "' does'nt exist!" << std::endl;
+    }
    m_LocationCache[name] = value;
    return value;
 }

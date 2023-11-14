@@ -12,12 +12,12 @@ Model::Model()
 
 }
 
-Model::Model( std::string const& path, bool gamma = false,bool isFlip = false) 
-            : gammaCorrection(gamma), size(size)
+Model::Model( std::string const& path, bool isTextureFlip) 
+           
 {
 
     this->modelPath = path;
-    this->isTextureFlipped = isFlip;
+    this->isTextureFlipped = isTextureFlip;
    
     loadModel(path);
     std::cout << path << std::endl;
@@ -27,8 +27,8 @@ Model::Model( std::string const& path, bool gamma = false,bool isFlip = false)
 
 void Model::Draw(Shader& shader)
 {
-    glm::mat4 matModel = transform.getModelMatrix();
-    shader.setMat4("model", matModel);
+    
+    shader.setMat4("model", transform.GetModelMatrix());
     if (!isVisible)
     {
         return;
@@ -65,7 +65,7 @@ void Model::processNode(aiNode* node, const aiScene* scene)
     {
         processNode(node->mChildren[i], scene);
     }
-
+    std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
 }
 
  Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)

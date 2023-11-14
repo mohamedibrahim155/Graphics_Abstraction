@@ -8,7 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <unordered_map>
+#include <map>
 
 
 class Shader
@@ -55,7 +55,7 @@ private:
   
     void checkCompileErrors(unsigned int shader, std::string type);
 
-    std::unordered_map<std::string, int> m_LocationCache;
+    std::map<std::string, int> m_LocationCache;
    
 };
 #endif
