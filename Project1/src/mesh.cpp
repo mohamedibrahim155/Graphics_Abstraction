@@ -16,8 +16,8 @@ void Mesh::meshDraw(Shader& shader)
 {
     
 
-    unsigned int diffuseNr = 1;
-    unsigned int specularNr = 1;
+    unsigned int diffuseNr = 0;
+    unsigned int specularNr = 0;
     //unsigned int normalNr = 1;
     //unsigned int emissiveNr = 1;
    // unsigned int heightNr = 1;
@@ -34,12 +34,12 @@ void Mesh::meshDraw(Shader& shader)
 
       
 
-       GLCALL(  glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i));
+        GLCALL(glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i));
          //std::cout << shader.FindUniformLocations((name + number).c_str()) << std::endl;
 
-      GLCALL(  glBindTexture(GL_TEXTURE_2D, textures[i].id));
+        GLCALL(glBindTexture(GL_TEXTURE_2D, textures[i].id));
     }
-   GLCALL( glActiveTexture(GL_TEXTURE0));
+    GLCALL(glActiveTexture(GL_TEXTURE0));
 
 
    VAO->Bind();

@@ -18,7 +18,7 @@
 #include "IndexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "VertexArray.h"
-
+#include"Textures.h"
 
 #define MAX_BONE_INFLUENCE 4
 struct Vertex
@@ -30,15 +30,6 @@ struct Vertex
     glm::vec4 vRgb;
 
 };
-
-struct Texture {
-    unsigned int id;
-
-    std::string type;
-    std::string path;
-};
-
-
 
 
 
