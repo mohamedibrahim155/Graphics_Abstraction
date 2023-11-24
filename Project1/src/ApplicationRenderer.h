@@ -6,10 +6,8 @@
 #include "Renderer.h"
 #include "VertexArray.h"
 #include  "model.h"
-
 #include "material.h"
 #include "Light.h"
-
 #include "Transform.h"
 #include"LightManager.h"
 #include "Random.h"

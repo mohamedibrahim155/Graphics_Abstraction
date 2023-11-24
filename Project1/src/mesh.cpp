@@ -63,6 +63,7 @@ void Mesh::meshDraw(Shader& shader)
 
 void Mesh::setupMesh()
 {
+    CalculateTriangles();
     VAO = new VertexArray();
     void* pVertices = static_cast<void*>(&vertices[0]);
     unsigned int size = vertices.size() * sizeof(Vertex);
@@ -77,4 +78,21 @@ void Mesh::setupMesh()
     VAO->AddBuffer(*VBO, *layout);
     IBO = new IndexBufferObject(&indices[0], indices.size());
 
+}
+
+void Mesh::CalculateTriangles()
+{
+    for (size_t i = 0; i < indices.size(); i += 3)
+    {
+        Triangles tempTri;
+
+        tempTri.v1 = vertices[indices[i]].Position;
+        tempTri.v2 = vertices[indices[i + 1]].Position;
+        tempTri.v3 = vertices[indices[i + 2]].Position;
+
+        tempTri.normal = (vertices[indices[i]].Normal +
+            vertices[indices[i + 1]].Normal +
+            vertices[indices[i + 2]].Normal) / 3.0f;
+        triangle.push_back(tempTri);
+    }
 }

@@ -18,18 +18,12 @@
 #include "IndexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "VertexArray.h"
-#include"Textures.h"
+#include "Textures.h"
+#include "Vertex.h"
+#include "Triangle.h"
 
 #define MAX_BONE_INFLUENCE 4
-struct Vertex
-{
 
-    glm::vec3 Position;
-    glm::vec3 Normal;
-    glm::vec2 TexCoords;
-    glm::vec4 vRgb;
-
-};
 
 
 
@@ -43,6 +37,7 @@ public:
     std::vector<unsigned int> indices;
     std::vector<Texture>      textures;
     //unsigned int VAO;
+    std::vector<Triangles> triangle;
 
     Mesh( std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
     void meshDraw(Shader& shader);
@@ -57,5 +52,6 @@ private:
     //unsigned int VBO, EBO;
 
     void setupMesh();
+    void CalculateTriangles();
 };
 #endif

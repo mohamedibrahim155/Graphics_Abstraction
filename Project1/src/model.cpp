@@ -40,7 +40,7 @@ void Model::Draw(Shader& shader)
         return;
     }
     for (unsigned int i = 0; i < meshes.size(); i++)
-        meshes[i].meshDraw(shader);
+        meshes[i]->meshDraw(shader);
 }
 
 void Model::loadModel(std::string const& path)
@@ -74,7 +74,7 @@ void Model::processNode(aiNode* node, const aiScene* scene)
     std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
 }
 
- Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
+std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
 {
      std::vector<Vertex> vertices;
      std::vector<unsigned int> indices;
@@ -157,7 +157,7 @@ void Model::processNode(aiNode* node, const aiScene* scene)
 
     
     // return a mesh object created from the extracted mesh data
-    return Mesh(vertices, indices, textures);
+    return std::make_shared<Mesh>(vertices, indices, textures);
  }
 
 
