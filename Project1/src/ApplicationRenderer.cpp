@@ -96,6 +96,15 @@ void ApplicationRenderer::Start()
      lightManager.AddNewLight(directionLight);
 
      lightManager.SetUniforms(defaultShader->ID);
+     PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
+     SpherePhyiscs->Initialize(false, true, DYNAMIC);
+
+     PhysicsEngine.AddPhysicsObjects(SpherePhyiscs);
+}
+
+void ApplicationRenderer::PreRender()
+{
+
 }
 
 void ApplicationRenderer::Render()
@@ -119,7 +128,7 @@ void ApplicationRenderer::Render()
         glm::mat4 _view = camera.GetViewMatrix();
 
 
-     
+        PreRender(); //Update call BEFORE  DRAW
 
         defaultShader->Bind();
         lightManager.UpdateUniformValues(defaultShader->ID);
@@ -134,13 +143,19 @@ void ApplicationRenderer::Render()
          lightShader->setMat4("view", _view);
 
          render.Draw();
-        
+
+         PostRender(); // Update Call AFTER  DRAW
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     glfwTerminate();
+}
+
+void ApplicationRenderer::PostRender()
+{
+    PhysicsEngine.UpdatePhysics(deltaTime);
 }
 
 void ApplicationRenderer::Clear()

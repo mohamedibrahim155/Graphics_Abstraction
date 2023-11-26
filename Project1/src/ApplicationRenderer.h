@@ -11,7 +11,7 @@
 #include "Transform.h"
 #include"LightManager.h"
 #include "Random.h"
-
+#include "PhysicsEngine.h"
 
 #include "GraphicsRender.h"
 
@@ -31,7 +31,9 @@ public:
 	void WindowInitialize(int width, int height,  std::string windowName ="Window");
 	
 	void Start();
+	void PreRender();
 	void Render();
+	void PostRender();
 	void Clear();
 
 	void ProcessInput(GLFWwindow* window);
@@ -48,6 +50,8 @@ private:
 
 	Shader* defaultShader;
 	Shader* lightShader;
+
+	PhysicsEngine PhysicsEngine;
 
 	 int windowWidth;
 	 int  WindowHeight;
