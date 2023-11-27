@@ -12,7 +12,7 @@
 class Texture
 {
 public:
-	Texture();
+	Texture() {}
 	Texture(const char* filePath);
 	~Texture() {}
 	unsigned int id;

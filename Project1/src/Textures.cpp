@@ -10,11 +10,7 @@
 
 
 
-Texture::Texture()
-{
-	/*this->path = NULL;
-	this->textureId = NULL;*/
-}
+
 
 Texture::Texture(const char* filePath)
 {

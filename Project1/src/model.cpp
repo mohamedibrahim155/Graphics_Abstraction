@@ -163,7 +163,32 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
  std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 {
+
+    
      std::vector<Texture> textures;
+     if (mat->GetTextureCount(type) == 0)
+     {
+         std::string path = "";
+         switch (type)
+         {
+         case aiTextureType_DIFFUSE:
+             path = "Textures/DefaultTextures/Default_Diffuse.png";
+             break;
+         case aiTextureType_SPECULAR:
+             path = "Textures/DefaultTextures/Default_Specular.jpg";
+             break;
+         }
+
+         Texture* defaultTexture = new Texture(path.c_str());
+         defaultTexture->type = typeName.c_str();
+
+         Texture temp = *defaultTexture;
+
+         std::cout << "Texture loading : " << temp.path << std::endl;
+         textures.push_back(temp);
+         textures_loaded.push_back(temp);
+         return textures;
+     }
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {
         aiString str;   
@@ -204,5 +229,27 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
     return textures;
 }
+
+ Texture Model::LoadDefaultTexture(aiTextureType type, std::string typeName)
+ {
+     std::string path = "";
+     switch (type)
+     {
+     case aiTextureType_DIFFUSE:
+         path = "Textures/DefaultTextures/Default_Diffuse.png";
+         break;
+     case aiTextureType_SPECULAR:
+         path = "Textures/DefaultTextures/Default_Specular.jpg";
+         break;
+     }
+
+     Texture* defaultTexture = new Texture(path.c_str());
+     defaultTexture->type = typeName.c_str();
+
+     std::cout << "Default Texture Loaded: " << defaultTexture->path << std::endl;
+     return *defaultTexture;
+ }
+
+
 
 

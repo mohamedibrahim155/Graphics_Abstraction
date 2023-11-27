@@ -96,10 +96,10 @@ void ApplicationRenderer::Start()
      lightManager.AddNewLight(directionLight);
 
    //  lightManager.SetUniforms(defaultShader->ID);
-     PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
-     SpherePhyiscs->Initialize(false, true, DYNAMIC);
+   //  PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
+   //  SpherePhyiscs->Initialize(false, true, DYNAMIC);
 
-     PhysicsEngine.AddPhysicsObjects(SpherePhyiscs);
+   //  PhysicsEngine.AddPhysicsObjects(SpherePhyiscs);
 }
 
 void ApplicationRenderer::PreRender()
@@ -156,7 +156,7 @@ void ApplicationRenderer::Render()
 
 void ApplicationRenderer::PostRender()
 {
-    PhysicsEngine.UpdatePhysics(deltaTime);
+ //   PhysicsEngine.UpdatePhysics(deltaTime);
 }
 
 void ApplicationRenderer::Clear()
@@ -174,8 +174,6 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
     float cameraSpeed=25;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-        std::cout << "W pressed " << std::endl;
-
         camera.ProcessKeyboard(FORWARD, deltaTime * cameraSpeed);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
