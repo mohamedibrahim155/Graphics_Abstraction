@@ -187,7 +187,6 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
          std::cout << "Texture loading : " << temp.path << std::endl;
          textures.push_back(temp);
          textures_loaded.push_back(temp);
-         return textures;
      }
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {

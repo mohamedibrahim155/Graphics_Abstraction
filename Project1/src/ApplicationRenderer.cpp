@@ -75,20 +75,23 @@ void ApplicationRenderer::Start()
 
 
      Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply",true);
+     Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj",true);
      Sphere->transform.position.x += 2;
+     Pokeball->transform.position.x -= 2;
 
      Model* dir = new Model(*Sphere);
 
      Light directionLight;
      directionLight.lightType = LightType::DIRECTION_LIGHT;
      directionLight.lightModel = dir;
-     directionLight.ambient = glm::vec3(0.1f);
-     directionLight.diffuse = glm::vec3(0.1f);
-     directionLight.specular = glm::vec3(0.1f);
+     directionLight.ambient =  glm::vec3(0.7f);
+     directionLight.diffuse =  glm::vec3(0.7f);
+     directionLight.specular = glm::vec3(0.7f);
 
 
      //Mesh Renderer
      render.AddModelsAndShader(Sphere,defaultShader);
+     render.AddModelsAndShader(Pokeball,defaultShader);
      render.AddModelsAndShader(dir,lightShader);
   
 

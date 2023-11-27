@@ -80,14 +80,15 @@ void main()
           float diff = max(dot(norm, lightDir), 0.0);
          vec3 reflectDir = reflect(-lightDir, norm);
          float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-//        vec3 ambient = lights[index].ambient * vec3(texture(material.diffuse, TextureCoordinates));
-//         vec3 diffuse =  lights[index].diffuse * diff * vec3(texture(material.diffuse, TextureCoordinates));
-//         vec3 specular =  lights[index].specular * spec * vec3(texture(material.specular, TextureCoordinates));
+
+         vec3 ambient = lights[index].ambient   *         meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
+         vec3 diffuse = lights[index].diffuse   * diff  * meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
+         vec3 specular = lights[index].specular * spec  * meshColour.rgb * vec3(texture(material.specular, TextureCoordinates));
 
 
-          vec3 ambient = lights[index].ambient * meshColour.rgb;
-         vec3 diffuse =  lights[index].diffuse * diff * meshColour.rgb;
-         vec3 specular =  lights[index].specular * spec *meshColour.rgb;
+//          vec3 ambient = lights[index].ambient * meshColour.rgb;
+//         vec3 diffuse =  lights[index].diffuse * diff * meshColour.rgb;
+//         vec3 specular =  lights[index].specular * spec *meshColour.rgb;
 
          vec3 finalValueforDir =(ambient+diffuse+specular);
          result+=finalValueforDir*lights[index].color;
@@ -105,9 +106,9 @@ void main()
         float distance = length(lights[index].position - FragPosition);
         float attenuation = 1.0 / (lights[index].constant + lights[index].linear * distance + lights[index].quadratic * (distance * distance));    
         // combine results
-        vec3 ambient = lights[index].ambient * vec3(texture(material.diffuse, TextureCoordinates)) * meshColour.rgb;
-        vec3 diffuse = lights[index].diffuse * diff * vec3(texture(material.diffuse, TextureCoordinates)) * meshColour.rgb;
-        vec3 specular = lights[index].specular * spec * vec3(texture(material.specular, TextureCoordinates)) * meshColour.rgb;
+         vec3 ambient = lights[index].ambient   *         meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
+         vec3 diffuse = lights[index].diffuse   * diff  * meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
+         vec3 specular = lights[index].specular * spec  * meshColour.rgb * vec3(texture(material.specular, TextureCoordinates));
 
         
 //          vec3 ambient = lights[index].ambient * meshColour.rgb;
@@ -137,14 +138,14 @@ void main()
          float epsilon = lights[index].cutOff - lights[index].outerCutOff;
          float intensity = clamp((theta - lights[index].outerCutOff) / epsilon, 0.0, 1.0);
          // combine results
-//         vec3 ambient = lights[index].ambient * vec3(texture(material.diffuse, TextureCoordinates));
-//         vec3 diffuse = lights[index].diffuse * diff * vec3(texture(material.diffuse, TextureCoordinates));
-//         vec3 specular = lights[index].specular * spec * vec3(texture(material.specular, TextureCoordinates));
-//
+         vec3 ambient = lights[index].ambient   *         meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
+         vec3 diffuse = lights[index].diffuse   * diff  * meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
+         vec3 specular = lights[index].specular * spec  * meshColour.rgb * vec3(texture(material.specular, TextureCoordinates));
 
-                vec3 ambient = lights[index].ambient * meshColour.rgb;
-         vec3 diffuse =  lights[index].diffuse * diff * meshColour.rgb;
-         vec3 specular =  lights[index].specular * spec *meshColour.rgb;
+//
+//                vec3 ambient = lights[index].ambient * meshColour.rgb;
+//         vec3 diffuse =  lights[index].diffuse * diff * meshColour.rgb;
+//         vec3 specular =  lights[index].specular * spec *meshColour.rgb;
 
          ambient *= attenuation * intensity;
          diffuse *= attenuation * intensity;
