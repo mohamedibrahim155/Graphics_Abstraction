@@ -27,9 +27,13 @@ void Mesh::meshDraw(Shader& shader)
         std::string number;
         std::string name = textures[i].type;
         if (name == "material.diffuse")
+        {
             number = std::to_string(diffuseNr++);
+        }
         else if (name == "material.specular")
-            number = std::to_string(specularNr++); 
+        {
+            number = std::to_string(specularNr++);
+        }
 
 
       

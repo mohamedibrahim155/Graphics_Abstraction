@@ -65,7 +65,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
   
     defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader.frag");
     lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
-   
+    camera.Position = glm::vec3(0, 0, - 1.0f);
 }
 
 
@@ -114,7 +114,8 @@ void ApplicationRenderer::Render()
 {
     Start();
     Material material(128.0f);
-    
+   // glEnable(GL_BLEND);
+  //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     while (!glfwWindowShouldClose(window))
     {
         Clear();
@@ -140,6 +141,7 @@ void ApplicationRenderer::Render()
        
          defaultShader->setMat4("projection", _projection);
          defaultShader->setMat4("view", _view);
+         defaultShader->setVec3("viewPos", camera.Position.x, camera.Position.y, camera.Position.z);
 
          lightShader->Bind();
          lightShader->setVec3("objectColor", glm::vec3(1, 1, 1));
@@ -153,7 +155,7 @@ void ApplicationRenderer::Render()
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
+   /// glDisable(GL_BLEND);
     glfwTerminate();
 }
 
