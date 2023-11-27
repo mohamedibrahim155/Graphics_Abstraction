@@ -95,7 +95,7 @@ void ApplicationRenderer::Start()
      //LightRenderer
      lightManager.AddNewLight(directionLight);
 
-     lightManager.SetUniforms(defaultShader->ID);
+   //  lightManager.SetUniforms(defaultShader->ID);
      PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
      SpherePhyiscs->Initialize(false, true, DYNAMIC);
 
@@ -131,7 +131,8 @@ void ApplicationRenderer::Render()
         PreRender(); //Update call BEFORE  DRAW
 
         defaultShader->Bind();
-        lightManager.UpdateUniformValues(defaultShader->ID);
+        lightManager.UpdateUniformValuesToShader(defaultShader);
+    //    lightManager.UpdateUniformValues(defaultShader->ID);
         material.SetMaterialProperties(*defaultShader);
        
          defaultShader->setMat4("projection", _projection);
