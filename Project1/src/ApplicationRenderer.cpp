@@ -62,9 +62,14 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
         return;
     }
 
+
+
+
   
     defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader.frag");
     lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
+    StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag");
+    render.AssignStencilShader(StencilShader);
     camera.Position = glm::vec3(0, 0, - 1.0f);
 }
 
@@ -72,12 +77,26 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
 void ApplicationRenderer::Start()
 {
+   // GLCALL(glEnable(GL_DEPTH_TEST));
+    GLCALL(glDepthFunc(GL_LESS));
+    GLCALL(glEnable(GL_STENCIL_TEST));
+    GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
+    GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
+
 
 
      Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply",true);
-     Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj",true);
+     Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj", true);
+     Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj",true);
      Sphere->transform.position.x += 2;
      Pokeball->transform.position.x -= 2;
+    
+
+     Pokeball2->transform.position.x -= 5;
+     Pokeball2->transform.position.y -= 0.3f;
+     Pokeball2->transform.SetScale(glm::vec3(1.2f));
+    /* Pokeball2->transform.position = Pokeball->transform.position;
+         Pokeball2->transform.SetScale(glm::vec3(0.5f));*/
 
      Model* dir = new Model(*Sphere);
 
@@ -91,7 +110,13 @@ void ApplicationRenderer::Start()
 
      //Mesh Renderer
      render.AddModelsAndShader(Sphere,defaultShader);
-     render.AddModelsAndShader(Pokeball,defaultShader);
+
+     render.AddModelsAndShader(Pokeball, defaultShader);
+
+
+   
+     render.selectedModel = Sphere;
+
      render.AddModelsAndShader(dir,lightShader);
   
 
@@ -133,22 +158,34 @@ void ApplicationRenderer::Render()
 
 
         PreRender(); //Update call BEFORE  DRAW
-
         defaultShader->Bind();
         lightManager.UpdateUniformValuesToShader(defaultShader);
-    //    lightManager.UpdateUniformValues(defaultShader->ID);
         material.SetMaterialProperties(*defaultShader);
        
+
          defaultShader->setMat4("projection", _projection);
          defaultShader->setMat4("view", _view);
          defaultShader->setVec3("viewPos", camera.Position.x, camera.Position.y, camera.Position.z);
-
+       
          lightShader->Bind();
          lightShader->setVec3("objectColor", glm::vec3(1, 1, 1));
          lightShader->setMat4("projection", _projection);
          lightShader->setMat4("view", _view);
 
+         StencilShader->Bind();
+         StencilShader->setMat4("projection", _projection);
+         StencilShader->setMat4("view", _view);
+         
+
+         
+         // make models that it should not write in the stencil buffer
          render.Draw();
+
+      
+
+
+
+
 
          PostRender(); // Update Call AFTER  DRAW
 
@@ -166,9 +203,8 @@ void ApplicationRenderer::PostRender()
 
 void ApplicationRenderer::Clear()
 {
-    GLCALL(glEnable(GL_DEPTH_TEST));
     GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 0.1f));
-    GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+    GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 }
 
 void ApplicationRenderer::ProcessInput(GLFWwindow* window)
@@ -209,7 +245,25 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
  {  
          if (key == GLFW_KEY_V && action == GLFW_PRESS)
          {
+
+            
              std::cout << "V pressed" << std::endl;
+
+             std::vector<Model*> listOfModels = render.GetModelList();
+            
+          
+
+             selectedModelCount++;
+
+             if (selectedModelCount > listOfModels.size()-1)
+             {
+                 selectedModelCount = 0;
+             }
+
+            
+             render.selectedModel = listOfModels[selectedModelCount];
+
+
          }
      
  }

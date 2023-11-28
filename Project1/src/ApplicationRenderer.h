@@ -50,12 +50,12 @@ private:
 
 	Shader* defaultShader;
 	Shader* lightShader;
-
+	Shader* StencilShader;
 	PhysicsEngine PhysicsEngine;
 
 	 int windowWidth;
 	 int  WindowHeight;
-
+	 int selectedModelCount = 0;
 
 	 float lastX;
 	 float lastY;

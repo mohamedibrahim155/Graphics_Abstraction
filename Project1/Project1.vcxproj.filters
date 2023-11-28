@@ -211,5 +211,7 @@
     <None Include="Shaders\Shader.vert" />
     <None Include="Shaders\color.vert" />
     <None Include="Shaders\color.frag" />
+    <None Include="Shaders\StencilOutline.vert" />
+    <None Include="Shaders\StencilOutline.frag" />
   </ItemGroup>
 </Project>

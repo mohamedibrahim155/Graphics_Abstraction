@@ -34,7 +34,9 @@ Model::Model( std::string const& path, bool isTextureFlip)
 void Model::Draw(Shader& shader)
 {
     shader.Bind();
+   
     shader.setMat4("model", transform.GetModelMatrix());
+   
     if (!isVisible)
     {
         return;
