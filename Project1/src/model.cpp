@@ -19,12 +19,13 @@ Model::Model(const Model& copyModel)
 
 }
 
-Model::Model( std::string const& path, bool isTextureFlip) 
+Model::Model( std::string const& path, bool isTextureFlip, bool isTransparancy)
            
 {
 
     this->modelPath = path;
     this->isTextureFlipped = isTextureFlip;
+    this->isTransparant = isTransparancy;
     loadModel(path);
     std::cout << path << std::endl;
 }
@@ -42,7 +43,10 @@ void Model::Draw(Shader& shader)
         return;
     }
     for (unsigned int i = 0; i < meshes.size(); i++)
+    {
+        meshes[i]->SetTransparency(isTransparant);
         meshes[i]->meshDraw(shader);
+    }
 }
 
 void Model::loadModel(std::string const& path)

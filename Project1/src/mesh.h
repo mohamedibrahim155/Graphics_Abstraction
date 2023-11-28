@@ -41,17 +41,20 @@ public:
 
     Mesh( std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
     void meshDraw(Shader& shader);
+    void SetTransparency(const bool& isTransparent);
 
     VertexBuffer* VBO;
     IndexBufferObject* IBO;
     VertexArray* VAO;
     VertexBufferLayout* layout;
     bool isWireFrame = false;
+
 private:
     
     //unsigned int VBO, EBO;
 
     void setupMesh();
     void CalculateTriangles();
+    bool isTransparancy = false;
 };
 #endif

@@ -42,12 +42,13 @@ public:
     float size;
 
     bool gammaCorrection;
+    bool isTransparant;
     Transform transform;
     bool isWireFrame;
     bool isVisible =true;
     Model();
     Model(const Model& copyModel);
-    Model( std::string const& path, bool isTextureFlip=false);
+    Model( std::string const& path, bool isTextureFlip=false, bool isTransparancy= false);
     
     void Draw(Shader& shader);
     

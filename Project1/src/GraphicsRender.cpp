@@ -15,6 +15,10 @@ void GraphicsRender::AddModelsAndShader(Model* model, Shader* Shader)
 	m_Shaders.push_back(Shader);
 }
 
+void GraphicsRender::AddAlphaModelsAndShader(Model* model, Shader* Shader)
+{
+}
+
 void GraphicsRender::AddModelsAndShader(Model& model, Shader& Shader)
 {
 	m_Models.push_back(&model);

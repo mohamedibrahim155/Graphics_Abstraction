@@ -14,7 +14,11 @@ Mesh::Mesh( std::vector<Vertex> vertices, std::vector<unsigned int> indices, std
 
 void Mesh::meshDraw(Shader& shader)
 {
-    
+    if (isTransparancy)
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
 
     unsigned int diffuseNr = 0;
     unsigned int specularNr = 0;
@@ -37,8 +41,18 @@ void Mesh::meshDraw(Shader& shader)
 
 
       
-
+        shader.setFloat("material.shininess", 128);
         GLCALL(glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i));
+        if (isTransparancy)
+        {
+        GLCALL(shader.setFloat("material.alpha", 0.5f));
+
+        }
+        else
+        {
+        GLCALL(shader.setFloat("material.alpha", 1.0f));
+
+        }
          //std::cout << shader.FindUniformLocations((name + number).c_str()) << std::endl;
 
         GLCALL(glBindTexture(GL_TEXTURE_2D, textures[i].id));
@@ -57,12 +71,20 @@ void Mesh::meshDraw(Shader& shader)
    {
        GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
    }
-
+   
    GLCALL( glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0));
    VAO->Unbind();
+   if (isTransparancy)
+   {
+       glDisable(GL_BLEND);
+   }
+  
 
+}
 
-
+void Mesh::SetTransparency(const bool& isTransparent)
+{
+    this->isTransparancy = isTransparent;
 }
 
 void Mesh::setupMesh()

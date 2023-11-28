@@ -8,6 +8,7 @@ struct Material
     sampler2D diffuse;
     sampler2D specular;    
     float shininess;
+    float alpha;
 }; 
 
 
@@ -158,14 +159,22 @@ void main()
 
 
 //    vec4 finalColor = texture(material.diffuse, TextureCoordinates);
-//    
-//        
+    vec4 finalColor = vec4(result ,material.alpha);
+    vec4 diffuseAlphaDiscard = vec4(texture(material.diffuse, TextureCoordinates));
+    if  (material.alpha<1)
+    {
+        if(diffuseAlphaDiscard.a <0.1)
+        {
+            discard;
+        }
+    }
+        
 //      if (finalColor.a < 0.25) 
 //      {
 //          discard;
 //      }
 
-        FragColor =  vec4(result , 0.3) ;
+        FragColor =  finalColor ;
 }
 
 

@@ -16,6 +16,7 @@ public:
 	~GraphicsRender();
 
 	void AddModelsAndShader(Model* model, Shader* Shader);
+	void AddAlphaModelsAndShader(Model* model, Shader* Shader);
 	void AddModelsAndShader(Model& model, Shader& Shader);
 	
 	void AssignStencilShader( Shader* Shader);
@@ -36,7 +37,7 @@ private:
 	std::vector<Model*> m_Models;
 	std::vector<Shader*> m_Shaders;
 
-
+	std::vector<Model*> m_transparentModels;
 
 
 };

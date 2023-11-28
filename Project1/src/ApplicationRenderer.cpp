@@ -93,7 +93,7 @@ void ApplicationRenderer::Start()
 
      Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true);
     
-     Model* Window = new Model((char*)"Models/Window/Window.obj",true);
+     Model* Window = new Model((char*)"Models/Window/Window.obj",true,true);
 
 
      Sphere->transform.position.x += 2;
@@ -136,7 +136,7 @@ void ApplicationRenderer::Start()
      //LightRenderer
      lightManager.AddNewLight(directionLight);
 
-   //  lightManager.SetUniforms(defaultShader->ID);
+     lightManager.SetUniforms(defaultShader->ID);
    //  PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
    //  SpherePhyiscs->Initialize(false, true, DYNAMIC);
 
@@ -172,8 +172,9 @@ void ApplicationRenderer::Render()
 
         PreRender(); //Update call BEFORE  DRAW
         defaultShader->Bind();
-        lightManager.UpdateUniformValuesToShader(defaultShader);
-        material.SetMaterialProperties(*defaultShader);
+       // material.SetMaterialProperties(*defaultShader);
+     //   lightManager.UpdateUniformValuesToShader(defaultShader);
+        lightManager.UpdateUniformValues(defaultShader->ID);
        
 
          defaultShader->setMat4("projection", _projection);
