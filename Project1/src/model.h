@@ -35,32 +35,32 @@ public:
     std::vector<std::shared_ptr<Mesh>> meshes;
     std::string directory;
     std::string modelPath;
-
+    Texture* alphaMask;
 
     int offset;
     std::string id; //if needed 
     float size;
 
     bool gammaCorrection;
-    bool isTransparant;
+    bool isTransparant =false;
     Transform transform;
     bool isWireFrame;
     bool isVisible =true;
     Model();
     Model(const Model& copyModel);
     Model( std::string const& path, bool isTextureFlip=false, bool isTransparancy= false);
-    
+    void loadModel(std::string const& path);
     void Draw(Shader& shader);
     
 
 private:
-    void loadModel(std::string const& path);    
+    
     void processNode(aiNode* node, const aiScene* scene);   
     std::shared_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene);
     std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
     Texture LoadDefaultTexture(aiTextureType type, std::string typeName);
    
-    bool isTextureFlipped;
+    bool isTextureFlipped = true;
 };
 
 

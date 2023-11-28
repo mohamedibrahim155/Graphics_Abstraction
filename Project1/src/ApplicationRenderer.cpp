@@ -91,9 +91,15 @@ void ApplicationRenderer::Start()
      Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
 
 
-     Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true);
+     Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true,true);
     
-     Model* Window = new Model((char*)"Models/Window/Window.obj",true,true);
+     Model* Window = new Model();
+     Window->alphaMask = new Texture();
+     Window->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png", "material.alphaMask");
+     Window->loadModel((char*)"Models/Window/Window.obj");
+     Window->isTransparant = true;
+   
+     
 
 
      Sphere->transform.position.x += 2;
@@ -109,33 +115,42 @@ void ApplicationRenderer::Start()
          Pokeball2->transform.SetScale(glm::vec3(0.5f));*/
 
      Model* dir = new Model(*Sphere);
+     Model* spotlight = new Model(*Sphere);
+     spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
 
      Light directionLight;
      directionLight.lightType = LightType::DIRECTION_LIGHT;
-     directionLight.lightModel = dir;
+     directionLight.lightModel = spotlight;
      directionLight.ambient =  glm::vec3(0.7f);
      directionLight.diffuse =  glm::vec3(0.7f);
      directionLight.specular = glm::vec3(0.7f);
 
 
+     Light spot;
+     spot.lightType = LightType::SPOT_LIGHT;
+     spot.lightModel = spotlight;
+     spot.ambient =  glm::vec3(0.7f);
+     spot.diffuse =  glm::vec3(0.7f);
+     spot.specular =  glm::vec3(0.7f);
+
      //Mesh Renderer
      render.AddModelsAndShader(Sphere, defaultShader);
 
      render.AddModelsAndShader(Grass, defaultShader);
-     render.AddModelsAndShader(Window,defaultShader);
+    
 
      render.AddModelsAndShader(Pokeball, defaultShader);
-
+  
 
      
      render.selectedModel = Sphere;
 
      render.AddModelsAndShader(dir,lightShader);
-  
-
+     render.AddModelsAndShader(spotlight, lightShader);
+     render.AddModelsAndShader(Window, defaultShader);
      //LightRenderer
      lightManager.AddNewLight(directionLight);
-
+   //  lightManager.AddNewLight(spot);
      lightManager.SetUniforms(defaultShader->ID);
    //  PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
    //  SpherePhyiscs->Initialize(false, true, DYNAMIC);

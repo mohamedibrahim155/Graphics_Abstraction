@@ -22,6 +22,7 @@ void Mesh::meshDraw(Shader& shader)
 
     unsigned int diffuseNr = 0;
     unsigned int specularNr = 0;
+    unsigned int alphaNr = 0;
     //unsigned int normalNr = 1;
     //unsigned int emissiveNr = 1;
    // unsigned int heightNr = 1;
@@ -38,6 +39,10 @@ void Mesh::meshDraw(Shader& shader)
         {
             number = std::to_string(specularNr++);
         }
+        else if (name == "material.alphaMask")
+        {
+            number = std::to_string(alphaNr++);
+        }
 
 
       
@@ -45,13 +50,13 @@ void Mesh::meshDraw(Shader& shader)
         GLCALL(glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i));
         if (isTransparancy)
         {
-        GLCALL(shader.setFloat("material.alpha", 0.5f));
-
+        GLCALL(shader.setFloat("material.alpha", 1.0f));
+        GLCALL (shader.setBool("isMasking", true));
         }
         else
         {
         GLCALL(shader.setFloat("material.alpha", 1.0f));
-
+        shader.setBool("isMasking", false);
         }
          //std::cout << shader.FindUniformLocations((name + number).c_str()) << std::endl;
 

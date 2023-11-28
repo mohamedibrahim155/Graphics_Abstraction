@@ -160,7 +160,11 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
     // 2. specular maps
     std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "material.specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-
+    if ( alphaMask && alphaMask->id != 0 )
+    {
+        textures.push_back(*alphaMask);
+        std::cout << "Alpha pushed : " << alphaMask->path << std::endl;
+    }
     
     // return a mesh object created from the extracted mesh data
     return std::make_shared<Mesh>(vertices, indices, textures);

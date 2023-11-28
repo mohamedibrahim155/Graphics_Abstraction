@@ -9,6 +9,7 @@ struct Material
     sampler2D specular;    
     float shininess;
     float alpha;
+    sampler2D alphaMask;
 }; 
 
 
@@ -46,7 +47,7 @@ in vec4 meshColour;
 
 uniform vec3 viewPos;
 uniform Material material;
-
+uniform bool isMasking;
 
 uniform int DIRECTION_LIGHT_ID =0;
 uniform int POINT_LIGHT_ID =1;
@@ -55,7 +56,7 @@ const int LIGHTCOUNT = 15;
 uniform sLight lights[LIGHTCOUNT];
 
 
-
+vec3 CalculateLight(vec3 norm, vec3 viewDir );
 
 
 void main()
@@ -66,7 +67,38 @@ void main()
 
     
 
-    vec3 result;
+    vec3 result = CalculateLight(norm,viewDir);
+  
+
+
+
+
+//    vec4 finalColor = texture(material.diffuse, TextureCoordinates);
+   vec4 finalColor = vec4(result, material.alpha);
+
+    if (isMasking)
+    {
+        // Sample the mask texture
+        vec4 maskSample = texture(material.alphaMask, TextureCoordinates);
+
+        // Multiply the alpha channel of the final color with the alpha channel of the mask
+        finalColor.a *= maskSample.a;
+
+        // If the alpha of the mask is below a threshold, discard the fragment
+        if (maskSample.a < 0.1)
+        {
+            discard;
+        }
+    }
+
+    FragColor = finalColor;
+}
+
+
+vec3 CalculateLight(vec3 norm, vec3 viewDir )
+{
+
+    vec3 result =vec3(0,0,0);
   
 
     for( int index = 0; index < LIGHTCOUNT; index++)
@@ -158,23 +190,5 @@ void main()
     }
 
 
-//    vec4 finalColor = texture(material.diffuse, TextureCoordinates);
-    vec4 finalColor = vec4(result ,material.alpha);
-    vec4 diffuseAlphaDiscard = vec4(texture(material.diffuse, TextureCoordinates));
-    if  (material.alpha<1)
-    {
-        if(diffuseAlphaDiscard.a <0.1)
-        {
-            discard;
-        }
-    }
-        
-//      if (finalColor.a < 0.25) 
-//      {
-//          discard;
-//      }
-
-        FragColor =  finalColor ;
+    return result;
 }
-
-
