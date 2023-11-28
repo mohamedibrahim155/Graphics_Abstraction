@@ -157,17 +157,15 @@ void main()
     }
 
 
-    vec4 finalColor = texture(material.diffuse, TextureCoordinates);
-       
-       
-     
-        
-      if (finalColor.a < 0.1) 
-      {
-          discard;
-      }
+//    vec4 finalColor = texture(material.diffuse, TextureCoordinates);
+//    
+//        
+//      if (finalColor.a < 0.25) 
+//      {
+//          discard;
+//      }
 
-        FragColor =  vec4(result , 1.0) ;
+        FragColor =  vec4(result , 0.3) ;
 }
 
 

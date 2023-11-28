@@ -82,7 +82,8 @@ void ApplicationRenderer::Start()
     GLCALL(glEnable(GL_STENCIL_TEST));
     GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
     GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
-
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
      Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply",true);
@@ -90,14 +91,16 @@ void ApplicationRenderer::Start()
      Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
 
 
-     Model* Grass = new Model((char*)"Models/Grass/Grass.obj",true);
+     Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true);
+    
+     Model* Window = new Model((char*)"Models/Window/Window.obj",true);
 
 
      Sphere->transform.position.x += 2;
      Pokeball->transform.position.x -= 2;
     
      Grass->transform.position.y += 5;
-
+     Window->transform.position.y += 8;
 
      Pokeball2->transform.position.x -= 5;
      Pokeball2->transform.position.y -= 0.3f;
@@ -117,7 +120,9 @@ void ApplicationRenderer::Start()
 
      //Mesh Renderer
      render.AddModelsAndShader(Sphere, defaultShader);
-     render.AddModelsAndShader(Grass,defaultShader);
+
+     render.AddModelsAndShader(Grass, defaultShader);
+     render.AddModelsAndShader(Window,defaultShader);
 
      render.AddModelsAndShader(Pokeball, defaultShader);
 
