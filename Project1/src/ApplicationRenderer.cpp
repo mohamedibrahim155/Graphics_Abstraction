@@ -87,10 +87,17 @@ void ApplicationRenderer::Start()
 
      Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply",true);
      Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj", true);
-     Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj",true);
+     Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
+
+
+     Model* Grass = new Model((char*)"Models/Grass/Grass.obj",true);
+
+
      Sphere->transform.position.x += 2;
      Pokeball->transform.position.x -= 2;
     
+     Grass->transform.position.y += 5;
+
 
      Pokeball2->transform.position.x -= 5;
      Pokeball2->transform.position.y -= 0.3f;
@@ -109,12 +116,13 @@ void ApplicationRenderer::Start()
 
 
      //Mesh Renderer
-     render.AddModelsAndShader(Sphere,defaultShader);
+     render.AddModelsAndShader(Sphere, defaultShader);
+     render.AddModelsAndShader(Grass,defaultShader);
 
      render.AddModelsAndShader(Pokeball, defaultShader);
 
 
-   
+     
      render.selectedModel = Sphere;
 
      render.AddModelsAndShader(dir,lightShader);

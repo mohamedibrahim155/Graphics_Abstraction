@@ -157,13 +157,17 @@ void main()
     }
 
 
+    vec4 finalColor = texture(material.diffuse, TextureCoordinates);
+       
+       
+     
+        
+      if (finalColor.a < 0.1) 
+      {
+          discard;
+      }
 
-
-    // phase 2: point lights
-  // for(int i = 0; i < 4; i++)
-
-
-    FragColor = vec4(result  , 1.0);
+        FragColor =  vec4(result , 1.0) ;
 }
 
 
