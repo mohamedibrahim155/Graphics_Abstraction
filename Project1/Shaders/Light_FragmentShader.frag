@@ -59,6 +59,16 @@ uniform sLight lights[LIGHTCOUNT];
 float temp;
 
 vec4 CalculateLight(vec3 norm, vec3 viewDir );
+float near = 0.1; 
+float far  = 100.0; 
+
+float LinearizeDepth(float depth) 
+{
+    float z = depth * 2.0 - 1.0; // back to NDC 
+    return (2.0 * near * far) / (far + near - z * (far - near));	
+}
+
+uniform bool isDepthBuffer;
 
 
 void main()
@@ -93,11 +103,27 @@ void main()
      }
      
 
-      FragColor = result; 
+     if(isDepthBuffer)
+     {
+
+          float depth = LinearizeDepth(gl_FragCoord.z) / far;
+          FragColor = vec4(vec3(depth), 1.0); 
+      }
+      else
+      {
+          FragColor = result;
+
+      }
+
+
+      //
+
     //FragColor = vec4( temp,temp, temp,1.0);
      
-
+    
 }
+
+  
 
 
 vec4 CalculateLight(vec3 norm, vec3 viewDir )

@@ -69,6 +69,9 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader.frag");
     lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
     StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag");
+   
+    SkyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
+
 
     //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
     render.AssignStencilShader(StencilShader);
@@ -87,6 +90,12 @@ void ApplicationRenderer::Start()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
+    skybox = new Skybox(); 
+    
+    skybox->AssignSkyboxShader(SkyboxShader);
+    skybox->SkyboxPrerender();
+    
 
     render.AssignCamera(&camera);
 
@@ -211,9 +220,20 @@ void ApplicationRenderer::Render()
 
         glm::mat4 _projection = glm::perspective(glm::radians(camera.Zoom), (float)windowWidth / (float)WindowHeight, 0.1f, 100.0f);
         glm::mat4 _view = camera.GetViewMatrix();
+        glm::mat4 _skyboxview = glm::mat4(glm::mat3(camera.GetViewMatrix()));
 
 
         PreRender(); //Update call BEFORE  DRAW
+
+        glDepthFunc(GL_LEQUAL);
+        SkyboxShader->Bind();
+        SkyboxShader->setMat4("view", _skyboxview);
+        SkyboxShader->setMat4("projection", _projection);
+
+        skybox->Skyboxrender();
+        glDepthFunc(GL_LESS); 
+
+
         defaultShader->Bind();
        // material.SetMaterialProperties(*defaultShader);
      //   lightManager.UpdateUniformValuesToShader(defaultShader);
@@ -224,6 +244,7 @@ void ApplicationRenderer::Render()
          defaultShader->setMat4("view", _view);
          defaultShader->setVec3("viewPos", camera.Position.x, camera.Position.y, camera.Position.z);
          defaultShader->setFloat("time", scrollTime);
+         defaultShader->setBool("isDepthBuffer", false);
 
          lightShader->Bind();
          lightShader->setVec3("objectColor", glm::vec3(1, 1, 1));
@@ -237,13 +258,14 @@ void ApplicationRenderer::Render()
         /* ScrollShader->Bind();
          ScrollShader->setMat4("ProjectionMatrix", _projection);*/
         
-         
 
+       
+
+         
+  
          
          // make models that it should not write in the stencil buffer
          render.Draw();
-
-      
 
 
 

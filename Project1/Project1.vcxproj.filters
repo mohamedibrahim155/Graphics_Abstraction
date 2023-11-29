@@ -99,6 +99,9 @@
     <ClCompile Include="src\PhysicsEngine.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -200,6 +203,9 @@
     <ClInclude Include="src\Triangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.frag" />
@@ -215,5 +221,7 @@
     <None Include="Shaders\StencilOutline.frag" />
     <None Include="Shaders\ScrollTexture.vert" />
     <None Include="Shaders\ScrollTexture.frag" />
+    <None Include="Shaders\SkyboxShader.vert" />
+    <None Include="Shaders\SkyboxShader.frag" />
   </ItemGroup>
 </Project>

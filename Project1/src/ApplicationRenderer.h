@@ -12,6 +12,7 @@
 #include"LightManager.h"
 #include "Random.h"
 #include "PhysicsEngine.h"
+#include "Skybox.h"
 
 #include "GraphicsRender.h"
 
@@ -51,7 +52,10 @@ private:
 	Shader* defaultShader;
 	Shader* lightShader;
 	Shader* StencilShader;
-	Shader* ScrollShader;
+	Shader* SkyboxShader;
+
+	Skybox* skybox;
+
 	PhysicsEngine PhysicsEngine;
 
 	 int windowWidth;

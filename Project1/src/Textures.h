@@ -22,6 +22,7 @@ public:
 
 	unsigned int TextureFromFile(const char* path, const std::string& directory);
 
+	unsigned int loadCubemap(std::vector<std::string> faces);
 
 private:
 	unsigned int loadTexture(char const* path);
