@@ -69,6 +69,17 @@ void Mesh::meshDraw(Shader& shader)
 
         }
 
+        if (isTextureScrolling)
+        {
+            GLCALL(shader.setBool("isScrollingTexture", true));
+
+        }
+        else
+        {
+            GLCALL(shader.setBool("isScrollingTexture", false));
+
+        }
+
      
 
         shader.setInt((name), i);
@@ -114,6 +125,13 @@ void Mesh::SetCutOff(const bool& isCutOut)
 {
 
     this->isCutOut = isCutOut;
+
+}
+
+void Mesh::TextureScrolling(const bool& isScroll)
+{
+
+    this->isTextureScrolling = isScroll;
 
 }
 

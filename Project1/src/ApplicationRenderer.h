@@ -51,6 +51,7 @@ private:
 	Shader* defaultShader;
 	Shader* lightShader;
 	Shader* StencilShader;
+	Shader* ScrollShader;
 	PhysicsEngine PhysicsEngine;
 
 	 int windowWidth;
@@ -62,6 +63,8 @@ private:
 	 float deltaTime;
 	 double lastTime;
 	 float lastFrame;
+
+	 float scrollTime;
 
 	 bool firstMouse;
 

@@ -13,15 +13,26 @@ layout (location = 3) in vec4 aColor;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform float time = 0;
 
+uniform bool isScrollingTexture;
 
 // function prototypes
 
 void main()
 {
+   
     FragPosition = vec3(model * vec4(aPos, 1.0));
     Normal =  mat3(transpose(inverse(model))) * aNormal;
-	TextureCoordinates = aTexCoords;
+	if(isScrollingTexture)
+	{
+
+	  TextureCoordinates = aTexCoords + vec2(0.1 * time, 0.2 * time);
+	}
+	else
+	{
+	  TextureCoordinates = aTexCoords;
+	}
 	 meshColour = aColor;
 	//gl_Position = projection * view * model;
 	gl_Position = projection * view * vec4(FragPosition, 1.0);

@@ -83,7 +83,7 @@ void main()
 
       if (isCutout)
      {
-
+      
          if (cutOff.a < 0.1)
         {
             discard;

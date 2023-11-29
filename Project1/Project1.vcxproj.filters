@@ -213,5 +213,7 @@
     <None Include="Shaders\color.frag" />
     <None Include="Shaders\StencilOutline.vert" />
     <None Include="Shaders\StencilOutline.frag" />
+    <None Include="Shaders\ScrollTexture.vert" />
+    <None Include="Shaders\ScrollTexture.frag" />
   </ItemGroup>
 </Project>

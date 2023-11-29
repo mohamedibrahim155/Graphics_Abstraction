@@ -43,6 +43,7 @@ public:
     void meshDraw(Shader& shader);
     void SetTransparency(const bool& isTransparent);
     void SetCutOff(const bool& isCutOut);
+    void TextureScrolling(const bool& isScroll);
 
     VertexBuffer* VBO;
     IndexBufferObject* IBO;
@@ -58,5 +59,6 @@ private:
     void CalculateTriangles();
     bool isTransparancy = false;
     bool isCutOut = false;
+    bool isTextureScrolling = false;
 };
 #endif

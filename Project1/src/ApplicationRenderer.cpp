@@ -69,6 +69,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader.frag");
     lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
     StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag");
+
+    //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
     render.AssignStencilShader(StencilShader);
     camera.Position = glm::vec3(0, 0, - 1.0f);
 }
@@ -88,12 +90,19 @@ void ApplicationRenderer::Start()
 
     render.AssignCamera(&camera);
 
-     Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
-   /*  Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj", true);
+    Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
+   // Model* Sphere = new Model();
+
+    Model* scroll = new Model((char*)"Models/Scroll/scroll.obj", true);
+    scroll->transform.position.y -= 5;
+    scroll->meshes[0]->TextureScrolling(true);
+
+
+     Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj", true);
      Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
 
 
-     Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true,false, true);*/
+     Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true,false, true);
     
      Model* Window = new Model();
      Window->alphaMask = new Texture();
@@ -115,19 +124,19 @@ void ApplicationRenderer::Start()
 
 
      Sphere->transform.position.x += 2;
-   //  Pokeball->transform.position.x -= 2;
+     Pokeball->transform.position.x -= 2;
     
-    // Grass->transform.position.y += 5;
+     Grass->transform.position.y += 5;
      Window->transform.position.y += 8;
      Window2->transform.position.y += 6;
 
-    // Pokeball2->transform.position.x -= 5;
-    // Pokeball2->transform.position.y -= 0.3f;
-    // Pokeball2->transform.SetScale(glm::vec3(1.2f));
-    /* Pokeball2->transform.position = Pokeball->transform.position;
-         Pokeball2->transform.SetScale(glm::vec3(0.5f));*/
+     Pokeball2->transform.position.x -= 5;
+     Pokeball2->transform.position.y -= 0.3f;
+     Pokeball2->transform.SetScale(glm::vec3(1.2f));
+    Pokeball2->transform.position = Pokeball->transform.position;
+         Pokeball2->transform.SetScale(glm::vec3(0.5f));
 
-     Model* dir = new Model(*Sphere);
+     Model* dir = new Model();
     // Model* spotlight = new Model(*Sphere);
      //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
 
@@ -148,11 +157,12 @@ void ApplicationRenderer::Start()
 
      //Mesh Renderer
      render.AddModelsAndShader(Sphere, defaultShader);
+     render.AddModelsAndShader(scroll, defaultShader);
 
-    // render.AddModelsAndShader(Grass, defaultShader);
+     render.AddModelsAndShader(Grass, defaultShader);
     
 
-    // render.AddModelsAndShader(Pokeball, defaultShader);
+     render.AddModelsAndShader(Pokeball, defaultShader);
   
 
      
@@ -194,6 +204,8 @@ void ApplicationRenderer::Render()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
+        scrollTime += deltaTime;
+
         ProcessInput(window);
 
 
@@ -211,7 +223,8 @@ void ApplicationRenderer::Render()
          defaultShader->setMat4("projection", _projection);
          defaultShader->setMat4("view", _view);
          defaultShader->setVec3("viewPos", camera.Position.x, camera.Position.y, camera.Position.z);
-       
+         defaultShader->setFloat("time", scrollTime);
+
          lightShader->Bind();
          lightShader->setVec3("objectColor", glm::vec3(1, 1, 1));
          lightShader->setMat4("projection", _projection);
@@ -220,6 +233,10 @@ void ApplicationRenderer::Render()
          StencilShader->Bind();
          StencilShader->setMat4("projection", _projection);
          StencilShader->setMat4("view", _view);
+
+        /* ScrollShader->Bind();
+         ScrollShader->setMat4("ProjectionMatrix", _projection);*/
+        
          
 
          
