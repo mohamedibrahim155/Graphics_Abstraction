@@ -58,7 +58,7 @@ unsigned int Texture::loadTexture(char const* path)
 	return textureID;
 }
 
-void  Texture::LoadTexture(const char* filePath, const char* _type)
+void  Texture::LoadTexture(const char* filePath, std::string _type)
 {
 	this->path = filePath;
 	this->type = _type;

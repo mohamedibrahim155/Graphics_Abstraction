@@ -248,12 +248,12 @@ void LightManager::UpdateUniformValues(GLuint shaderID)
 
      GLCALL(glUniform3f(lightList[index].direction_UL, value.x, value.y, value.z));
 
-        glUniform3f(lightList[index].diffuse_UL, lightList[index].diffuse.x,lightList[index].diffuse.y, lightList[index].diffuse.z);
-
-        glUniform3f(lightList[index].specular_UL,lightList[index].specular.x,lightList[index].specular.y, lightList[index].specular.z);
-
-        glUniform3f(lightList[index].ambient_UL, lightList[index].ambient.x, lightList[index].ambient.y, lightList[index].ambient.z);
-
+        glUniform4f(lightList[index].diffuse_UL, lightList[index].diffuse.x,lightList[index].diffuse.y,   lightList[index].diffuse.z, lightList[index].diffuse.w);
+                 
+        glUniform4f(lightList[index].specular_UL,lightList[index].specular.x,lightList[index].specular.y, lightList[index].specular.z, lightList[index].diffuse.w);
+                 
+        glUniform4f(lightList[index].ambient_UL, lightList[index].ambient.x, lightList[index].ambient.y,  lightList[index].ambient.z, lightList[index].diffuse.w);
+                 
         glUniform3f(lightList[index].direction_UL,lightList[index].direction.x, lightList[index].direction.y,lightList[index].direction.z);
 
         glUniform1i(lightList[index].lightType_UL,  (int)lightList[index].lightType);
@@ -271,7 +271,7 @@ void LightManager::UpdateUniformValues(GLuint shaderID)
         glUniform1f(lightList[index].cuttOffAngle_UL, glm::cos(glm::radians( lightList[index].cutOffAngle)));
 
         glUniform1f(lightList[index].outerCutOffAngle_UL, glm::cos(glm::radians(lightList[index].outerCutOffAngle)));
-        glUniform3f(lightList[index].color_UL,  lightList[index].color.r, lightList[index].color.y, lightList[index].color.z);
+        glUniform4f(lightList[index].color_UL,  lightList[index].color.x, lightList[index].color.y, lightList[index].color.z, lightList[index].color.w);
     }
 
 

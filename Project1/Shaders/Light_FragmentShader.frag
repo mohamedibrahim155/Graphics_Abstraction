@@ -18,24 +18,24 @@ struct Material
 struct sLight
 {
     vec3 position;			
-	vec3 diffuse;	// Colour of the light (used for diffuse)
-	vec3 specular;	// rgb = highlight colour, w = power
+	vec4 diffuse;	// Colour of the light (used for diffuse)
+	vec4 specular;	// rgb = highlight colour, w = power
 		
 	vec3 direction;	// Spot, directional lights
 	int lightType;	// x = lightType, y = inner angle, z = outer angle, w = TBD
 	        
                    // 0 = pointlight
-   float constant;
+    float constant;
     float linear;
     float quadratic;	
     
     // 1 = spot light
 					// 2 = directional light
-    vec3 ambient;
+    vec4 ambient;
 
      float cutOff;
     float outerCutOff;
-    vec3 color;
+    vec4 color;
     
 };
 
@@ -48,6 +48,7 @@ in vec4 meshColour;
 uniform vec3 viewPos;
 uniform Material material;
 uniform bool isMasking;
+uniform bool isCutout;
 
 uniform int DIRECTION_LIGHT_ID =0;
 uniform int POINT_LIGHT_ID =1;
@@ -56,7 +57,7 @@ const int LIGHTCOUNT = 15;
 uniform sLight lights[LIGHTCOUNT];
 
 
-vec3 CalculateLight(vec3 norm, vec3 viewDir );
+vec4 CalculateLight(vec3 norm, vec3 viewDir );
 
 
 void main()
@@ -67,38 +68,43 @@ void main()
 
     
 
-    vec3 result = CalculateLight(norm,viewDir);
+    vec4 result = CalculateLight(norm,viewDir);
   
+     vec4 cutOff = texture(material.diffuse, TextureCoordinates);
+ 
+     float maskSample = texture(material.alphaMask, TextureCoordinates).r;
+
+     //vec4 finalColor = vec4(result, isCutout ? 1.0f : maskSample);
 
 
+     if (isMasking)
+     {
+       // result.w = texture(material.alphaMask, TextureCoordinates).r;
+     
+     }
 
+      if (isCutout)
+     {
 
-//    vec4 finalColor = texture(material.diffuse, TextureCoordinates);
-   vec4 finalColor = vec4(result, material.alpha);
-
-    if (isMasking)
-    {
-        // Sample the mask texture
-        vec4 maskSample = texture(material.alphaMask, TextureCoordinates);
-
-        // Multiply the alpha channel of the final color with the alpha channel of the mask
-        finalColor.a *= maskSample.a;
-
-        // If the alpha of the mask is below a threshold, discard the fragment
-        if (maskSample.a < 0.1)
+         if (cutOff.a < 0.1)
         {
             discard;
         }
-    }
+     
+     }
+     
 
-    FragColor = finalColor;
+      FragColor = result; 
+  
+     
+
 }
 
 
-vec3 CalculateLight(vec3 norm, vec3 viewDir )
+vec4 CalculateLight(vec3 norm, vec3 viewDir )
 {
 
-    vec3 result =vec3(0,0,0);
+    vec4 result = vec4(0,0,0,0);
   
 
     for( int index = 0; index < LIGHTCOUNT; index++)
@@ -114,16 +120,16 @@ vec3 CalculateLight(vec3 norm, vec3 viewDir )
          vec3 reflectDir = reflect(-lightDir, norm);
          float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
-         vec3 ambient = lights[index].ambient   *         meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
-         vec3 diffuse = lights[index].diffuse   * diff  * meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
-         vec3 specular = lights[index].specular * spec  * meshColour.rgb * vec3(texture(material.specular, TextureCoordinates));
+         vec4 ambient = lights[index].ambient   *         meshColour * texture(material.diffuse, TextureCoordinates);
+         vec4 diffuse = lights[index].diffuse   * diff  * meshColour * texture(material.diffuse, TextureCoordinates);
+         vec4 specular = lights[index].specular * spec  * meshColour * texture(material.specular, TextureCoordinates);
 
 
 //          vec3 ambient = lights[index].ambient * meshColour.rgb;
 //         vec3 diffuse =  lights[index].diffuse * diff * meshColour.rgb;
 //         vec3 specular =  lights[index].specular * spec *meshColour.rgb;
 
-         vec3 finalValueforDir =(ambient+diffuse+specular);
+         vec4 finalValueforDir =(ambient+diffuse+specular);
          result+=finalValueforDir*lights[index].color;
         
        }
@@ -139,9 +145,9 @@ vec3 CalculateLight(vec3 norm, vec3 viewDir )
         float distance = length(lights[index].position - FragPosition);
         float attenuation = 1.0 / (lights[index].constant + lights[index].linear * distance + lights[index].quadratic * (distance * distance));    
         // combine results
-         vec3 ambient = lights[index].ambient   *         meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
-         vec3 diffuse = lights[index].diffuse   * diff  * meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
-         vec3 specular = lights[index].specular * spec  * meshColour.rgb * vec3(texture(material.specular, TextureCoordinates));
+         vec4 ambient = lights[index].ambient   *         meshColour * texture(material.diffuse, TextureCoordinates);
+         vec4 diffuse = lights[index].diffuse   * diff  * meshColour * texture(material.diffuse, TextureCoordinates);
+         vec4 specular = lights[index].specular * spec  * meshColour * texture(material.specular, TextureCoordinates);
 
         
 //          vec3 ambient = lights[index].ambient * meshColour.rgb;
@@ -151,7 +157,7 @@ vec3 CalculateLight(vec3 norm, vec3 viewDir )
         ambient *= attenuation;
         diffuse *= attenuation;
         specular *= attenuation;
-         vec3 finalValueforDir= (ambient + diffuse + specular)*lights[index].color;
+         vec4 finalValueforDir= (ambient + diffuse + specular)*lights[index].color;
           result+=finalValueforDir;
        }
 
@@ -171,9 +177,9 @@ vec3 CalculateLight(vec3 norm, vec3 viewDir )
          float epsilon = lights[index].cutOff - lights[index].outerCutOff;
          float intensity = clamp((theta - lights[index].outerCutOff) / epsilon, 0.0, 1.0);
          // combine results
-         vec3 ambient = lights[index].ambient   *         meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
-         vec3 diffuse = lights[index].diffuse   * diff  * meshColour.rgb * vec3(texture(material.diffuse, TextureCoordinates));
-         vec3 specular = lights[index].specular * spec  * meshColour.rgb * vec3(texture(material.specular, TextureCoordinates));
+         vec4 ambient = lights[index].ambient   *         meshColour * texture(material.diffuse, TextureCoordinates);
+         vec4 diffuse = lights[index].diffuse   * diff  * meshColour * texture(material.diffuse, TextureCoordinates);
+         vec4 specular = lights[index].specular * spec  * meshColour * texture(material.specular, TextureCoordinates);
 
 //
 //                vec3 ambient = lights[index].ambient * meshColour.rgb;
@@ -183,12 +189,12 @@ vec3 CalculateLight(vec3 norm, vec3 viewDir )
          ambient *= attenuation * intensity;
          diffuse *= attenuation * intensity;
          specular *= attenuation * intensity;
-         vec3 finalValueforDir= (ambient + diffuse + specular)*lights[index].color;
+         vec4 finalValueforDir= (ambient + diffuse + specular)*lights[index].color;
           result+=finalValueforDir;
        }
 
     }
 
-
-    return result;
+    
+      return result;
 }

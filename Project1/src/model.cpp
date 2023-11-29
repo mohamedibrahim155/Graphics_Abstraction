@@ -19,13 +19,14 @@ Model::Model(const Model& copyModel)
 
 }
 
-Model::Model( std::string const& path, bool isTextureFlip, bool isTransparancy)
+Model::Model( std::string const& path, bool isTextureFlip, bool isTransparancy, bool isCutOut)
            
 {
 
     this->modelPath = path;
     this->isTextureFlipped = isTextureFlip;
     this->isTransparant = isTransparancy;
+    this->isCutOut = isCutOut;
     loadModel(path);
     std::cout << path << std::endl;
 }
@@ -45,6 +46,7 @@ void Model::Draw(Shader& shader)
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
         meshes[i]->SetTransparency(isTransparant);
+        meshes[i]->SetCutOff(isCutOut);
         meshes[i]->meshDraw(shader);
     }
 }
@@ -84,7 +86,7 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
 {
      std::vector<Vertex> vertices;
      std::vector<unsigned int> indices;
-     std::vector<Texture> textures;
+     std::vector<Texture*> textures;
 
     
 
@@ -155,14 +157,14 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
    
     // 1. diffuse maps
-    std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "material.diffuse");
+    std::vector<Texture*> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "material.diffuse");
     textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
     // 2. specular maps
-    std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "material.specular");
+    std::vector<Texture*> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "material.specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     if ( alphaMask && alphaMask->id != 0 )
     {
-        textures.push_back(*alphaMask);
+        textures.push_back(alphaMask);
         std::cout << "Alpha pushed : " << alphaMask->path << std::endl;
     }
     
@@ -171,71 +173,76 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
  }
 
 
- std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
+std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 {
 
-    
-     std::vector<Texture> textures;
-     if (mat->GetTextureCount(type) == 0)
-     {
-         std::string path = "";
-         switch (type)
-         {
-         case aiTextureType_DIFFUSE:
-             path = "Textures/DefaultTextures/Default_Diffuse.png";
-             break;
-         case aiTextureType_SPECULAR:
-             path = "Textures/DefaultTextures/Default_Specular.jpg";
-             break;
-         }
 
-         Texture* defaultTexture = new Texture(path.c_str());
-         defaultTexture->type = typeName.c_str();
-
-         Texture temp = *defaultTexture;
-
-         std::cout << "Texture loading : " << temp.path << std::endl;
-         textures.push_back(temp);
-         textures_loaded.push_back(temp);
-     }
-    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+    std::vector<Texture*> textures;
+    if (mat->GetTextureCount(type) == 0)
     {
-        aiString str;   
-        mat->GetTexture(type, i, &str);
-
-       /* if (this->isTextureFlipped)
+        std::string path = "";
+        switch (type)
         {
-            stbi_set_flip_vertically_on_load(true);
-
+        case aiTextureType_DIFFUSE:
+            path = "Textures/DefaultTextures/Default_Diffuse.png";
+            break;
+        case aiTextureType_SPECULAR:
+            path = "Textures/DefaultTextures/Default_Specular.jpg";
+            break;
         }
-        else
-        {
-            stbi_set_flip_vertically_on_load(false);
 
-        }*/
+        Texture* defaultTexture = new Texture(path.c_str());
+        defaultTexture->type = typeName;
 
-        bool skip = false;
-        for (unsigned int j = 0; j < textures_loaded.size(); j++)
+
+
+        std::cout << "Texture loading : " << defaultTexture->path << std::endl;
+        std::cout << "Texture type : " << defaultTexture->type << std::endl;
+        textures.push_back(defaultTexture);
+        textures_loaded.push_back(defaultTexture);
+    }
+    else
+    {
+        for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
-            if (std::strcmp(textures_loaded[j].path, str.C_Str()) == 0)
+            aiString str;
+            mat->GetTexture(type, i, &str);
+
+            /* if (this->isTextureFlipped)
+             {
+                 stbi_set_flip_vertically_on_load(true);
+
+             }
+             else
+             {
+                 stbi_set_flip_vertically_on_load(false);
+
+             }*/
+
+            bool skip = false;
+            for (unsigned int j = 0; j < textures_loaded.size(); j++)
             {
-                textures.push_back(textures_loaded[j]);
-                skip = true;
-                break;
+                if (std::strcmp(textures_loaded[j]->path, str.C_Str()) == 0)
+                {
+                    textures.push_back(textures_loaded[j]);
+                    skip = true;
+                    break;
+                }
+            }
+            if (!skip)
+            {
+                Texture* texture = new Texture();
+                texture->id = texture->TextureFromFile(str.C_Str(), this->directory);
+                texture->type = typeName;
+                std::cout << "Texture Loaded: " << texture->type << std::endl;
+                texture->path = str.C_Str();
+                textures.push_back(texture);
+                textures_loaded.push_back(texture);
             }
         }
-        if (!skip)
-        {   
-            Texture texture;
-            texture.id = texture.TextureFromFile(str.C_Str(), this->directory);
-            texture.type = typeName.c_str();
-            std::cout << "Texture Loaded: " << texture.type << std::endl;
-            texture.path = str.C_Str();
-            textures.push_back(texture);
-            textures_loaded.push_back(texture); 
-        }
-    }
 
+
+    }
     return textures;
 }
 

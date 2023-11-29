@@ -17,8 +17,8 @@ public:
 	~Texture() {}
 	unsigned int id;
 	const char* path;
-	const char* type;
-	void LoadTexture(const char* filePath, const char* _type);
+	std::string type;
+	void LoadTexture(const char* filePath, std::string _type);
 
 	unsigned int TextureFromFile(const char* path, const std::string& directory);
 

@@ -25,9 +25,30 @@ void GraphicsRender::AddModelsAndShader(Model& model, Shader& Shader)
 	m_Shaders.push_back(&Shader);
 }
 
+void GraphicsRender::AddTransparentModels(Model* model, Shader* Shader)
+{
+	m_transparentModels.push_back(model);
+	m_transparentShaders.push_back(Shader);
+
+}
+
 void GraphicsRender::AssignStencilShader(Shader* Shader)
 {
 	this->m_StencilShader = Shader;
+
+
+}
+
+void GraphicsRender::AssignCamera(Camera* cam)
+{
+
+	this->cam = cam;
+}
+
+void GraphicsRender::SortObject()
+{
+	CompareDistances compareDistance(cam->Position);
+	std::sort(m_transparentModels.begin(), m_transparentModels.end(), compareDistance);
 
 
 }
@@ -43,6 +64,12 @@ std::vector<Model*> GraphicsRender::GetModelList()
 
 void GraphicsRender::Draw()
 {
+	/*std::map<float, glm::vec3> sorted;
+	for (unsigned int i = 0; i < windows.size(); i++)
+	{
+		float distance = glm::length(camera.Position - windows[i]);
+		sorted[distance] = windows[i];
+	}*/
 
 	glStencilMask(0x00);
 	for (size_t i = 0; i < m_Models.size(); i++)
@@ -82,6 +109,18 @@ void GraphicsRender::Draw()
 	glStencilMask(0xFF);
 	glStencilFunc(GL_ALWAYS, 0, 0xFF);
 	glEnable(GL_DEPTH_TEST);
+
+
+	SortObject();
+
+
+	for (size_t i = 0; i < m_transparentModels.size(); i++)
+	{
+		
+		m_transparentModels[i]->Draw(*m_transparentShaders[i]);
+
+	}
+
 }
 
 void GraphicsRender::ClearData()

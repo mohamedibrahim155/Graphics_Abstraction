@@ -31,7 +31,7 @@ class Model
 public:
 
 
-    std::vector<Texture> textures_loaded;	
+    std::vector<Texture*> textures_loaded;
     std::vector<std::shared_ptr<Mesh>> meshes;
     std::string directory;
     std::string modelPath;
@@ -42,13 +42,14 @@ public:
     float size;
 
     bool gammaCorrection;
-    bool isTransparant =false;
+    bool isTransparant = false;
+    bool isCutOut = false;
     Transform transform;
     bool isWireFrame;
     bool isVisible =true;
     Model();
     Model(const Model& copyModel);
-    Model( std::string const& path, bool isTextureFlip=false, bool isTransparancy= false);
+    Model( std::string const& path, bool isTextureFlip=false, bool isTransparancy= false, bool isCutOut = false);
     void loadModel(std::string const& path);
     void Draw(Shader& shader);
     
@@ -57,7 +58,7 @@ private:
     
     void processNode(aiNode* node, const aiScene* scene);   
     std::shared_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene);
-    std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+    std::vector<Texture*> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
     Texture LoadDefaultTexture(aiTextureType type, std::string typeName);
    
     bool isTextureFlipped = true;

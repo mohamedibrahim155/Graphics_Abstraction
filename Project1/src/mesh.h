@@ -35,13 +35,14 @@ public:
 
     std::vector<Vertex>       vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture>      textures;
+    std::vector<Texture*>      textures;
     //unsigned int VAO;
     std::vector<Triangles> triangle;
 
-    Mesh( std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+    Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture*>& textures);
     void meshDraw(Shader& shader);
     void SetTransparency(const bool& isTransparent);
+    void SetCutOff(const bool& isCutOut);
 
     VertexBuffer* VBO;
     IndexBufferObject* IBO;
@@ -56,5 +57,6 @@ private:
     void setupMesh();
     void CalculateTriangles();
     bool isTransparancy = false;
+    bool isCutOut = false;
 };
 #endif
