@@ -31,14 +31,17 @@ void Mesh::meshDraw(Shader& shader)
         if (name == "material.diffuse")
         {
             number = std::to_string(diffuseNr++);
+            name = "diffuse";
         }
         else if (name == "material.specular")
         {
             number = std::to_string(specularNr++);
+            name = "specular";
         }
         else if (name == "material.alphaMask")
         {
             number = std::to_string(alphaNr++);
+            name = "alphaMask";
         }
 
 
@@ -46,13 +49,13 @@ void Mesh::meshDraw(Shader& shader)
 
         if (isTransparancy)
         {
-            GLCALL(shader.setFloat("material.alpha", 1.0f));
+           // GLCALL(shader.setFloat("material.alpha", 1.0f));
             GLCALL(shader.setBool("isMasking", true));
         }
         else
         {
-            GLCALL(shader.setFloat("material.alpha", 1.0f));
-            shader.setBool("isMasking", false);
+          //  GLCALL(shader.setFloat("material.alpha", 1.0f));
+           shader.setBool("isMasking", false);
         }
 
 
@@ -68,9 +71,9 @@ void Mesh::meshDraw(Shader& shader)
 
      
 
-
+        shader.setInt((name), i);
          //std::cout << shader.FindUniformLocations((name + number).c_str()) << std::endl;
-        GLCALL(glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i));
+      //  GLCALL(glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i));
 
         GLCALL(glBindTexture(GL_TEXTURE_2D, textures[i]->id));
     }
@@ -90,6 +93,7 @@ void Mesh::meshDraw(Shader& shader)
    }
    
    GLCALL( glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0));
+   GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
    VAO->Unbind();
 
 

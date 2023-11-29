@@ -49,7 +49,7 @@ public:
     bool isVisible =true;
     Model();
     Model(const Model& copyModel);
-    Model( std::string const& path, bool isTextureFlip=false, bool isTransparancy= false, bool isCutOut = false);
+    Model( std::string const& path, bool isTextureFlip=true, bool isTransparancy= false, bool isCutOut = false);
     void loadModel(std::string const& path);
     void Draw(Shader& shader);
     
