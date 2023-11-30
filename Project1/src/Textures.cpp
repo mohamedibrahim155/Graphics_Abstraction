@@ -12,10 +12,10 @@
 
 
 
-Texture::Texture(const char* filePath)
+Texture::Texture(std::string& filePath)
 {
 	this->path = filePath;
-	this->id = loadTexture(filePath);
+	this->id = loadTexture(filePath.c_str());
 }
 
 
@@ -58,11 +58,11 @@ unsigned int Texture::loadTexture(char const* path)
 	return textureID;
 }
 
-void  Texture::LoadTexture(const char* filePath, std::string _type)
+void  Texture::LoadTexture(const std::string& filePath, const std::string& _type)
 {
 	this->path = filePath;
 	this->type = _type;
-	this->id = loadTexture(filePath);
+	this->id = loadTexture(filePath.c_str());
 }
 
 unsigned int Texture::TextureFromFile(const char* path, const std::string& directory)
@@ -108,7 +108,6 @@ unsigned int Texture::TextureFromFile(const char* path, const std::string& direc
 		stbi_image_free(data);
 	}
 
-
 	return textureID;
 }
 
@@ -141,4 +140,14 @@ unsigned int Texture::loadCubemap(std::vector<std::string> faces)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	return textureID;
+}
+
+void Texture::Bind()
+{
+	GLCALL(glBindTexture(GL_TEXTURE_2D, id));
+}
+
+void Texture::Unbind()
+{
+	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
 }

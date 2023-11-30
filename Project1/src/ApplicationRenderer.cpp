@@ -66,7 +66,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
 
   
-    defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader.frag");
+    defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader2.frag");
     lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
     StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag");
    
@@ -91,10 +91,10 @@ void ApplicationRenderer::Start()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-    skybox = new Skybox(); 
+   /* skybox = new Skybox(); 
     
     skybox->AssignSkyboxShader(SkyboxShader);
-    skybox->SkyboxPrerender();
+    skybox->SkyboxPrerender();*/
     
 
     render.AssignCamera(&camera);
@@ -102,22 +102,22 @@ void ApplicationRenderer::Start()
     Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
    // Model* Sphere = new Model();
 
-    Model* scroll = new Model((char*)"Models/Scroll/scroll.obj", true);
-    scroll->transform.position.y -= 5;
-    scroll->meshes[0]->TextureScrolling(true);
+   // Model* scroll = new Model((char*)"Models/Scroll/scroll.obj", true);
+   // scroll->transform.position.y -= 5;
+   // scroll->meshes[0]->TextureScrolling(true);
 
 
-     Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj", true);
-     Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
+     Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj");
+   //  Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
 
 
-     Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true,false, true);
+    // Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true,true, true);
     
-     Model* Window = new Model();
+   /*  Model* Window = new Model();
      Window->alphaMask = new Texture();
      
-     Window->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png", "material.alphaMask");
-     Window->loadModel((char*)"Models/Window/Window.obj");
+     Window->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png","opacity_Texture");
+     Window->loadModel("Models/Window/Window.obj");
      Window->isTransparant = true;
      Window->isCutOut = false;
 
@@ -125,8 +125,8 @@ void ApplicationRenderer::Start()
      Window2->alphaMask = new Texture();
      Window2->isTransparant = true;
      Window2->isCutOut = false;
-     Window2->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png", "material.alphaMask");
-     Window2->loadModel((char*)"Models/Window/Window.obj");
+     Window2->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png", "opacity_Texture");
+     Window2->loadModel((char*)"Models/Window/Window.obj");*/
    
    
      
@@ -135,26 +135,28 @@ void ApplicationRenderer::Start()
      Sphere->transform.position.x += 2;
      Pokeball->transform.position.x -= 2;
     
-     Grass->transform.position.y += 5;
-     Window->transform.position.y += 8;
-     Window2->transform.position.y += 6;
+   //  Grass->transform.position.y += 5;
+     //Window->transform.position.y += 8;
+     //Window2->transform.position.y += 6;
 
-     Pokeball2->transform.position.x -= 5;
-     Pokeball2->transform.position.y -= 0.3f;
-     Pokeball2->transform.SetScale(glm::vec3(1.2f));
-    Pokeball2->transform.position = Pokeball->transform.position;
-         Pokeball2->transform.SetScale(glm::vec3(0.5f));
+    // Pokeball2->transform.position.x -= 5;
+    // Pokeball2->transform.position.y -= 0.3f;
+   //  Pokeball2->transform.SetScale(glm::vec3(1.2f));
+  //  Pokeball2->transform.position = Pokeball->transform.position;
+  //       Pokeball2->transform.SetScale(glm::vec3(0.5f));
 
-     Model* dir = new Model();
+     Model* dir = new Model(*Sphere);
     // Model* spotlight = new Model(*Sphere);
      //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
 
      Light directionLight;
-     directionLight.lightType = LightType::DIRECTION_LIGHT;
+     directionLight.lightType = LightType::POINT_LIGHT;
      directionLight.lightModel = dir;
      directionLight.ambient =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
      directionLight.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
      directionLight.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
+     directionLight.color = glm::vec4(1, 0, 0, 1.0f);
+   
 
 
     /* Light spot;
@@ -165,23 +167,23 @@ void ApplicationRenderer::Start()
      spot.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);*/
 
      //Mesh Renderer
-     render.AddModelsAndShader(Sphere, defaultShader);
-     render.AddModelsAndShader(scroll, defaultShader);
+   //  render.AddModelsAndShader(Sphere, defaultShader);
+    
 
-     render.AddModelsAndShader(Grass, defaultShader);
+    // render.AddModelsAndShader(Grass, defaultShader);
     
 
      render.AddModelsAndShader(Pokeball, defaultShader);
   
 
      
-     render.selectedModel = Sphere;
+  //   render.selectedModel = Sphere;
 
      render.AddModelsAndShader(dir,lightShader);
     // render.AddModelsAndShader(spotlight, lightShader);
 
-     render.AddTransparentModels(Window, defaultShader);
-     render.AddTransparentModels(Window2, defaultShader);
+     //render.AddTransparentModels(Window, defaultShader);
+     //render.AddTransparentModels(Window2, defaultShader);
 
      //LightRenderer
      lightManager.AddNewLight(directionLight);
@@ -204,7 +206,7 @@ void ApplicationRenderer::PreRender()
 void ApplicationRenderer::Render()
 {
     Start();
-    Material material(128.0f);
+  
    // glEnable(GL_BLEND);
   //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     while (!glfwWindowShouldClose(window))
@@ -233,7 +235,7 @@ void ApplicationRenderer::Render()
         SkyboxShader->setMat4("view", _skyboxview);
         SkyboxShader->setMat4("projection", _projection);
 
-        skybox->Skyboxrender();
+       // skybox->Skyboxrender();
         glDepthFunc(GL_LESS); 
 
 
