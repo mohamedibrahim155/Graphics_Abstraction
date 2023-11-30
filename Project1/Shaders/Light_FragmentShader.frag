@@ -69,7 +69,7 @@ float LinearizeDepth(float depth)
 }
 
 uniform bool isDepthBuffer;
-
+uniform samplerCube skybox;
 
 void main()
 {    
@@ -77,7 +77,7 @@ void main()
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPosition);
 
-    
+    vec3 R = reflect(-viewDir, norm);
 
     vec4 result = CalculateLight(norm,viewDir);
   
@@ -111,16 +111,18 @@ void main()
       }
       else
       {
+          //float depth = LinearizeDepth(gl_FragCoord.z) / far;
+         // FragColor = vec4(result.xyz + vec3(depth * 0.75f) + texture(skybox, R).rgb *  0.75, 1.0);
           FragColor = result;
-
       }
 
 
-      //
+     
 
     //FragColor = vec4( temp,temp, temp,1.0);
      
     
+
 }
 
   

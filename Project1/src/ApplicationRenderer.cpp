@@ -191,6 +191,9 @@ void ApplicationRenderer::Start()
    //  SpherePhyiscs->Initialize(false, true, DYNAMIC);
 
    //  PhysicsEngine.AddPhysicsObjects(SpherePhyiscs);
+
+     defaultShader->Bind();
+     defaultShader->setInt("skybox", 0);
 }
 
 void ApplicationRenderer::PreRender()
