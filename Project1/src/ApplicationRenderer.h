@@ -13,7 +13,7 @@
 #include "Random.h"
 #include "PhysicsEngine.h"
 #include "Skybox.h"
-
+#include "LoadModelsExternal.h"
 #include "GraphicsRender.h"
 
 
@@ -47,6 +47,9 @@ private:
 	Camera camera;
 
 	GraphicsRender render;
+
+	LoadModelsExternal m_loadModels;
+
 	LightManager lightManager;
 
 	Shader* defaultShader;

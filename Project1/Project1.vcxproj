@@ -148,6 +148,7 @@
     <ClCompile Include="Extern\imGui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Extern\imGui\imgui_tables.cpp" />
     <ClCompile Include="Extern\imGui\imgui_widgets.cpp" />
+    <ClCompile Include="src\LoadModelsExternal.cpp" />
     <ClCompile Include="src\Skybox.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ApplicationRenderer.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Extern\imGui\imstb_rectpack.h" />
     <ClInclude Include="Extern\imGui\imstb_textedit.h" />
     <ClInclude Include="Extern\imGui\imstb_truetype.h" />
+    <ClInclude Include="src\LoadModelsExternal.h" />
     <ClInclude Include="src\Skybox.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\ApplicationRenderer.h" />

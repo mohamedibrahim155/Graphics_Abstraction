@@ -100,6 +100,12 @@ void ApplicationRenderer::Start()
     render.AssignCamera(&camera);
 
     Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
+
+    
+
+
+    
+   
    // Model* Sphere = new Model();
 
     Model* scroll = new Model((char*)"Models/Scroll/scroll.obj", true);
@@ -149,6 +155,72 @@ void ApplicationRenderer::Start()
     // Model* spotlight = new Model(*Sphere);
      //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
 
+
+#pragma region MODELS
+
+     Model* Walls = new Model((char*)"Models/WallsHouse/Walls.obj", false);
+     render.AddModelsAndShader(Walls, defaultShader);
+
+     Model* TableSofa = new Model((char*)"Models/TableSofa/TableSofa.obj", true);
+     render.AddModelsAndShader(TableSofa, defaultShader);
+
+     Model* Sofas = new Model((char*)"Models/Sofas/Sofas.obj", true);
+     render.AddModelsAndShader(Sofas, defaultShader);
+
+     Model* Floor = new Model((char*)"Models/Floor/Floor.obj", true);
+     render.AddModelsAndShader(Floor, defaultShader);
+
+     Model* Deco = new Model((char*)"Models/Deco/Deco.obj", true);
+     render.AddModelsAndShader(Deco, defaultShader);
+
+     Model* Door = new Model((char*)"Models/Door/Door.obj", true);
+     render.AddModelsAndShader(Door, defaultShader);
+
+     Model* Deco2 = new Model((char*)"Models/Deco2/Deco2.obj", true);
+     render.AddModelsAndShader(Deco2, defaultShader);
+
+     Model* Desk = new Model((char*)"Models/Desk/Desk.obj", true);
+     Desk->meshes[0]->textures[0]->LoadTexture("Models/Desk/04_-_Default_baseColor.jpeg", "diffuse");
+     render.AddModelsAndShader(Desk, defaultShader);
+
+     Model* Desk2 = new Model((char*)"Models/Desk2/Desk2.obj", true);
+     render.AddModelsAndShader(Desk2, defaultShader);
+
+     Model* TeaTable = new Model((char*)"Models/TeaTable/TeaTable.obj", true);
+     render.AddModelsAndShader(TeaTable, defaultShader);
+
+     Model* FloorMat = new Model((char*)"Models/FloorMat/FloorMat.obj", true);
+     render.AddModelsAndShader(FloorMat, defaultShader);
+
+     Model* Fireplace = new Model((char*)"Models/Fireplace/Fireplace.obj", true);
+     render.AddModelsAndShader(Fireplace, defaultShader);
+
+     /*Model* Fireplace1 = new Model((char*)"Models/Fireplace1/Fireplace1.obj", true);
+     render.AddModelsAndShader(Fireplace1, defaultShader);  */              //DO Texture Scrolling here
+
+     Model* Photos = new Model((char*)"Models/Photos/Photos.obj", true);
+     render.AddModelsAndShader(Photos, defaultShader);
+
+     Model* Music = new Model((char*)"Models/Music/Music.obj", true);
+     render.AddModelsAndShader(Music, defaultShader);
+
+     Model* CD = new Model((char*)"Models/CD/CD.obj", true);
+     render.AddModelsAndShader(CD, defaultShader);
+
+     Model* Roof = new Model((char*)"Models/Roof/Roof.obj", true);
+     render.AddModelsAndShader(Roof, defaultShader);
+
+     Model* Symbols = new Model((char*)"Models/Symbols/Symbols.obj", true);
+     render.AddModelsAndShader(Symbols, defaultShader);
+
+     Model* WallLights = new Model((char*)"Models/WallLights/WallLights.obj", true);
+     render.AddModelsAndShader(WallLights, defaultShader);
+
+
+#pragma endregion
+
+
+
      Light directionLight;
      directionLight.lightType = LightType::DIRECTION_LIGHT;
      directionLight.lightModel = dir;
@@ -165,17 +237,17 @@ void ApplicationRenderer::Start()
      spot.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);*/
 
      //Mesh Renderer
-     render.AddModelsAndShader(Sphere, defaultShader);
+    // render.AddModelsAndShader(Sphere, defaultShader);
      render.AddModelsAndShader(scroll, defaultShader);
 
      render.AddModelsAndShader(Grass, defaultShader);
     
-
-     render.AddModelsAndShader(Pokeball, defaultShader);
+     
+    // render.AddModelsAndShader(Pokeball, defaultShader);
   
 
      
-     render.selectedModel = Sphere;
+     //render.selectedModel = Sphere;
 
      render.AddModelsAndShader(dir,lightShader);
     // render.AddModelsAndShader(spotlight, lightShader);
