@@ -38,10 +38,16 @@ void Mesh::meshDraw(Shader& shader)
             number = std::to_string(specularNr++);
             name = "specular";
         }
-        else if (name == "material.alphaMask")
+        else if (name == "alphaMask")
         {
             number = std::to_string(alphaNr++);
             name = "alphaMask";
+        }
+
+        else if (name == "starAlpha")
+        {
+            number = std::to_string(alphaNr++);
+            name = "starAlpha";
         }
 
 
@@ -79,6 +85,19 @@ void Mesh::meshDraw(Shader& shader)
             GLCALL(shader.setBool("isScrollingTexture", false));
 
         }
+
+        if (isColorAlpha)
+        {
+            GLCALL(shader.setBool("isColorMultiply", true));
+
+        }
+        else
+        {
+            GLCALL(shader.setBool("isColorMultiply", false));
+
+        }
+
+
 
      
 
@@ -132,6 +151,12 @@ void Mesh::TextureScrolling(const bool& isScroll)
 {
 
     this->isTextureScrolling = isScroll;
+
+}
+
+void Mesh::SetColorAlpha(const bool& colorAlpha)
+{
+    this->isColorAlpha = colorAlpha;
 
 }
 

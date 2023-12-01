@@ -36,6 +36,7 @@ public:
     std::string directory;
     std::string modelPath;
     Texture* alphaMask;
+    Texture* starAlpha;
 
     int offset;
     std::string id; //if needed 

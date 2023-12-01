@@ -80,6 +80,75 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
 
 
+std::vector<ModelData> ApplicationRenderer::loadModelDataFromFile(const std::string& filePath)
+{
+
+    std::ifstream file(filePath);
+    std::vector<ModelData> modelData;
+
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << filePath << std::endl;
+        return modelData;
+    }
+    else
+    {
+        std::cerr << "File Opened >>>>>>>>>>>>>>>>>>>>>>>>>>>: " << filePath << std::endl;
+
+    }
+
+    std::string line;
+    ModelData currentModel;
+
+    while (std::getline(file, line))
+    {
+        std::istringstream iss(line);
+        std::string token;
+        iss >> token;
+
+        if (token == "ModelPath:") 
+        {
+            iss >> currentModel.path;
+        }
+        else if (token == "ModelPosition:") {
+            iss >> currentModel.position.x >> currentModel.position.y >> currentModel.position.z;
+        }       
+        else if (token == "ModelRotation:") {
+
+            iss >> currentModel.rotation.x >> currentModel.rotation.y >> currentModel.rotation.z;
+
+        }
+      
+        else if (token == "TexturePath:") 
+        {
+
+            iss >> currentModel.texturePath;
+
+        }
+        else if (token == "Transperency:")
+        {
+
+            iss >> currentModel.isTrans;
+
+        }
+        
+        else if (token == "Cutoff:")
+        {
+
+            iss >> currentModel.isCutoff;
+
+        }
+      
+        else if (token == "ModelScale:") {
+            iss >> currentModel.scale.x >> currentModel.scale.y >> currentModel.scale.z;
+            modelData.push_back(currentModel);
+        }
+    }
+
+    file.close();
+    return modelData;
+}
+
+
 void ApplicationRenderer::Start()
 {
    // GLCALL(glEnable(GL_DEPTH_TEST));
@@ -108,42 +177,18 @@ void ApplicationRenderer::Start()
    
    // Model* Sphere = new Model();
 
-    Model* scroll = new Model((char*)"Models/Scroll/scroll.obj", true);
-    scroll->transform.position.y -= 5;
-    scroll->meshes[0]->TextureScrolling(true);
+   
 
 
      Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj", true);
      Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
 
 
-     Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true,false, true);
-    
-     Model* Window = new Model();
-     Window->alphaMask = new Texture();
-     
-     Window->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png", "material.alphaMask");
-     Window->loadModel((char*)"Models/Window/Window.obj");
-     Window->isTransparant = true;
-     Window->isCutOut = false;
-
-     Model* Window2 = new Model();
-     Window2->alphaMask = new Texture();
-     Window2->isTransparant = true;
-     Window2->isCutOut = false;
-     Window2->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png", "material.alphaMask");
-     Window2->loadModel((char*)"Models/Window/Window.obj");
-   
-   
-     
-
 
      Sphere->transform.position.x += 2;
      Pokeball->transform.position.x -= 2;
     
-     Grass->transform.position.y += 5;
-     Window->transform.position.y += 8;
-     Window2->transform.position.y += 6;
+     
 
      Pokeball2->transform.position.x -= 5;
      Pokeball2->transform.position.y -= 0.3f;
@@ -158,63 +203,157 @@ void ApplicationRenderer::Start()
 
 #pragma region MODELS
 
-     Model* Walls = new Model((char*)"Models/WallsHouse/Walls.obj", false);
+
+     modelData = loadModelDataFromFile("Model.txt");
+
+     Model* Walls = new Model(modelData[0].path);
+     Walls->transform.SetPosition(glm::vec3(modelData[0].position));
+     Walls->transform.SetRotation(glm::vec3(modelData[0].rotation));
+     Walls->transform.SetScale(glm::vec3(modelData[0].scale));
      render.AddModelsAndShader(Walls, defaultShader);
 
-     Model* TableSofa = new Model((char*)"Models/TableSofa/TableSofa.obj", true);
+     Model* TableSofa = new Model(modelData[1].path);
+     TableSofa->transform.SetPosition(glm::vec3(modelData[1].position));
+     TableSofa->transform.SetRotation(glm::vec3(modelData[1].rotation));
+     TableSofa->transform.SetScale(glm::vec3(modelData[1].scale));
      render.AddModelsAndShader(TableSofa, defaultShader);
 
-     Model* Sofas = new Model((char*)"Models/Sofas/Sofas.obj", true);
+     Model* Sofas = new Model(modelData[2].path);
+     Sofas->transform.SetPosition(glm::vec3(modelData[2].position));
+     Sofas->transform.SetRotation(glm::vec3(modelData[2].rotation));
+     Sofas->transform.SetScale(glm::vec3(modelData[2].scale));
      render.AddModelsAndShader(Sofas, defaultShader);
 
-     Model* Floor = new Model((char*)"Models/Floor/Floor.obj", true);
+     Model* Floor = new Model(modelData[3].path);
+     Floor->transform.SetPosition(glm::vec3(modelData[3].position));
+     Floor->transform.SetRotation(glm::vec3(modelData[3].rotation));
+     Floor->transform.SetScale(glm::vec3(modelData[3].scale));
      render.AddModelsAndShader(Floor, defaultShader);
 
-     Model* Deco = new Model((char*)"Models/Deco/Deco.obj", true);
+     Model* Deco = new Model(modelData[4].path);
+     Deco->transform.SetPosition(glm::vec3(modelData[4].position));
+     Deco->transform.SetRotation(glm::vec3(modelData[4].rotation));
+     Deco->transform.SetScale(glm::vec3(modelData[4].scale));
      render.AddModelsAndShader(Deco, defaultShader);
 
-     Model* Door = new Model((char*)"Models/Door/Door.obj", true);
+     Model* Door = new Model(modelData[5].path);
+     Door->transform.SetPosition(glm::vec3(modelData[5].position));
+     Door->transform.SetRotation(glm::vec3(modelData[5].rotation));
+     Door->transform.SetScale(glm::vec3(modelData[5].scale));
      render.AddModelsAndShader(Door, defaultShader);
 
-     Model* Deco2 = new Model((char*)"Models/Deco2/Deco2.obj", true);
+     Model* Deco2 = new Model(modelData[6].path);
+     Deco2->transform.SetPosition(glm::vec3(modelData[6].position));
+     Deco2->transform.SetRotation(glm::vec3(modelData[6].rotation));
+     Deco2->transform.SetScale(glm::vec3(modelData[6].scale));
      render.AddModelsAndShader(Deco2, defaultShader);
 
-     Model* Desk = new Model((char*)"Models/Desk/Desk.obj", true);
-     Desk->meshes[0]->textures[0]->LoadTexture("Models/Desk/04_-_Default_baseColor.jpeg", "diffuse");
+     Model* Desk = new Model(modelData[7].path);
+     Desk->transform.SetPosition(glm::vec3(modelData[7].position));
+     Desk->transform.SetRotation(glm::vec3(modelData[7].rotation));
+     Desk->transform.SetScale(glm::vec3(modelData[7].scale));
+     Desk->meshes[0]->textures[0]->LoadTexture(modelData[7].texturePath.c_str(), "diffuse");
      render.AddModelsAndShader(Desk, defaultShader);
 
-     Model* Desk2 = new Model((char*)"Models/Desk2/Desk2.obj", true);
+     Model* Desk2 = new Model(modelData[8].path);
+     Desk2->transform.SetPosition(glm::vec3(modelData[8].position));
+     Desk2->transform.SetRotation(glm::vec3(modelData[8].rotation));
+     Desk2->transform.SetScale(glm::vec3(modelData[8].scale));
      render.AddModelsAndShader(Desk2, defaultShader);
 
-     Model* TeaTable = new Model((char*)"Models/TeaTable/TeaTable.obj", true);
+     Model* TeaTable = new Model(modelData[9].path);
+     TeaTable->transform.SetPosition(glm::vec3(modelData[9].position));
+     TeaTable->transform.SetRotation(glm::vec3(modelData[9].rotation));
+     TeaTable->transform.SetScale(glm::vec3(modelData[9].scale));
      render.AddModelsAndShader(TeaTable, defaultShader);
 
-     Model* FloorMat = new Model((char*)"Models/FloorMat/FloorMat.obj", true);
+     Model* FloorMat = new Model(modelData[10].path);
+     FloorMat->transform.SetPosition(glm::vec3(modelData[10].position));
+     FloorMat->transform.SetRotation(glm::vec3(modelData[10].rotation));
+     FloorMat->transform.SetScale(glm::vec3(modelData[10].scale));
      render.AddModelsAndShader(FloorMat, defaultShader);
 
-     Model* Fireplace = new Model((char*)"Models/Fireplace/Fireplace.obj", true);
-     render.AddModelsAndShader(Fireplace, defaultShader);
+     Model* Fireplace = new Model(modelData[11].path);
+     Fireplace->transform.SetPosition(glm::vec3(modelData[11].position));
+     Fireplace->transform.SetRotation(glm::vec3(modelData[11].rotation));
+     Fireplace->transform.SetScale(glm::vec3(modelData[11].scale));
+     render.AddModelsAndShader(Fireplace, defaultShader);     
 
-     /*Model* Fireplace1 = new Model((char*)"Models/Fireplace1/Fireplace1.obj", true);
-     render.AddModelsAndShader(Fireplace1, defaultShader);  */              //DO Texture Scrolling here
-
-     Model* Photos = new Model((char*)"Models/Photos/Photos.obj", true);
+     Model* Photos = new Model(modelData[12].path);
+     Photos->transform.SetPosition(glm::vec3(modelData[12].position));
+     Photos->transform.SetRotation(glm::vec3(modelData[12].rotation));
+     Photos->transform.SetScale(glm::vec3(modelData[12].scale));
      render.AddModelsAndShader(Photos, defaultShader);
 
-     Model* Music = new Model((char*)"Models/Music/Music.obj", true);
+     Model* Music = new Model(modelData[13].path);
+     Music->transform.SetPosition(glm::vec3(modelData[13].position));
+     Music->transform.SetRotation(glm::vec3(modelData[13].rotation));
+     Music->transform.SetScale(glm::vec3(modelData[13].scale));
      render.AddModelsAndShader(Music, defaultShader);
 
-     Model* CD = new Model((char*)"Models/CD/CD.obj", true);
+     Model* CD = new Model(modelData[14].path);
+     CD->transform.SetPosition(glm::vec3(modelData[14].position));
+     CD->transform.SetRotation(glm::vec3(modelData[14].rotation));
+     CD->transform.SetScale(glm::vec3(modelData[14].scale));
      render.AddModelsAndShader(CD, defaultShader);
 
-     Model* Roof = new Model((char*)"Models/Roof/Roof.obj", true);
+     Model* Roof = new Model(modelData[15].path);
+     Roof->transform.SetPosition(glm::vec3(modelData[15].position));
+     Roof->transform.SetRotation(glm::vec3(modelData[15].rotation));
+     Roof->transform.SetScale(glm::vec3(modelData[15].scale));
      render.AddModelsAndShader(Roof, defaultShader);
 
-     Model* Symbols = new Model((char*)"Models/Symbols/Symbols.obj", true);
+     Model* Symbols = new Model(modelData[16].path);
+     Symbols->transform.SetPosition(glm::vec3(modelData[16].position));
+     Symbols->transform.SetRotation(glm::vec3(modelData[16].rotation));
+     Symbols->transform.SetScale(glm::vec3(modelData[16].scale));
      render.AddModelsAndShader(Symbols, defaultShader);
 
-     Model* WallLights = new Model((char*)"Models/WallLights/WallLights.obj", true);
+     Model* WallLights = new Model();
+     Texture* starTexture = new Texture();
+     starTexture->LoadTexture(modelData[17].texturePath.c_str(), "starAlpha");
+     WallLights->loadModel(modelData[17].path);
+     WallLights->meshes[0]->textures.push_back(starTexture);
+     WallLights->meshes[0]->SetColorAlpha(true);
+     WallLights->transform.SetPosition(glm::vec3(modelData[17].position));
+     WallLights->transform.SetRotation(glm::vec3(modelData[17].rotation));
+     WallLights->transform.SetScale(glm::vec3(modelData[17].scale));
      render.AddModelsAndShader(WallLights, defaultShader);
+
+     Model* Grass = new Model(modelData[18].path, true, modelData[18].isTrans , modelData[18].isCutoff);
+     Grass->transform.SetPosition(glm::vec3(modelData[18].position));
+     Grass->transform.SetRotation(glm::vec3(modelData[18].rotation));
+     Grass->transform.SetScale(glm::vec3(modelData[18].scale));
+     render.AddModelsAndShader(Grass, defaultShader);
+
+     Model* Window = new Model();
+     Window->alphaMask = new Texture();
+     Window->isTransparant = modelData[19].isTrans;
+     Window->isCutOut = modelData[19].isCutoff;
+     Window->alphaMask->LoadTexture(modelData[19].texturePath.c_str(), "alphaMask");
+     Window->loadModel(modelData[19].path);
+     Window->transform.SetPosition(glm::vec3(modelData[19].position));
+     Window->transform.SetRotation(glm::vec3(modelData[19].rotation));
+     Window->transform.SetScale(glm::vec3(modelData[19].scale));
+     render.AddTransparentModels(Window, defaultShader);
+
+     Model* Window2 = new Model();
+     Window2->alphaMask = new Texture();
+     Window2->isTransparant = modelData[20].isTrans;
+     Window2->isCutOut = modelData[20].isCutoff;
+     Window2->alphaMask->LoadTexture(modelData[20].texturePath.c_str(), "alphaMask");
+     Window2->loadModel(modelData[20].path);
+     Window2->transform.SetPosition(glm::vec3(modelData[20].position));
+     Window2->transform.SetRotation(glm::vec3(modelData[20].rotation));
+     Window2->transform.SetScale(glm::vec3(modelData[20].scale));
+     render.AddTransparentModels(Window2, defaultShader);
+
+     Model* scroll = new Model(modelData[21].path);
+     scroll->transform.SetPosition(glm::vec3(modelData[21].position));
+     scroll->transform.SetRotation(glm::vec3(modelData[21].rotation));
+     scroll->transform.SetScale(glm::vec3(modelData[21].scale));
+     scroll->meshes[0]->TextureScrolling(true);
+     render.AddModelsAndShader(scroll, defaultShader);
 
 
 #pragma endregion
@@ -228,6 +367,7 @@ void ApplicationRenderer::Start()
      directionLight.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
      directionLight.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
 
+    
 
     /* Light spot;
      spot.lightType = LightType::SPOT_LIGHT;
@@ -238,31 +378,25 @@ void ApplicationRenderer::Start()
 
      //Mesh Renderer
     // render.AddModelsAndShader(Sphere, defaultShader);
-     render.AddModelsAndShader(scroll, defaultShader);
 
-     render.AddModelsAndShader(Grass, defaultShader);
     
      
     // render.AddModelsAndShader(Pokeball, defaultShader);
   
 
      
-     //render.selectedModel = Sphere;
+     render.selectedModel = nullptr;
 
      render.AddModelsAndShader(dir,lightShader);
     // render.AddModelsAndShader(spotlight, lightShader);
 
-     render.AddTransparentModels(Window, defaultShader);
-     render.AddTransparentModels(Window2, defaultShader);
+     
 
      //LightRenderer
      lightManager.AddNewLight(directionLight);
    //  lightManager.AddNewLight(spot);
      lightManager.SetUniforms(defaultShader->ID);
-   //  PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
-   //  SpherePhyiscs->Initialize(false, true, DYNAMIC);
-
-   //  PhysicsEngine.AddPhysicsObjects(SpherePhyiscs);
+   
 
      defaultShader->Bind();
      defaultShader->setInt("skybox", 0);
@@ -411,7 +545,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 
              std::vector<Model*> listOfModels = render.GetModelList();
             
-          
+
 
              selectedModelCount++;
 
@@ -423,6 +557,12 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
             
              render.selectedModel = listOfModels[selectedModelCount];
 
+
+         }
+
+         if (key == GLFW_KEY_X && action == GLFW_PRESS)
+         {
+             render.selectedModel = nullptr;
 
          }
      

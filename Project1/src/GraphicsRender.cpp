@@ -101,7 +101,7 @@ void GraphicsRender::Draw()
 		
 		glm::vec3 scale = selectedModel->transform.scale;
 		
-		selectedModel->transform.SetScale(scale + 0.1f);
+		selectedModel->transform.SetScale(scale + 0.01f);
 		selectedModel->Draw(*m_StencilShader);
 		selectedModel->transform.SetScale(tempScale);
 		

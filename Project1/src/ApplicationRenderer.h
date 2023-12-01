@@ -16,7 +16,18 @@
 #include "LoadModelsExternal.h"
 #include "GraphicsRender.h"
 
+struct ModelData
+{
 
+
+	std::string path;
+	glm::vec3 position;
+	glm::vec3 rotation;
+	bool isCutoff;
+	bool isTrans;
+	std::string texturePath;	
+	glm::vec3 scale;
+};
 
 class ApplicationRenderer
 {
@@ -30,6 +41,9 @@ public:
 	void MouseScroll(GLFWwindow* window, double xoffset, double yoffset);
 	
 	void WindowInitialize(int width, int height,  std::string windowName ="Window");
+
+	std::vector<ModelData> modelData;
+	std::vector<ModelData> loadModelDataFromFile(const std::string& filePath);
 	
 	void Start();
 	void PreRender();

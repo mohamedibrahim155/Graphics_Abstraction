@@ -44,6 +44,7 @@ public:
     void SetTransparency(const bool& isTransparent);
     void SetCutOff(const bool& isCutOut);
     void TextureScrolling(const bool& isScroll);
+    void SetColorAlpha(const bool& colorAlpha);
 
     VertexBuffer* VBO;
     IndexBufferObject* IBO;
@@ -60,5 +61,6 @@ private:
     bool isTransparancy = false;
     bool isCutOut = false;
     bool isTextureScrolling = false;
+    bool isColorAlpha = false;
 };
 #endif

@@ -15,6 +15,7 @@ struct Material
 uniform sampler2D diffuse;
 uniform  sampler2D specular;  
 uniform sampler2D alphaMask;
+uniform sampler2D starAlpha;
 
 struct sLight
 {
@@ -69,6 +70,7 @@ float LinearizeDepth(float depth)
 }
 
 uniform bool isDepthBuffer;
+uniform bool isColorMultiply;
 uniform samplerCube skybox;
 
 void main()
@@ -81,24 +83,30 @@ void main()
 
     vec4 result = CalculateLight(norm,viewDir);
   
-     vec4 cutOff = texture(diffuse, TextureCoordinates);
- 
-     //float maskSample = texture(material.alphaMask, TextureCoordinates).r;
+    vec4 difTexture = texture(diffuse, TextureCoordinates);
+    float colorAlpha = texture(starAlpha,TextureCoordinates).r;
+    
+    vec3 spotColor = vec3(1.0, 0.0, 0.0);
+    
+    vec3 finalColor = mix(difTexture.rgb, spotColor, colorAlpha);
 
-     //vec4 finalColor = vec4(result, isCutout ? 1.0f : maskSample);
+      
 
-     
-
+      if(isColorMultiply)
+      {
+           FragColor = vec4(result.rgb * finalColor, difTexture.a);
+           return;
+      }
     
 
       if (isCutout)
      {
       
-         if (cutOff.a < 0.1)
+         if (difTexture.a < 0.1)
         {
             discard;
         }
-        FragColor = result*cutOff.a; 
+        FragColor = result * difTexture.a; 
      
      }
      
@@ -223,7 +231,7 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir )
     }
      if (isMasking)
      {
-    // temp = texture(alphaMask, TextureCoordinates).r;
+    
        result.w = texture(alphaMask, TextureCoordinates).r;
      
      }

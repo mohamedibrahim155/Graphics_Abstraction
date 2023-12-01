@@ -27,7 +27,7 @@ void main()
 	if(isScrollingTexture)
 	{
 
-	  TextureCoordinates = aTexCoords + vec2(0.1 * time, 0.2 * time);
+	  TextureCoordinates = aTexCoords + vec2(0.1 , 0.2 * time);
 	}
 	else
 	{
