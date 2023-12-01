@@ -88,13 +88,16 @@ void main()
     
     vec3 spotColor = vec3(1.0, 0.0, 0.0);
     
-    vec3 finalColor = mix(difTexture.rgb, spotColor, colorAlpha);
+    vec3 finalColor = mix(result.xyz, spotColor, colorAlpha);
 
       
 
       if(isColorMultiply)
       {
-           FragColor = vec4(result.rgb * finalColor, difTexture.a);
+        
+           
+           FragColor = vec4(finalColor , result.a);
+           //FragColor = vec4(finalColor,1.0);
            return;
       }
     
@@ -102,11 +105,11 @@ void main()
       if (isCutout)
      {
       
-         if (difTexture.a < 0.1)
+         if (texture(alphaMask, TextureCoordinates).r < 0.1)
         {
             discard;
         }
-        FragColor = result * difTexture.a; 
+       // FragColor = result * difTexture.a; 
      
      }
      
@@ -235,6 +238,8 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir )
        result.w = texture(alphaMask, TextureCoordinates).r;
      
      }
+    
+
     
       return result;
 }

@@ -297,7 +297,12 @@ void ApplicationRenderer::Start()
      CD->transform.SetScale(glm::vec3(modelData[14].scale));
      render.AddModelsAndShader(CD, defaultShader);
 
-     Model* Roof = new Model(modelData[15].path);
+     Model* Roof = new Model();
+     Texture* starTexture = new Texture();
+     starTexture->LoadTexture(modelData[15].texturePath.c_str(), "starAlpha");
+     Roof->loadModel(modelData[15].path);
+     Roof->meshes[0]->textures.push_back(starTexture);
+     Roof->meshes[0]->SetColorAlpha(true);
      Roof->transform.SetPosition(glm::vec3(modelData[15].position));
      Roof->transform.SetRotation(glm::vec3(modelData[15].rotation));
      Roof->transform.SetScale(glm::vec3(modelData[15].scale));
@@ -310,10 +315,10 @@ void ApplicationRenderer::Start()
      render.AddModelsAndShader(Symbols, defaultShader);
 
      Model* WallLights = new Model();
-     Texture* starTexture = new Texture();
-     starTexture->LoadTexture(modelData[17].texturePath.c_str(), "starAlpha");
+     Texture* starTexture1 = new Texture();
+     starTexture1->LoadTexture(modelData[17].texturePath.c_str(), "starAlpha");
      WallLights->loadModel(modelData[17].path);
-     WallLights->meshes[0]->textures.push_back(starTexture);
+     WallLights->meshes[0]->textures.push_back(starTexture1);
      WallLights->meshes[0]->SetColorAlpha(true);
      WallLights->transform.SetPosition(glm::vec3(modelData[17].position));
      WallLights->transform.SetRotation(glm::vec3(modelData[17].rotation));
@@ -354,6 +359,21 @@ void ApplicationRenderer::Start()
      scroll->transform.SetScale(glm::vec3(modelData[21].scale));
      scroll->meshes[0]->TextureScrolling(true);
      render.AddModelsAndShader(scroll, defaultShader);
+
+     Model* plant = new Model("Models/Plant.fbm/plant.fbx");
+     plant->alphaMask = new Texture();
+     plant->meshes[0]->SetCutOff(true);
+    
+     plant->alphaMask->LoadTexture("Models/Plant.fbm/plant.fbm/Leaf_Front_1_2_Opacity.png", "alphaMask"); 
+     plant->meshes[0]->textures.push_back(plant->alphaMask);
+
+     plant->meshes[1]->textures.clear();
+     Texture* mesh2Tex = new Texture();
+     mesh2Tex->LoadTexture("Models/Plant.fbm/Plant.fbm/Sample_Bark_2.png", "diffuse");
+     plant->meshes[1]->textures.push_back(mesh2Tex);
+     plant->transform.SetPosition(glm::vec3(4, 4, 4));
+     render.AddModelsAndShader(plant, defaultShader);
+      
 
 
 #pragma endregion

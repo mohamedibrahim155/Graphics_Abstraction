@@ -154,7 +154,7 @@ ModelScale: 1 1 1
 ModelPath: Models/Roof/Roof.obj
 ModelPosition: 0 0 0
 ModelRotation: 0 0 0 
-TexturePath: None
+TexturePath: Models/AlphaTexture/star.png
 Transperency: 0
 Cutoff: 0
 ModelScale: 1 1 1

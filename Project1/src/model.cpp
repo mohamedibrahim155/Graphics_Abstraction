@@ -46,7 +46,7 @@ void Model::Draw(Shader& shader)
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
         meshes[i]->SetTransparency(isTransparant);
-        meshes[i]->SetCutOff(isCutOut);
+       // meshes[i]->SetCutOff(isCutOut);
         meshes[i]->meshDraw(shader);
     }
 }
