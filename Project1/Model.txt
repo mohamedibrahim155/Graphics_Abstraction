@@ -154,7 +154,7 @@ ModelScale: 1 1 1
 ModelPath: Models/Roof/Roof.obj
 ModelPosition: 0 0 0
 ModelRotation: 0 0 0 
-TexturePath: Models/AlphaTexture/star.png
+TexturePath: Models/AlphaTexture/Pattern.jpeg
 Transperency: 0
 Cutoff: 0
 ModelScale: 1 1 1
@@ -174,7 +174,7 @@ ModelScale: 1 1 1
 ModelPath: Models/WallLights/WallLights.obj
 ModelPosition: 0 0 0
 ModelRotation: 0 0 0 
-TexturePath: Models/AlphaTexture/star.png
+TexturePath: Models/AlphaTexture/Pattern.jpeg
 Transperency: 0
 Cutoff: 0
 ModelScale: 1 1 1
@@ -212,9 +212,9 @@ ModelScale: 0.75 1 1.5
 /////////////// Scroll
 
 ModelPath: Models/Scroll/scroll.obj
-ModelPosition: 0 0 -4.83
-ModelRotation: 0 90 0 
+ModelPosition: 0 0.4 -4.6
+ModelRotation: 90 0 90 
 TexturePath: None
 Transperency: 0
 Cutoff: 1
-ModelScale: 1 1 1
+ModelScale: 0.5 0.7 0.5

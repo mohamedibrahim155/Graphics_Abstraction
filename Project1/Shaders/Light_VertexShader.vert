@@ -21,16 +21,16 @@ uniform bool isScrollingTexture;
 
 void main()
 {
-   
+	
     FragPosition = vec3(model * vec4(aPos, 1.0));
     Normal =  mat3(transpose(inverse(model))) * aNormal;
 	if(isScrollingTexture)
 	{
 
-	  TextureCoordinates = aTexCoords + vec2(0.1 , 0.2 * time);
+	  TextureCoordinates = aTexCoords + vec2(0.1* time , 0.2 );
 	}
 	else
-	{
+	{	
 	  TextureCoordinates = aTexCoords;
 	}
 	 meshColour = aColor;

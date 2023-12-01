@@ -197,9 +197,35 @@ void ApplicationRenderer::Start()
          Pokeball2->transform.SetScale(glm::vec3(0.5f));
 
      Model* dir = new Model();
-    // Model* spotlight = new Model(*Sphere);
-     //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
+     Model* spotlight = new Model(*Sphere);
+     spotlight->transform.SetPosition(glm::vec3(1.0f, 3.0f, 0.0f));
+     spotlight->transform.SetRotation(glm::vec3(-90, 0, 0));
+     spotlight->transform.SetScale(glm::vec3(0.1f));
 
+     Model* spotlight2 = new Model(*Sphere);
+     spotlight2->transform.SetPosition(glm::vec3(-1.0f, 3.0f, 0.0f));
+     spotlight2->transform.SetRotation(glm::vec3(-90, 0, 0));
+     spotlight2->transform.SetScale(glm::vec3(0.1f));
+
+     Model* spotlight3 = new Model(*Sphere);
+     spotlight3->transform.SetPosition(glm::vec3(-1.0f, 3.0f, 2.0f));
+     spotlight3->transform.SetRotation(glm::vec3(-90, 0, 0));
+     spotlight3->transform.SetScale(glm::vec3(0.1f));
+
+     Model* spotlight4 = new Model(*Sphere);
+     spotlight4->transform.SetPosition(glm::vec3(1.0f, 3.0f, 2.0f));
+     spotlight4->transform.SetRotation(glm::vec3(-90, 0, 0));
+     spotlight4->transform.SetScale(glm::vec3(0.1f));
+
+     Model* spotlight5 = new Model(*Sphere);
+     spotlight5->transform.SetPosition(glm::vec3(1.0f, 3.0f, -2.0f));
+     spotlight5->transform.SetRotation(glm::vec3(-90, 0, 0));
+     spotlight5->transform.SetScale(glm::vec3(0.1f));
+
+     Model* spotlight6 = new Model(*Sphere);
+     spotlight6->transform.SetPosition(glm::vec3(-1.0f, 3.0f, -2.0f));
+     spotlight6->transform.SetRotation(glm::vec3(-90, 0, 0));
+     spotlight6->transform.SetScale(glm::vec3(0.1f));
 
 #pragma region MODELS
 
@@ -371,10 +397,25 @@ void ApplicationRenderer::Start()
      Texture* mesh2Tex = new Texture();
      mesh2Tex->LoadTexture("Models/Plant.fbm/Plant.fbm/Sample_Bark_2.png", "diffuse");
      plant->meshes[1]->textures.push_back(mesh2Tex);
-     plant->transform.SetPosition(glm::vec3(4, 4, 4));
+     plant->transform.SetPosition(glm::vec3(-2.3f, 0.8f, 0));
+     plant->transform.SetRotation(glm::vec3(-90, 0, 0));
      render.AddModelsAndShader(plant, defaultShader);
-      
 
+     plant2 = new Model("Models/Plant.fbm/plant.fbx");
+     plant2->alphaMask = new Texture();
+     plant2->meshes[0]->SetCutOff(false);
+
+     plant2->alphaMask->LoadTexture("Models/Plant.fbm/plant.fbm/Leaf_Front_1_2_Opacity.png", "alphaMask");
+     plant2->meshes[0]->textures.push_back(plant2->alphaMask);
+
+     plant2->meshes[1]->textures.clear();
+     Texture* mesh3Tex = new Texture();
+     mesh3Tex->LoadTexture("Models/Plant.fbm/Plant.fbm/Sample_Bark_2.png", "diffuse");
+     plant2->meshes[1]->textures.push_back(mesh3Tex);
+     plant2->transform.SetPosition(glm::vec3(-2.3f, 0.8f, 0.7));
+     plant2->transform.SetRotation(glm::vec3(-90, 0, 0));
+     render.AddModelsAndShader(plant2, defaultShader);
+      
 
 #pragma endregion
 
@@ -383,21 +424,69 @@ void ApplicationRenderer::Start()
      Light directionLight;
      directionLight.lightType = LightType::DIRECTION_LIGHT;
      directionLight.lightModel = dir;
-     directionLight.ambient =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-     directionLight.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-     directionLight.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
+     directionLight.ambient =  glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+     directionLight.diffuse =  glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+     directionLight.specular = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
 
     
 
-    /* Light spot;
+     Light spot;
      spot.lightType = LightType::SPOT_LIGHT;
      spot.lightModel = spotlight;
-     spot.ambient =  glm::vec4(0.7f, 0.7f, 0.7f,1.0f);
-     spot.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-     spot.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);*/
+     spot.ambient =  glm::vec4(5.0f, 5.0f, 5.0f,1.0f);
+     spot.diffuse =  glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot.cutOffAngle = 15;
+     spot.outerCutOffAngle = 35;
+
+     Light spot2;
+     spot2.lightType = LightType::SPOT_LIGHT;
+     spot2.lightModel = spotlight2;
+     spot2.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot2.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot2.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot2.cutOffAngle = 15;
+     spot2.outerCutOffAngle = 35;
+
+     Light spot3;
+     spot3.lightType = LightType::SPOT_LIGHT;
+     spot3.lightModel = spotlight3;
+     spot3.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot3.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot3.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot3.cutOffAngle = 15;
+     spot3.outerCutOffAngle = 35;
+
+     Light spot4;
+     spot4.lightType = LightType::SPOT_LIGHT;
+     spot4.lightModel = spotlight4;
+     spot4.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot4.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot4.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot4.cutOffAngle = 15;
+     spot4.outerCutOffAngle = 35;
+
+     Light spot5;
+     spot5.lightType = LightType::SPOT_LIGHT;
+     spot5.lightModel = spotlight5;
+     spot5.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot5.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot5.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot5.cutOffAngle = 15;
+     spot5.outerCutOffAngle = 35;
+
+     Light spot6;
+     spot6.lightType = LightType::SPOT_LIGHT;
+     spot6.lightModel = spotlight6;
+     spot6.ambient = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot6.diffuse = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot6.specular = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+     spot6.cutOffAngle = 15;
+     spot6.outerCutOffAngle = 35;
+     
 
      //Mesh Renderer
-    // render.AddModelsAndShader(Sphere, defaultShader);
+     //render.AddModelsAndShader(Sphere, defaultShader);
 
     
      
@@ -408,18 +497,30 @@ void ApplicationRenderer::Start()
      render.selectedModel = nullptr;
 
      render.AddModelsAndShader(dir,lightShader);
-    // render.AddModelsAndShader(spotlight, lightShader);
+     render.AddModelsAndShader(spotlight, lightShader);
+     render.AddModelsAndShader(spotlight2, lightShader);
+     render.AddModelsAndShader(spotlight3, lightShader);
+     render.AddModelsAndShader(spotlight4, lightShader);
+     render.AddModelsAndShader(spotlight5, lightShader);
+     render.AddModelsAndShader(spotlight6, lightShader);
 
      
 
      //LightRenderer
      lightManager.AddNewLight(directionLight);
-   //  lightManager.AddNewLight(spot);
+     lightManager.AddNewLight(spot);
+     lightManager.AddNewLight(spot2);
+     lightManager.AddNewLight(spot3);
+     lightManager.AddNewLight(spot4);
+     lightManager.AddNewLight(spot5);
+     lightManager.AddNewLight(spot6);
      lightManager.SetUniforms(defaultShader->ID);
    
 
      defaultShader->Bind();
      defaultShader->setInt("skybox", 0);
+
+     moveCam.AssignCam(&camera);
 }
 
 void ApplicationRenderer::PreRender()
@@ -431,6 +532,7 @@ void ApplicationRenderer::Render()
 {
     Start();
     Material material(128.0f);
+    glm::vec3 pos(5, 0, 0);
    // glEnable(GL_BLEND);
   //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     while (!glfwWindowShouldClose(window))
@@ -445,7 +547,6 @@ void ApplicationRenderer::Render()
         scrollTime += deltaTime;
 
         ProcessInput(window);
-
 
         glm::mat4 _projection = glm::perspective(glm::radians(camera.Zoom), (float)windowWidth / (float)WindowHeight, 0.1f, 100.0f);
         glm::mat4 _view = camera.GetViewMatrix();
@@ -496,6 +597,14 @@ void ApplicationRenderer::Render()
          // make models that it should not write in the stencil buffer
          render.Draw();
 
+         if (cameraMoveToTarget)
+         {
+             moveCam.LookAt(plant2->transform.position);
+
+
+         }
+       
+         
 
 
 
@@ -584,6 +693,14 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          {
              render.selectedModel = nullptr;
 
+         }
+         if (key == GLFW_KEY_C && action == GLFW_PRESS)
+         {
+             cameraMoveToTarget = !cameraMoveToTarget;
+             if (cameraMoveToTarget)
+             {
+                 //camera.Position = glm::vec3(0);
+             }
          }
      
  }

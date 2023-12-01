@@ -15,6 +15,7 @@
 #include "Skybox.h"
 #include "LoadModelsExternal.h"
 #include "GraphicsRender.h"
+#include "CameraMovement.h"
 
 struct ModelData
 {
@@ -59,9 +60,10 @@ public:
 private:
 	GLFWwindow* window;
 	Camera camera;
+	Model* plant2;
 
 	GraphicsRender render;
-
+	CameraMovement moveCam;
 	LoadModelsExternal m_loadModels;
 
 	LightManager lightManager;
@@ -88,6 +90,6 @@ private:
 	 float scrollTime;
 
 	 bool firstMouse;
-
+	 bool cameraMoveToTarget;
 };
 

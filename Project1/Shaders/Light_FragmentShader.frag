@@ -92,14 +92,7 @@ void main()
 
       
 
-      if(isColorMultiply)
-      {
-        
-           
-           FragColor = vec4(finalColor , result.a);
-           //FragColor = vec4(finalColor,1.0);
-           return;
-      }
+   
     
 
       if (isCutout)
@@ -119,6 +112,7 @@ void main()
 
           float depth = LinearizeDepth(gl_FragCoord.z) / far;
           FragColor = vec4(vec3(depth), 1.0); 
+          return;
       }
       else
       {
@@ -128,7 +122,14 @@ void main()
       }
 
 
-     
+        if(isColorMultiply)
+      {
+        
+           
+           FragColor = vec4(finalColor , result.a);
+           //FragColor = vec4(finalColor,1.0);
+           return;
+      }
 
     //FragColor = vec4( temp,temp, temp,1.0);
      
