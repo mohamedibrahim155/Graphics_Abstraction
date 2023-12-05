@@ -128,36 +128,45 @@ void Mesh::meshDraw(Shader& shader)
 void Mesh::MeshDraw(Shader* shader)
 {
     shader->Bind();  
-    shader->setVec4("material.baseColor", meshMaterial-> GetBaseColor().x, meshMaterial->GetBaseColor().y, meshMaterial->GetBaseColor().z, meshMaterial->GetBaseColor().w);
-    shader->setVec4("material.ambientColor", meshMaterial->GetAmbientColor().x, meshMaterial->GetAmbientColor().y, meshMaterial->GetBaseColor().z, meshMaterial->GetAmbientColor().w);
-    
-    shader->setFloat("material.specularValue", meshMaterial->GetSpecular());
-    shader->setFloat("material.shininess", meshMaterial->shininess);
 
-    if (meshMaterial->diffuseTexture!=nullptr)
+    if (shader->shaderType == ShaderType::OPAQUE)
     {
-       
-        GLCALL(glActiveTexture(GL_TEXTURE0 + 0));
-        shader->setInt("diffuse_Texture", 0);
-        meshMaterial->diffuseTexture->Bind();
 
+
+        shader->setVec4("material.baseColor", meshMaterial->GetBaseColor().x, meshMaterial->GetBaseColor().y, meshMaterial->GetBaseColor().z, meshMaterial->GetBaseColor().w);
+        shader->setVec4("material.ambientColor", meshMaterial->GetAmbientColor().x, meshMaterial->GetAmbientColor().y, meshMaterial->GetBaseColor().z, meshMaterial->GetAmbientColor().w);
+
+        shader->setFloat("material.specularValue", meshMaterial->GetSpecular());
+        shader->setFloat("material.shininess", meshMaterial->shininess);
+
+        if (meshMaterial->diffuseTexture != nullptr)
+        {
+
+            GLCALL(glActiveTexture(GL_TEXTURE0 + 0));
+            shader->setInt("diffuse_Texture", 0);
+            meshMaterial->diffuseTexture->Bind();
+
+        }
+        if (meshMaterial->specularTexture != nullptr)
+        {
+
+            GLCALL(glActiveTexture(GL_TEXTURE0 + 1));
+            shader->setInt("specular_Texture", 1);
+            meshMaterial->specularTexture->Bind();
+
+        }
+
+        if (meshMaterial->alphaTexture != nullptr)
+        {
+            GLCALL(glActiveTexture(GL_TEXTURE0 + 2));
+            shader->setInt("opacity_Texture", 2);
+            meshMaterial->alphaTexture->Bind();
+        }
     }
-    if(meshMaterial->specularTexture != nullptr)
+    else if (shader->shaderType == ShaderType::SOLID)
     {
-      
-        GLCALL(glActiveTexture(GL_TEXTURE0 + 1));
-        shader->setInt("specular_Texture", 1);
-        meshMaterial->specularTexture->Bind();
-
+        shader->setVec3("objectColor", glm::vec3(1, 1, 1));
     }
-
-    if (meshMaterial->alphaTexture != nullptr)
-    {
-        GLCALL(glActiveTexture(GL_TEXTURE0 + 2));
-        shader->setInt("opacity_Texture", 2);
-        meshMaterial->alphaTexture->Bind();
-    }
-
     VAO->Bind();
     IBO->Bind();
 

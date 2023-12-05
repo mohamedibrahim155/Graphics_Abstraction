@@ -67,8 +67,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
   
     defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader2.frag");
-    lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
-    StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag");
+    lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag", SOLID);
+    StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", SOLID);
    
     SkyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
 
@@ -172,8 +172,10 @@ void ApplicationRenderer::Start()
 
     // render.AddModelsAndShader(Grass, defaultShader);
     
+     Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
 
      render.AddModelsAndShader(Pokeball, defaultShader);
+     render.AddModelsAndShader(plant, defaultShader);
   
 
      
@@ -252,7 +254,6 @@ void ApplicationRenderer::Render()
          defaultShader->setBool("isDepthBuffer", false);
 
          lightShader->Bind();
-         lightShader->setVec3("objectColor", glm::vec3(1, 1, 1));
          lightShader->setMat4("projection", _projection);
          lightShader->setMat4("view", _view);
 
