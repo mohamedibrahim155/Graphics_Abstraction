@@ -61,6 +61,7 @@ private:
 	GLFWwindow* window;
 	Camera camera;
 	Model* plant2;
+	Model* CamPlaceholder;
 
 	GraphicsRender render;
 	CameraMovement moveCam;

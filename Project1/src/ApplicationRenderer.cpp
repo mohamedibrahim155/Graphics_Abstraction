@@ -170,8 +170,12 @@ void ApplicationRenderer::Start()
 
     Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
 
-    
 
+    CamPlaceholder = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
+    CamPlaceholder->transform.SetPosition(glm::vec3(-1.5f, 0.8f, 0.5));
+    CamPlaceholder->transform.SetScale(glm::vec3(0.1f));
+
+    //render.AddModelsAndShader(CamPlaceholder, defaultShader);
 
     
    
@@ -521,6 +525,7 @@ void ApplicationRenderer::Start()
      defaultShader->setInt("skybox", 0);
 
      moveCam.AssignCam(&camera);
+
 }
 
 void ApplicationRenderer::PreRender()
@@ -599,8 +604,7 @@ void ApplicationRenderer::Render()
 
          if (cameraMoveToTarget)
          {
-             moveCam.LookAt(plant2->transform.position);
-
+             camera.UpdateCameraPosition(deltaTime);
 
          }
        
@@ -697,12 +701,30 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          if (key == GLFW_KEY_C && action == GLFW_PRESS)
          {
              cameraMoveToTarget = !cameraMoveToTarget;
+             camera.SetTargetPosition(CamPlaceholder->transform.position);
+
              if (cameraMoveToTarget)
              {
                  //camera.Position = glm::vec3(0);
              }
          }
-     
+         if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+         {
+             
+             camera.SetTargetPosition(CamPlaceholder->transform.position);
+
+              
+         }
+
+         if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+         {
+
+             camera.SetTargetPosition(plant2->transform.position);
+
+             //cameraMoveToTarget = !cameraMoveToTarget;
+
+         }
+         
  }
 
  void ApplicationRenderer::MouseCallBack(GLFWwindow* window, double xposIn, double yposIn)

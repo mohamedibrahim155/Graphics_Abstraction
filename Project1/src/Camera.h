@@ -76,9 +76,28 @@ public:
         void ProcessMouseScroll(float yoffset);
    
         void updateCameraVectors();
+
+        void SetTargetPosition(const glm::vec3& targetPos) {
+            targetPosition = targetPos;
+        }
+
+        // Update camera position using lerp
+        void UpdateCameraPosition(float deltaTime) {
+            Position = glm::mix(Position, targetPosition, lerpSpeed * deltaTime);         
+
+
+            updateCameraVectors();
+
+        }
 private:
     // calculates the front vector from the Camera's (updated) Euler Angles
    // void updateCameraVectors();
+
+
+    glm::vec3 targetPosition;
+
+    // Lerp speed for smooth interpolation
+    float lerpSpeed = 2.0f;  // Adju
    
 };
 #endif
