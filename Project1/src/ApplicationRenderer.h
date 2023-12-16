@@ -17,6 +17,9 @@
 #include "GraphicsRender.h"
 #include "CameraMovement.h"
 
+#include "../Utilities/LookAt.h"
+#include "../Utilities/Lerp.h"
+
 struct ModelData
 {
 
@@ -55,13 +58,31 @@ public:
 	void ProcessInput(GLFWwindow* window);
 	
 
-
+	float changeUVx;
+	float changeUVy;
 
 private:
 	GLFWwindow* window;
 	Camera camera;
 	Model* plant2;
 	Model* CamPlaceholder;
+	Model* CamPlaceholder2;
+	Model* CamPlaceholder3;
+
+	Model* plantLookat;
+	Model* firePlaceLookat;
+	Model* RoofPlaceLookat;
+
+
+
+	LookAt* lookAt;
+	LookAt* lookAtFirePlace;
+	LookAt* lookAtRoof;
+
+	float lerpValue;
+	float timeStep;
+	
+	float time = 2.0f;
 
 	GraphicsRender render;
 	CameraMovement moveCam;
@@ -87,10 +108,14 @@ private:
 	 float deltaTime;
 	 double lastTime;
 	 float lastFrame;
+	
 
 	 float scrollTime;
 
 	 bool firstMouse;
-	 bool cameraMoveToTarget;
+	 bool plantCam;
+	 bool firePlaceCam;
+	 bool roofCam;
+	 bool isRenderchange;
 };
 

@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="Camera\CameraLerping.cpp" />
     <ClCompile Include="src\CameraMovement.cpp" />
     <ClCompile Include="Extern\imGui\imgui.cpp" />
     <ClCompile Include="Extern\imGui\imgui_demo.cpp" />
@@ -170,9 +171,11 @@
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
+    <ClCompile Include="Utilities\LookAt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="Camera\CameraLerping.h" />
     <ClInclude Include="src\CameraMovement.h" />
     <ClInclude Include="Extern\imGui\imconfig.h" />
     <ClInclude Include="Extern\imGui\imgui.h" />
@@ -208,6 +211,8 @@
     <ClInclude Include="src\VertexArray.h" />
     <ClInclude Include="src\VertexBuffer.h" />
     <ClInclude Include="src\VertexBufferLayout.h" />
+    <ClInclude Include="Utilities\Lerp.h" />
+    <ClInclude Include="Utilities\LookAt.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\color.frag" />

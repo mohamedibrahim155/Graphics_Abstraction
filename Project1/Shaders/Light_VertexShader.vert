@@ -16,7 +16,8 @@ uniform mat4 projection;
 uniform float time = 0;
 
 uniform bool isScrollingTexture;
-
+uniform float uvControlx = 1;
+uniform float uvControly = 1;
 // function prototypes
 
 void main()
@@ -31,7 +32,12 @@ void main()
 	}
 	else
 	{	
-	  TextureCoordinates = aTexCoords;
+
+
+	  vec2 updatedTex = vec2( aTexCoords.x * uvControlx, aTexCoords.y * uvControly);
+
+	  TextureCoordinates = updatedTex ;
+	  
 	}
 	 meshColour = aColor;
 	//gl_Position = projection * view * model;

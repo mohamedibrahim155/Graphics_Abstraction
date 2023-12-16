@@ -47,7 +47,7 @@ void GraphicsRender::AssignCamera(Camera* cam)
 
 void GraphicsRender::SortObject()
 {
-	CompareDistances compareDistance(cam->Position);
+	CompareDistances compareDistance(cam->transform.position);
 	std::sort(m_transparentModels.begin(), m_transparentModels.end(), compareDistance);
 
 
