@@ -882,7 +882,6 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          if (key == GLFW_KEY_R && action == GLFW_PRESS)
          {
 
-             defaultShader->Bind();
              changeUVx = 1;
              changeUVy = 1;
              defaultShader->setFloat("uvControlx", changeUVx);
