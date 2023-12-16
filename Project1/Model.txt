@@ -204,7 +204,7 @@ ModelScale: 0.75 1 1.5
 ModelPath: Models/Window/Window.obj
 ModelPosition: 1.95 1.6 -4.83
 ModelRotation: 90 0 0 
-TexturePath: Models/Window/WindowAlphaMask.png
+TexturePath: Models/Window/WindowAlphaMask2.png
 Transperency: 1
 Cutoff: 0
 ModelScale: 0.75 1 1.5
@@ -254,6 +254,8 @@ TexturePath: Models/Plant.fbm/Plant.fbm/Sample_Bark_2.png
 Transperency: 0
 Cutoff: 0
 ModelScale: 0.5 0.7 0.5
+
+
 
 
 
@@ -362,3 +364,43 @@ TexturePath: None
 Transperency: 0
 Cutoff: 1
 ModelScale: 0.1 0.1 0.1
+
+
+
+//////////////////////////////////////////////////////////////////
+////////////////////////// EXTRA MODELS
+
+ModelPath: Models/Jar/Jar.fbx
+ModelPosition: -0.4 0.65 -1.4
+ModelRotation: 0,90,0
+TexturePath: Models/Jar/Jar.png
+Transperency: 0
+Cutoff: 0
+ModelScale: 0.04 0.04 0.04
+
+ModelPath: Models/Jar/Jar.fbx
+ModelPosition: -0.4 0.65 -2.4
+ModelRotation: 0,90,0
+TexturePath: Models/Jar/Jar.png
+Transperency: 0
+Cutoff: 0
+ModelScale: 0.04 0.04 0.04
+
+ModelPath: Models/Jar/Jar.fbx
+ModelPosition: -0.4 0.65 -1.9 
+ModelRotation: 0,90,0
+TexturePath: Models/Jar/Jar.png
+Transperency: 0
+Cutoff: 0
+ModelScale: 0.04 0.04 0.04
+
+//////////////////////////////////////////////////////////////////
+////////////////////////// EXTRA CAMERA POSITION
+
+ModelPath: NONE
+ModelPosition: 0.296778 0.701426 0.195676
+ModelRotation: 0,90,0
+TexturePath: Models/Jar/Jar.png
+Transperency: 0
+Cutoff: 0
+ModelScale: 0.04 0.04 0.04

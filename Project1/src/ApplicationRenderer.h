@@ -78,6 +78,7 @@ private:
 	LookAt* lookAt;
 	LookAt* lookAtFirePlace;
 	LookAt* lookAtRoof;
+	LookAt* lookAtJar;
 
 	float lerpValue;
 	float timeStep;
@@ -117,5 +118,6 @@ private:
 	 bool firePlaceCam;
 	 bool roofCam;
 	 bool isRenderchange;
+	 bool jarCam;
 };
 

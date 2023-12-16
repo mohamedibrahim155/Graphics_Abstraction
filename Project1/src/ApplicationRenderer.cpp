@@ -378,8 +378,30 @@ void ApplicationRenderer::Start()
     render.AddModelsAndShader(plant2, defaultShader);
 
 
+    Model* Jar = new Model(modelData[38].path);
+    Jar->alphaMask = new Texture();
+    Jar->meshes[1]->SetTransparency(true);
+    Jar->alphaMask->LoadTexture(modelData[38].texturePath.c_str(), "alphaMask");
+    Jar->meshes[1]->textures.push_back(Jar->alphaMask); 
+    Texture* mesh3Tex2 = new Texture();
+    mesh3Tex2->LoadTexture(modelData[38].texturePath.c_str(), "diffuse");
+    Jar->meshes[1]->textures.push_back(mesh3Tex2);
+    Jar->transform.SetPosition(glm::vec3(modelData[38].position));
+    Jar->transform.SetRotation(glm::vec3(modelData[38].rotation));
+    Jar->transform.SetScale(glm::vec3(modelData[38].scale));
+    render.AddTransparentModels(Jar, defaultShader);
 
+    Model* Jar2 = new Model(*Jar);
+    Jar2->transform.SetPosition(glm::vec3(modelData[39].position));
+    Jar2->transform.SetRotation(glm::vec3(modelData[39].rotation));
+    Jar2->transform.SetScale(glm::vec3(modelData[39].scale));
+    render.AddTransparentModels(Jar2, defaultShader);
 
+    Model* Jar3 = new Model(*Jar);
+    Jar3->transform.SetPosition(glm::vec3(modelData[40].position));
+    Jar3->transform.SetRotation(glm::vec3(modelData[40].rotation));
+    Jar3->transform.SetScale(glm::vec3(modelData[40].scale));
+    render.AddTransparentModels(Jar3, defaultShader);
     
 #pragma endregion
 
@@ -555,6 +577,7 @@ void ApplicationRenderer::Start()
     lookAt = new LookAt(camera.transform, plantLookat);
     lookAtFirePlace = new LookAt(camera.transform, firePlaceLookat);
     lookAtRoof = new LookAt(camera.transform, RoofPlaceLookat);
+    lookAtJar = new LookAt(camera.transform, Jar3);
 
 #pragma endregion
 
@@ -669,8 +692,19 @@ void ApplicationRenderer::Render()
              lookAtRoof->CameraUpdate();
 
          }
+
+
+         if (jarCam)
+         {
+             timeStep += deltaTime / time;
+
+             camera.transform.SetPosition(Lerp(camera.transform.position, glm::vec3(modelData[41].position), timeStep));
+
+             lookAtJar->CameraUpdate();
+
+         }
        
-       //  std::cout << "camera Pos : " << camera.transform.position.x << " , " << camera.transform.position.y << " , " << camera.transform.position.z << std::endl;
+        std::cout << "camera Pos : " << camera.transform.position.x << " , " << camera.transform.position.y << " , " << camera.transform.position.z << std::endl;
 
 
 
@@ -704,7 +738,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    float cameraSpeed=25;
+    float cameraSpeed= 14;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
         camera.ProcessKeyboard(FORWARD, deltaTime * cameraSpeed);
@@ -770,7 +804,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
              plantCam = !plantCam;
              firePlaceCam = false;
              roofCam = false;
-
+             jarCam = false;
          }
          if (key == GLFW_KEY_2 && action == GLFW_PRESS)
          {
@@ -780,7 +814,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 
              plantCam = false;
              roofCam = false;
-
+             jarCam = false;
              firePlaceCam = !firePlaceCam;
            
 
@@ -793,10 +827,24 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
              timeStep = 0;
 
              plantCam = false;
-             firePlaceCam = false;;
+             firePlaceCam = false;
+             jarCam = false;
              roofCam = !roofCam;
 
+             
+         }
 
+         if (key == GLFW_KEY_4 && action == GLFW_PRESS)
+         {
+
+             lerpValue = 0;
+             timeStep = 0;
+
+             plantCam = false;
+             firePlaceCam = false;;
+             roofCam = false;
+             jarCam = !jarCam;
+            
          }
 
          if (key == GLFW_KEY_UP && action == GLFW_PRESS)
