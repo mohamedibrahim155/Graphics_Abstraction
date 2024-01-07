@@ -21,8 +21,8 @@ uniform sampler2D opacity_Texture;
 struct sLight
 {
     vec3 position;			
-	vec4 diffuse;	// Colour of the light (used for diffuse)
-	vec4 specular;	// rgb = highlight colour, w = power
+	//vec4 diffuse;	// Colour of the light (used for diffuse)
+	//vec4 specular;	// rgb = highlight colour, w = power
 		
 	vec3 direction;	// Spot, directional lights
 	int lightType;	// x = lightType, y = inner angle, z = outer angle, w = TBD
@@ -232,8 +232,8 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir )
        {
           vec3 lightDir = normalize(lights[index].position - FragPosition);
 
-         float distance = length(lights[index].position - FragPosition);
-         float attenuation = 1.0 / (lights[index].constant + lights[index].linear * distance + lights[index].quadratic * (distance * distance));    
+         float distance1 = length(lights[index].position - FragPosition);
+         float attenuation = 1.0 / (lights[index].constant + lights[index].linear * distance1 + lights[index].quadratic * (distance1 * distance1));    
         
 
          

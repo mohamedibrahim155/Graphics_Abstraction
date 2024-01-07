@@ -209,8 +209,8 @@ void LightManager::SetUniforms(GLuint shaderID)
     {
         std::string index = std::to_string(i);
         this->lightList[i].position_UL =         glGetUniformLocation(shaderID, ("lights[" + index + "].position").c_str());
-        this->lightList[i].diffuse_UL =          glGetUniformLocation(shaderID, ("lights[" + index + "].diffuse").c_str());
-        this->lightList[i].specular_UL =         glGetUniformLocation(shaderID, ("lights[" + index + "].specular").c_str());
+     //   this->lightList[i].diffuse_UL =          glGetUniformLocation(shaderID, ("lights[" + index + "].diffuse").c_str());
+       // this->lightList[i].specular_UL =         glGetUniformLocation(shaderID, ("lights[" + index + "].specular").c_str());
         this->lightList[i].ambient_UL =          glGetUniformLocation(shaderID, ("lights[" + index + "].ambient").c_str());
         this->lightList[i].direction_UL =        glGetUniformLocation(shaderID, ("lights[" + index + "].direction").c_str());
         this->lightList[i].lightType_UL =        glGetUniformLocation(shaderID, ("lights[" + index + "].lightType").c_str());
@@ -248,13 +248,13 @@ void LightManager::UpdateUniformValues(GLuint shaderID)
 
      GLCALL(glUniform3f(lightList[index].direction_UL, value.x, value.y, value.z));
 
-        glUniform4f(lightList[index].diffuse_UL, lightList[index].diffuse.x,lightList[index].diffuse.y,   lightList[index].diffuse.z, lightList[index].diffuse.w);
+       // glUniform4f(lightList[index].diffuse_UL, lightList[index].diffuse.x,lightList[index].diffuse.y,   lightList[index].diffuse.z, lightList[index].diffuse.w);
                  
-        glUniform4f(lightList[index].specular_UL,lightList[index].specular.x,lightList[index].specular.y, lightList[index].specular.z, lightList[index].diffuse.w);
+       // glUniform4f(lightList[index].specular_UL,lightList[index].specular.x,lightList[index].specular.y, lightList[index].specular.z, lightList[index].diffuse.w);
                  
         glUniform4f(lightList[index].ambient_UL, lightList[index].ambient.x, lightList[index].ambient.y,  lightList[index].ambient.z, lightList[index].diffuse.w);
                  
-        glUniform3f(lightList[index].direction_UL,lightList[index].direction.x, lightList[index].direction.y,lightList[index].direction.z);
+       // glUniform3f(lightList[index].direction_UL,lightList[index].direction.x, lightList[index].direction.y,lightList[index].direction.z);
 
         glUniform1i(lightList[index].lightType_UL,  (int)lightList[index].lightType);
 
@@ -281,6 +281,7 @@ void LightManager::UpdateUniformValues(GLuint shaderID)
 
 void LightManager::UpdateUniformValuesToShader(Shader* shader)
 {
+    shader->Bind();
     for (size_t i = 0; i < lightList.size(); i++)
     {
         if (lightList.size() > LightManager::MAX_LIGHT)
@@ -289,19 +290,17 @@ void LightManager::UpdateUniformValuesToShader(Shader* shader)
             break;
         }
         std::string index = std::to_string(i);
-        shader->setVec3(  "lights[" + index + "].position", lightList[i].lightModel->transform.position);
-        shader->setVec3(  "lights[" + index + "].diffuse", lightList[i].diffuse);
-        shader->setVec3(  "lights[" + index + "].specular", lightList[i].specular);
-        shader->setVec3(  "lights[" + index + "].ambient", lightList[i].ambient);
+        shader->setVec3(  "lights[" + index + "].position", lightList[i].lightModel->transform.position.x, lightList[i].lightModel->transform.position.y, lightList[i].lightModel->transform.position.z);
         shader->setVec3(  "lights[" + index + "].direction", lightList[i].lightModel->transform.GetForward());
-        shader->setInt(   "lights[" + index + "].lightType", lightList[i].lightType);
+        shader->setVec4(  "lights[" + index + "].ambient", lightList[i].ambient.x, lightList[i].ambient.y, lightList[i].ambient.z, lightList[i].ambient.w);
+        shader->setInt(   "lights[" + index + "].lightType", (int)lightList[i].lightType);
         shader->setFloat( "lights[" + index + "].linear", lightList[i].linear);
         shader->setFloat( "lights[" + index + "].quadratic", lightList[i].quadratic);
         shader->setFloat( "lights[" + index + "].constant", lightList[i].constant);
-        shader->setFloat( "lights[" + index + "].cutOff", lightList[i].cutOffAngle);
-        shader->setFloat( "lights[" + index + "].outerCutOff", lightList[i].outerCutOffAngle);
-        shader->setVec3(  "lights[" + index + "].color", lightList[i].color);
+        shader->setFloat( "lights[" + index + "].cutOff", glm::cos(glm::radians(lightList[i].cutOffAngle)));
+        shader->setFloat( "lights[" + index + "].outerCutOff", glm::cos(glm::radians(lightList[i].outerCutOffAngle)));
+        shader->setVec4(  "lights[" + index + "].color", lightList[i].color.x, lightList[i].color.y, lightList[i].color.z, lightList[i].color.w);
 
     }
-    
+    return;
 }

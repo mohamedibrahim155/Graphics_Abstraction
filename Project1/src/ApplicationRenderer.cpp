@@ -87,8 +87,8 @@ void ApplicationRenderer::Start()
     GLCALL(glEnable(GL_STENCIL_TEST));
     GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
     GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   // glEnable(GL_BLEND);
+   // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
    /* skybox = new Skybox(); 
@@ -108,6 +108,22 @@ void ApplicationRenderer::Start()
 
 
      Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj");
+
+     Model* floor = new Model((char*)"Models/Floor/Floor.fbx");
+     floor->transform.SetRotation(glm::vec3(90, 0, 0));
+     floor->transform.SetPosition(glm::vec3(0, -2, 0));
+
+     Model* floor2 = new Model(*floor);
+     floor2->transform.SetRotation(glm::vec3(90, 0, 0));
+     floor2->transform.SetPosition(glm::vec3(0, 2, 0));
+
+
+     Model* floor3 = new Model(*floor);
+   
+     floor3->transform.SetPosition(glm::vec3(-2, 0, 0));
+     Model* floor4 = new Model(*floor);
+     floor4->transform.SetPosition(glm::vec3(2, 0, 0));
+
    //  Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
 
 
@@ -145,18 +161,25 @@ void ApplicationRenderer::Start()
   //  Pokeball2->transform.position = Pokeball->transform.position;
   //       Pokeball2->transform.SetScale(glm::vec3(0.5f));
 
-     Model* dir = new Model(*Sphere);
+     Model* dir = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply");
+     dir->transform.SetScale(glm::vec3(0.5f));
     // Model* spotlight = new Model(*Sphere);
      //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
 
      Light directionLight;
-     directionLight.lightType = LightType::POINT_LIGHT;
+     directionLight.lightType = LightType::SPOT_LIGHT;
      directionLight.lightModel = dir;
-     directionLight.ambient =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-     directionLight.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-     directionLight.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
+     directionLight.ambient =  glm::vec4(1, 1, 1, 1.0f);
+   //  directionLight.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
+    // directionLight.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
      directionLight.color = glm::vec4(1, 0, 0, 1.0f);
-   
+     directionLight.linear = 1;
+     directionLight.constant = 1;
+     directionLight.quadratic = 0.01f;
+     directionLight.cutOffAngle = 11;
+     directionLight.outerCutOffAngle = 12;
+     dir->transform.SetRotation(glm::vec3(0, 180, 0));
+     dir->transform.SetPosition(glm::vec3(0, 0, 2));
 
 
     /* Light spot;
@@ -176,6 +199,10 @@ void ApplicationRenderer::Start()
 
      render.AddModelsAndShader(Pokeball, defaultShader);
      render.AddModelsAndShader(plant, defaultShader);
+     render.AddModelsAndShader(floor, defaultShader);
+     render.AddModelsAndShader(floor2, defaultShader);
+     render.AddModelsAndShader(floor3, defaultShader);
+     render.AddModelsAndShader(floor4, defaultShader);
   
 
      
@@ -190,7 +217,7 @@ void ApplicationRenderer::Start()
      //LightRenderer
      lightManager.AddNewLight(directionLight);
    //  lightManager.AddNewLight(spot);
-     lightManager.SetUniforms(defaultShader->ID);
+   //  lightManager.SetUniforms(defaultShader->ID);
    //  PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
    //  SpherePhyiscs->Initialize(false, true, DYNAMIC);
 
@@ -243,8 +270,8 @@ void ApplicationRenderer::Render()
 
         defaultShader->Bind();
        // material.SetMaterialProperties(*defaultShader);
-     //   lightManager.UpdateUniformValuesToShader(defaultShader);
-        lightManager.UpdateUniformValues(defaultShader->ID);
+        lightManager.UpdateUniformValuesToShader(defaultShader);
+      //  lightManager.UpdateUniformValues(defaultShader->ID);
        
 
          defaultShader->setMat4("projection", _projection);
