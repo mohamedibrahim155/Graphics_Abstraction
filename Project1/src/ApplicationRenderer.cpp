@@ -87,8 +87,8 @@ void ApplicationRenderer::Start()
     GLCALL(glEnable(GL_STENCIL_TEST));
     GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
     GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
-   // glEnable(GL_BLEND);
-   // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   //glEnable(GL_BLEND);
+   //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
    /* skybox = new Skybox(); 
@@ -169,7 +169,7 @@ void ApplicationRenderer::Start()
      Light directionLight;
      directionLight.lightType = LightType::SPOT_LIGHT;
      directionLight.lightModel = dir;
-     directionLight.ambient =  glm::vec4(1, 1, 1, 1.0f);
+     directionLight.ambient =  glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
    //  directionLight.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
     // directionLight.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
      directionLight.color = glm::vec4(1, 0, 0, 1.0f);
@@ -178,7 +178,7 @@ void ApplicationRenderer::Start()
      directionLight.quadratic = 0.01f;
      directionLight.cutOffAngle = 11;
      directionLight.outerCutOffAngle = 12;
-     dir->transform.SetRotation(glm::vec3(0, 180, 0));
+     dir->transform.SetRotation(glm::vec3(0, 0, 0));
      dir->transform.SetPosition(glm::vec3(0, 0, 2));
 
 

@@ -2,14 +2,14 @@
 #include "Shader.h"
 
 #include "Textures.h"
-
+#include "BaseMaterial.h"
 enum AmbientType
 {
 	Value,
 	Color
 };
 
-class Material
+class Material : public BaseMaterial
 {
 
 private:
@@ -50,8 +50,16 @@ public:
 	void SetBaseColor(glm::vec4 color);
 	void SetAmbientColor(glm::vec4 color);
 	
-	void UpdateMaterial(Shader* shader) ;
-	void ResetMaterial(Shader* shader);
+	
+
+
+
+	// Inherited via BaseMaterial
+	void UpdateMaterial(Shader* shader) override;
+	void ResetMaterial(Shader* shader) override;
+	// Inherited via BaseMaterial
+	BaseMaterial* DuplicateMaterial() override;
+
 
 
 };

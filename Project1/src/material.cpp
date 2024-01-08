@@ -89,10 +89,64 @@ void Material::SetAmbientColor(glm::vec4 color)
     ambientColor = color;
 }
 
-void Material::UpdateMaterial(Shader* shader)
-{
-}
+
+
 
 void Material::ResetMaterial(Shader* shader)
 {
+}
+
+BaseMaterial* Material::DuplicateMaterial()
+{
+    Material* material = new Material();
+
+    material->SetBaseColor(this->GetBaseColor());
+    material->SetAmbientColor(this->GetAmbientColor());
+    material->diffuseTexture = this->diffuseTexture;
+    material->specularTexture = this->specularTexture;
+    material->alphaTexture = this->alphaTexture;
+    material->ambientType = this->ambientType;
+    material->ambient = this->ambient;
+    material->specular = this->specular;
+    material->shininess = this->shininess;
+    material->useMaskTexture = this->useMaskTexture;
+    material->alphaCutoffThreshold = this->alphaCutoffThreshold;
+
+    return material;
+}
+
+void Material::UpdateMaterial(Shader* shader)
+{
+    shader->Bind();
+
+    shader->setVec4("material.baseColor", this->GetBaseColor().x, this->GetBaseColor().y, this->GetBaseColor().z, this->GetBaseColor().w);
+    shader->setVec4("material.ambientColor", this->GetAmbientColor().x, this->GetAmbientColor().y, this->GetBaseColor().z, this->GetAmbientColor().w);
+
+    shader->setFloat("material.specularValue", this->GetSpecular());
+    shader->setFloat("material.shininess", this->shininess);
+
+    if (this->diffuseTexture != nullptr)
+    {
+
+        GLCALL(glActiveTexture(GL_TEXTURE0 + 0));
+        shader->setInt("diffuse_Texture", 0);
+        this->diffuseTexture->Bind();
+
+    }
+    if (this->specularTexture != nullptr)
+    {
+
+        GLCALL(glActiveTexture(GL_TEXTURE0 + 1));
+        shader->setInt("specular_Texture", 1);
+        this->specularTexture->Bind();
+
+    }
+
+    if (this->alphaTexture != nullptr)
+    {
+        GLCALL(glActiveTexture(GL_TEXTURE0 + 2));
+        shader->setInt("opacity_Texture", 2);
+        this->alphaTexture->Bind();
+    }
+
 }
