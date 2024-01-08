@@ -162,7 +162,7 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
     
     aiColor4D baseColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-    Material* meshMaterial = new Material();
+    BaseMaterial* baseMeshMaterial = new Material();
 
     if (mesh->mMaterialIndex >= 0)
     {
@@ -170,20 +170,20 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
         {
             aiMaterial* m_aiMaterial = scene->mMaterials[mesh->mMaterialIndex];
 
-            meshMaterial->diffuseTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_DIFFUSE, "diffuse_Texture");
-            meshMaterial->specularTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_SPECULAR, "specular_Texture");
-            meshMaterial->alphaTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_OPACITY, "opacity_Texture");
+            baseMeshMaterial->AsMaterial()->diffuseTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_DIFFUSE, "diffuse_Texture");
+            baseMeshMaterial->AsMaterial()->specularTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_SPECULAR, "specular_Texture");
+            baseMeshMaterial->AsMaterial()->alphaTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_OPACITY, "opacity_Texture");
 
-            if (meshMaterial->alphaTexture->path != alphaTextureDefaultPath)
+            if (baseMeshMaterial->AsMaterial()->alphaTexture->path != alphaTextureDefaultPath)
             {
-                meshMaterial->useMaskTexture = true;
+                baseMeshMaterial->AsMaterial()->useMaskTexture = true;
             }
 
-            meshMaterial->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
+            baseMeshMaterial->AsMaterial()->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
         }
         else
         {
-            meshMaterial->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
+            baseMeshMaterial->AsMaterial()->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
         }
     }
     else
@@ -192,19 +192,7 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
     }
 
 
-    //std::vector<Texture*> diffuseMaps = loadMaterialTextures(m_aiMaterial, aiTextureType_DIFFUSE, "material.diffuse");
-    //textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-    //// 2. specular maps
-    //std::vector<Texture*> specularMaps = loadMaterialTextures(m_aiMaterial, aiTextureType_SPECULAR, "material.specular");
-    //textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-    //if ( alphaMask && alphaMask->id != 0 )
-    //{
-    //    textures.push_back(alphaMask);
-    //    std::cout << "Alpha pushed : " << alphaMask->path << std::endl;
-    //}
-    
-    // return a mesh object created from the extracted mesh data
-    return std::make_shared<Mesh>(vertices, indices, meshMaterial);
+    return std::make_shared<Mesh>(vertices, indices, baseMeshMaterial->AsMaterial());
  }
 
 
