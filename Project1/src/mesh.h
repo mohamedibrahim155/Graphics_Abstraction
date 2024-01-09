@@ -36,12 +36,12 @@ public:
     std::vector<Vertex>       vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture*>      textures;
-    Material* meshMaterial;
+    BaseMaterial* meshMaterial;
     //unsigned int VAO;
     std::vector<Triangles> triangle;
 
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture*>& textures);
-    Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, Material* meshMaterial);
+    Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, BaseMaterial* meshMaterial);
     void meshDraw(Shader& shader);
     void MeshDraw(Shader* shader);
     void SetTransparency(const bool& isTransparent);

@@ -28,7 +28,7 @@ Model::Model( std::string const& path, bool isLoadTexture, bool isTextureFlip, b
     this->isTextureFlipped = isTextureFlip;
     this->isTransparant = isTransparancy;
     this->isCutOut = isCutOut;
-    loadModel(path);
+    loadModel(path, isLoadTexture);
     std::cout << path << std::endl;
 }
 
@@ -170,20 +170,20 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
         {
             aiMaterial* m_aiMaterial = scene->mMaterials[mesh->mMaterialIndex];
 
-            baseMeshMaterial->AsMaterial()->diffuseTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_DIFFUSE, "diffuse_Texture");
-            baseMeshMaterial->AsMaterial()->specularTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_SPECULAR, "specular_Texture");
-            baseMeshMaterial->AsMaterial()->alphaTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_OPACITY, "opacity_Texture");
+            baseMeshMaterial->material()->diffuseTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_DIFFUSE, "diffuse_Texture");
+            baseMeshMaterial->material()->specularTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_SPECULAR, "specular_Texture");
+            baseMeshMaterial->material()->alphaTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_OPACITY, "opacity_Texture");
 
-            if (baseMeshMaterial->AsMaterial()->alphaTexture->path != alphaTextureDefaultPath)
+            if (baseMeshMaterial->material()->alphaTexture->path != alphaTextureDefaultPath)
             {
-                baseMeshMaterial->AsMaterial()->useMaskTexture = true;
+                baseMeshMaterial->material()->useMaskTexture = true;
             }
 
-            baseMeshMaterial->AsMaterial()->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
+            baseMeshMaterial->material()->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
         }
         else
         {
-            baseMeshMaterial->AsMaterial()->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
+            baseMeshMaterial->material()->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
         }
     }
     else
@@ -192,7 +192,7 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
     }
 
 
-    return std::make_shared<Mesh>(vertices, indices, baseMeshMaterial->AsMaterial());
+    return std::make_shared<Mesh>(vertices, indices, baseMeshMaterial);
  }
 
 

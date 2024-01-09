@@ -14,6 +14,7 @@
 #include "PhysicsEngine.h"
 #include "Skybox.h"
 
+#include "SkyboxMaterial.h"
 #include "GraphicsRender.h"
 
 

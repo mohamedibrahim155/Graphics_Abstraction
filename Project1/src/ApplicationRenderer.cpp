@@ -1,7 +1,6 @@
 #include"ApplicationRenderer.h"
 
 
-
 ApplicationRenderer::ApplicationRenderer()
 {
 }
@@ -72,9 +71,30 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
    
     SkyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
 
+    Model* skyBoxMod = new Model("Models/DefaultCube/DefaultCube.fbx",false);
+
+    skyBoxMod->meshes[0]->meshMaterial = new SkyboxMaterial();
+
+    SkyboxMaterial* _skyBoxMaterial = skyBoxMod->meshes[0]->meshMaterial->skyboxMaterial();
+
+    std::vector<std::string> faces
+    {
+       ("Textures/skybox/right.jpg"),
+       ("Textures/skybox/left.jpg"),
+       ("Textures/skybox/top.jpg"),
+       ("Textures/skybox/bottom.jpg"),
+       ("Textures/skybox/front.jpg"),
+       ("Textures/skybox/back.jpg")
+    };
+    _skyBoxMaterial->skyBoxTexture->LoadTexture(faces);
+
+    render.SkyBoxModel = skyBoxMod;
+   // render.AddModelsAndShader(render.SkyBoxModel, SkyboxShader);
 
     //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
     render.AssignStencilShader(StencilShader);
+
+
     camera.transform.position = glm::vec3(0, 0, - 1.0f);
 }
 
@@ -229,6 +249,40 @@ void ApplicationRenderer::Start()
 
 void ApplicationRenderer::PreRender()
 {
+    glm::mat4 _projection = glm::perspective(glm::radians(camera.Zoom), (float)windowWidth / (float)WindowHeight, 0.1f, 100.0f);
+    glm::mat4 _view = camera.GetViewMatrix();
+    glm::mat4 _skyboxview = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+    glDepthFunc(GL_LEQUAL);
+    SkyboxShader->Bind();
+    SkyboxShader->setMat4("view", _skyboxview);
+    SkyboxShader->setMat4("projection", _projection);
+
+    render.SkyBoxModel->Draw(*SkyboxShader);
+    glDepthFunc(GL_LESS);
+
+
+    defaultShader->Bind();
+    // material.SetMaterialProperties(*defaultShader);
+    lightManager.UpdateUniformValuesToShader(defaultShader);
+    //  lightManager.UpdateUniformValues(defaultShader->ID);
+
+
+    defaultShader->setMat4("projection", _projection);
+    defaultShader->setMat4("view", _view);
+    defaultShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
+    defaultShader->setFloat("time", scrollTime);
+    defaultShader->setBool("isDepthBuffer", false);
+
+    lightShader->Bind();
+    lightShader->setMat4("projection", _projection);
+    lightShader->setMat4("view", _view);
+
+    StencilShader->Bind();
+    StencilShader->setMat4("projection", _projection);
+    StencilShader->setMat4("view", _view);
+
+    /* ScrollShader->Bind();
+       ScrollShader->setMat4("ProjectionMatrix", _projection);*/
 
 }
 
@@ -252,57 +306,13 @@ void ApplicationRenderer::Render()
         ProcessInput(window);
 
 
-        glm::mat4 _projection = glm::perspective(glm::radians(camera.Zoom), (float)windowWidth / (float)WindowHeight, 0.1f, 100.0f);
-        glm::mat4 _view = camera.GetViewMatrix();
-        glm::mat4 _skyboxview = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+       
 
 
         PreRender(); //Update call BEFORE  DRAW
-
-        glDepthFunc(GL_LEQUAL);
-        SkyboxShader->Bind();
-        SkyboxShader->setMat4("view", _skyboxview);
-        SkyboxShader->setMat4("projection", _projection);
-
-       // skybox->Skyboxrender();
-        glDepthFunc(GL_LESS); 
-
-
-        defaultShader->Bind();
-       // material.SetMaterialProperties(*defaultShader);
-        lightManager.UpdateUniformValuesToShader(defaultShader);
-      //  lightManager.UpdateUniformValues(defaultShader->ID);
-       
-
-         defaultShader->setMat4("projection", _projection);
-         defaultShader->setMat4("view", _view);
-         defaultShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
-         defaultShader->setFloat("time", scrollTime);
-         defaultShader->setBool("isDepthBuffer", false);
-
-         lightShader->Bind();
-         lightShader->setMat4("projection", _projection);
-         lightShader->setMat4("view", _view);
-
-         StencilShader->Bind();
-         StencilShader->setMat4("projection", _projection);
-         StencilShader->setMat4("view", _view);
-
-        /* ScrollShader->Bind();
-         ScrollShader->setMat4("ProjectionMatrix", _projection);*/
         
-
-       
-
-         
-  
-         
          // make models that it should not write in the stencil buffer
          render.Draw();
-
-
-
-
 
          PostRender(); // Update Call AFTER  DRAW
 

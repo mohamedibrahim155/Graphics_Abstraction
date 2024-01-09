@@ -2,6 +2,7 @@
 #include "Shader.h"
 
 class Material;
+class SkyboxMaterial;
 
 class BaseMaterial
 {
@@ -11,7 +12,8 @@ public:
 	virtual void ResetMaterial(Shader* shader) = 0;
 	virtual BaseMaterial* DuplicateMaterial() = 0;
 
-	Material* AsMaterial();
+	Material* material();
+	SkyboxMaterial* skyboxMaterial();
 
 private:
 

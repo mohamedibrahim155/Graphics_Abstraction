@@ -53,6 +53,7 @@ public:
 	void Draw();
 
 	Model* selectedModel;
+	Model* SkyBoxModel;
 	
 
 private:

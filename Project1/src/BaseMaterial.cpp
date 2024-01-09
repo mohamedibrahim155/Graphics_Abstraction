@@ -1,8 +1,14 @@
 #include "BaseMaterial.h"
 #include "material.h"
+#include "SkyboxMaterial.h"
 
 
-Material* BaseMaterial::AsMaterial()
+Material* BaseMaterial::material()
 {
 	return (Material*)this;
+}
+
+SkyboxMaterial* BaseMaterial::skyboxMaterial()
+{
+	return (SkyboxMaterial*)this;
 }
