@@ -196,78 +196,7 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
  }
 
 
-std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
-{
 
-
-    std::vector<Texture*> textures;
-    if (mat->GetTextureCount(type) == 0)
-    {
-        std::string path = "";
-        switch (type)
-        {
-        case aiTextureType_DIFFUSE:
-            path = "Textures/DefaultTextures/Default_Diffuse.png";
-            break;
-        case aiTextureType_SPECULAR:
-            path = "Textures/DefaultTextures/Default_Specular.jpg";
-            break;
-        }
-
-        Texture* defaultTexture = new Texture(path);
-        defaultTexture->type = typeName;
-
-
-
-        std::cout << "Texture loading : " << defaultTexture->path << std::endl;
-        std::cout << "Texture type : " << defaultTexture->type << std::endl;
-        textures.push_back(defaultTexture);
-        textures_loaded.push_back(defaultTexture);
-    }
-    else
-    {
-        for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-        {
-            aiString str;
-            mat->GetTexture(type, i, &str);
-
-            /* if (this->isTextureFlipped)
-             {
-                 stbi_set_flip_vertically_on_load(true);
-
-             }
-             else
-             {
-                 stbi_set_flip_vertically_on_load(false);
-
-             }*/
-
-            bool skip = false;
-            for (unsigned int j = 0; j < textures_loaded.size(); j++)
-            {
-                if (std::strcmp(textures_loaded[j]->path.c_str(), str.C_Str()) == 0)
-                {
-                    textures.push_back(textures_loaded[j]);
-                    skip = true;
-                    break;
-                }
-            }
-            if (!skip)
-            {
-                Texture* texture = new Texture();
-                texture->id = texture->TextureFromFile(str.C_Str(), this->directory);
-                texture->type = typeName;
-                std::cout << "Texture Loaded: " << texture->type << std::endl;
-                texture->path = str.C_Str();
-                textures.push_back(texture);
-                textures_loaded.push_back(texture);
-            }
-        }
-
-
-    }
-    return textures;
-}
 
  Texture* Model::LoadDefaultTexture(aiTextureType type, std::string typeName)
  {
