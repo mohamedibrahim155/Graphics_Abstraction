@@ -25,6 +25,19 @@ void GraphicsRender::AddModelsAndShader(Model& model, Shader& Shader)
 	m_Shaders.push_back(&Shader);
 }
 
+void GraphicsRender::AddModelAndShader(Model* model, Shader* shader)
+{
+	if (shader->blendMode ==OPAQUE || shader->blendMode == ALPHA_CUTOUT)
+	{
+		modelAndShaderList.push_back(new ModelAndShader(model, shader));
+	}
+	else if (shader->blendMode == OPAQUE)
+	{
+		transparentmodelAndShaderList.push_back(new ModelAndShader(model, shader));
+	}
+	
+}
+
 void GraphicsRender::AddTransparentModels(Model* model, Shader* Shader)
 {
 	m_transparentModels.push_back(model);
@@ -48,7 +61,7 @@ void GraphicsRender::AssignCamera(Camera* cam)
 void GraphicsRender::SortObject()
 {
 	CompareDistances compareDistance(cam->transform.position);
-	std::sort(m_transparentModels.begin(), m_transparentModels.end(), compareDistance);
+	std::sort(transparentmodelAndShaderList.begin(), transparentmodelAndShaderList.end(), compareDistance);
 
 
 }
@@ -64,24 +77,15 @@ std::vector<Model*> GraphicsRender::GetModelList()
 
 void GraphicsRender::Draw()
 {
-	/*std::map<float, glm::vec3> sorted;
-	for (unsigned int i = 0; i < windows.size(); i++)
-	{
-		float distance = glm::length(camera.Position - windows[i]);
-		sorted[distance] = windows[i];
-	}*/
+
 
 	glStencilMask(0x00);
-	for (size_t i = 0; i < m_Models.size(); i++)
+
+	for (ModelAndShader* modelAndShader : modelAndShaderList)
 	{
-		if (m_Models[i] == selectedModel)
-		{
+		if (modelAndShader->model == selectedModel)  continue;
 
-			continue;
-
-		}
-		m_Models[i]->Draw(*m_Shaders[i]);
-
+		modelAndShader->model->Draw(modelAndShader->shader);
 	}
 
 	if (selectedModel != nullptr)
@@ -113,37 +117,32 @@ void GraphicsRender::Draw()
 
 	SortObject();
 
-
-	for (size_t i = 0; i < m_transparentModels.size(); i++)
+	for (ModelAndShader* modelAndShader :  transparentmodelAndShaderList)
 	{
-		
-		m_transparentModels[i]->Draw(*m_transparentShaders[i]);
-
+		modelAndShader->model->Draw(modelAndShader->shader);
 	}
 
 }
 
 void GraphicsRender::ClearData()
 {
-   //Deleteing model pointers
-	if (m_Models.size() > 0)
-	{
-		for (Model* model : m_Models)
-		{
-			delete model;
 
-		}
-		m_Models.clear();
+	for (ModelAndShader* modelAndShader : modelAndShaderList)
+	{
+		delete modelAndShader->model;
+		delete modelAndShader->shader;
+		delete modelAndShader;
 	}
 
-	//Deleteing shader pointers
-	if (m_Shaders.size() > 0)
-	{
-		for (Shader* shader : m_Shaders)
-		{
-			delete shader;
+	modelAndShaderList.clear();
 
-		}
-		m_Shaders.clear();
+	for (ModelAndShader* modelAndShader : transparentmodelAndShaderList)
+	{
+		delete modelAndShader->model;
+		delete modelAndShader->shader;
+		delete modelAndShader;
 	}
+
+	transparentmodelAndShaderList.clear();
+
 }

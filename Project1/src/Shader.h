@@ -10,10 +10,14 @@
 #include <iostream>
 #include <map>
 
-enum ShaderType
+
+
+enum BlendMode
 {
-    OPAQUE,
-    SOLID
+    OPAQUE = 0,
+    ALPHA_CUTOUT,
+    ALPHA_BLEND,
+
 };
 
 class Shader
@@ -21,8 +25,8 @@ class Shader
 public:
     unsigned int ID;
     
-    ShaderType shaderType = ShaderType::OPAQUE;
-    Shader(const char* vertexPath, const char* fragmentPath, ShaderType type = ShaderType::OPAQUE);
+    BlendMode blendMode = BlendMode::OPAQUE;
+    Shader(const char* vertexPath, const char* fragmentPath, BlendMode type = BlendMode::OPAQUE);
    ~Shader();
        
      void Bind() const;

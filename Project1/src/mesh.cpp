@@ -129,55 +129,16 @@ void Mesh::MeshDraw(Shader* shader)
 {
     shader->Bind();  
 
-    if (shader->shaderType == ShaderType::OPAQUE)
+    if (shader->blendMode == BlendMode::OPAQUE)
     {
-
-
-        //shader->setVec4("material.baseColor", meshMaterial->material()->GetBaseColor().x, 
-        //    meshMaterial->material()->GetBaseColor().y, 
-        //    meshMaterial->material()->GetBaseColor().z,
-        //    meshMaterial->material()->GetBaseColor().w);
-        //
-        //shader->setVec4("material.ambientColor", meshMaterial->material()->GetAmbientColor().x,
-        //    meshMaterial->material()->GetAmbientColor().y,
-        //    meshMaterial->material()->GetBaseColor().z,
-        //    meshMaterial->material()->GetAmbientColor().w);
-
-        //shader->setFloat("material.specularValue", meshMaterial->material()->GetSpecular());
-        //shader->setFloat("material.shininess", meshMaterial->material()->shininess);
-
-        //if (meshMaterial->material()->diffuseTexture != nullptr)
-        //{
-
-        //    GLCALL(glActiveTexture(GL_TEXTURE0 + 0));
-        //    shader->setInt("diffuse_Texture", 0);
-        //    meshMaterial->material()->diffuseTexture->Bind();
-
-        //}
-        //if (meshMaterial->material()->specularTexture != nullptr)
-        //{
-
-        //    GLCALL(glActiveTexture(GL_TEXTURE0 + 1));
-        //    shader->setInt("specular_Texture", 1);
-        //    meshMaterial->material()->specularTexture->Bind();
-
-        //}
-
-        //if (meshMaterial->material()->alphaTexture != nullptr)
-        //{
-        //    GLCALL(glActiveTexture(GL_TEXTURE0 + 2));
-        //    shader->setInt("opacity_Texture", 2);
-        //    meshMaterial->material()->alphaTexture->Bind();
-        //}
-
 
         meshMaterial->UpdateMaterial(shader);
 
     }
-    else if (shader->shaderType == ShaderType::SOLID)
+   /* else if (shader->blendMode == BlendMode::SOLID)
     {
         shader->setVec3("objectColor", glm::vec3(1, 1, 1));
-    }
+    }*/
     VAO->Bind();
     IBO->Bind();
 

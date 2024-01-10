@@ -53,6 +53,7 @@ public:
     Model( std::string const& path, bool isLoadTexture =true, bool isTextureFlip=true, bool isTransparancy= false, bool isCutOut = false);
     void loadModel(std::string const& path , bool isLoadTexture =true);
     void Draw(Shader& shader);
+    void Draw(Shader* shader);
     
 
 private:

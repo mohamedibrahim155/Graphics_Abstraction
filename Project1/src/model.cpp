@@ -53,6 +53,25 @@ void Model::Draw(Shader& shader)
     }
 }
 
+void Model::Draw(Shader* shader)
+{
+    shader->Bind();
+
+    shader->setMat4("model", transform.GetModelMatrix());
+
+    if (!isVisible)
+    {
+        return;
+    }
+    for (unsigned int i = 0; i < meshes.size(); i++)
+    {
+        meshes[i]->SetTransparency(isTransparant);
+        meshes[i]->SetCutOff(isCutOut);
+        //meshes[i]->meshDraw(shader);
+        meshes[i]->MeshDraw(shader);
+    }
+}
+
 void Model::loadModel(std::string const& path, bool isLoadTexture)
 {
     this->isLoadTexture = isLoadTexture;

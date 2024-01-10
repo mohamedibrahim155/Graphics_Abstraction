@@ -42,8 +42,12 @@ public:
 
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture*>& textures);
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, BaseMaterial* meshMaterial);
+
     void meshDraw(Shader& shader);
     void MeshDraw(Shader* shader);
+    void DrawShadedMesh(Shader* shader);
+
+
     void SetTransparency(const bool& isTransparent);
     void SetCutOff(const bool& isCutOut);
     void TextureScrolling(const bool& isScroll);

@@ -66,8 +66,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
   
     defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader2.frag");
-    lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag", SOLID);
-    StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", SOLID);
+    lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag", OPAQUE);
+    StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", OPAQUE);
    
     SkyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
 
@@ -217,18 +217,20 @@ void ApplicationRenderer::Start()
     
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
 
-     render.AddModelsAndShader(Pokeball, defaultShader);
-     render.AddModelsAndShader(plant, defaultShader);
-     render.AddModelsAndShader(floor, defaultShader);
-     render.AddModelsAndShader(floor2, defaultShader);
-     render.AddModelsAndShader(floor3, defaultShader);
-     render.AddModelsAndShader(floor4, defaultShader);
+     render.AddModelAndShader(Pokeball, defaultShader);
+     render.AddModelAndShader(plant, defaultShader);
+     render.AddModelAndShader(floor, defaultShader);
+     render.AddModelAndShader(floor2, defaultShader);
+     render.AddModelAndShader(floor3, defaultShader);
+     render.AddModelAndShader(floor4, defaultShader);
   
+
+
 
      
   //   render.selectedModel = Sphere;
 
-     render.AddModelsAndShader(dir,lightShader);
+     render.AddModelAndShader(dir,lightShader);
     // render.AddModelsAndShader(spotlight, lightShader);
 
      //render.AddTransparentModels(Window, defaultShader);
