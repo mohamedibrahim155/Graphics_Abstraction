@@ -172,6 +172,7 @@
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
     <ClCompile Include="src\Time.cpp" />
+    <ClCompile Include="src\UnLitMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="src\VertexBuffer.h" />
     <ClInclude Include="src\VertexBufferLayout.h" />
     <ClInclude Include="src\Time.h" />
+    <ClInclude Include="src\UnLitMaterial.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\color.frag" />

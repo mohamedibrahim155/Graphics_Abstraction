@@ -65,11 +65,12 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
 
   
-    defaultShader = new Shader("Shaders/Light_VertexShader.vert", "Shaders/Light_FragmentShader2.frag");
-    lightShader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag", OPAQUE);
+    defaultShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag");
+    SolidColorShader = new Shader("Shaders/SolidColor_Vertex.vert", "Shaders/SolidColor_Fragment.frag", SOLID);
     StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", OPAQUE);
    
     SkyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
+    SkyboxShader->modelUniform = false;
 
     Model* skyBoxMod = new Model("Models/DefaultCube/DefaultCube.fbx",false);
 
@@ -107,8 +108,8 @@ void ApplicationRenderer::Start()
     GLCALL(glEnable(GL_STENCIL_TEST));
     GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
     GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
-   //glEnable(GL_BLEND);
-   //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
    /* skybox = new Skybox(); 
@@ -129,20 +130,20 @@ void ApplicationRenderer::Start()
 
      Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj");
 
-     Model* floor = new Model((char*)"Models/Floor/Floor.fbx");
-     floor->transform.SetRotation(glm::vec3(90, 0, 0));
-     floor->transform.SetPosition(glm::vec3(0, -2, 0));
-
-     Model* floor2 = new Model(*floor);
-     floor2->transform.SetRotation(glm::vec3(90, 0, 0));
-     floor2->transform.SetPosition(glm::vec3(0, 2, 0));
-
-
-     Model* floor3 = new Model(*floor);
+    Model* floor = new Model((char*)"Models/Floor/Floor.fbx");
+    floor->transform.SetRotation(glm::vec3(90, 0, 0));
+    floor->transform.SetPosition(glm::vec3(0, -2, 0));
    
-     floor3->transform.SetPosition(glm::vec3(-2, 0, 0));
-     Model* floor4 = new Model(*floor);
-     floor4->transform.SetPosition(glm::vec3(2, 0, 0));
+    Model* floor2 = new Model(*floor);
+    floor2->transform.SetRotation(glm::vec3(90, 0, 0));
+    floor2->transform.SetPosition(glm::vec3(0, 2, 0));
+   
+   
+    Model* floor3 = new Model(*floor);
+   
+    floor3->transform.SetPosition(glm::vec3(-2, 0, 0));
+    Model* floor4 = new Model(*floor);
+    floor4->transform.SetPosition(glm::vec3(2, 0, 0));
 
    //  Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
 
@@ -171,17 +172,9 @@ void ApplicationRenderer::Start()
      Sphere->transform.position.x += 2;
      Pokeball->transform.position.x -= 2;
     
-   //  Grass->transform.position.y += 5;
-     //Window->transform.position.y += 8;
-     //Window2->transform.position.y += 6;
 
-    // Pokeball2->transform.position.x -= 5;
-    // Pokeball2->transform.position.y -= 0.3f;
-   //  Pokeball2->transform.SetScale(glm::vec3(1.2f));
-  //  Pokeball2->transform.position = Pokeball->transform.position;
-  //       Pokeball2->transform.SetScale(glm::vec3(0.5f));
 
-     Model* dir = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply");
+     Model* dir = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply",false);
      dir->transform.SetScale(glm::vec3(0.5f));
     // Model* spotlight = new Model(*Sphere);
      //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
@@ -201,19 +194,6 @@ void ApplicationRenderer::Start()
      dir->transform.SetRotation(glm::vec3(0, 0, 0));
      dir->transform.SetPosition(glm::vec3(0, 0, 2));
 
-
-    /* Light spot;
-     spot.lightType = LightType::SPOT_LIGHT;
-     spot.lightModel = spotlight;
-     spot.ambient =  glm::vec4(0.7f, 0.7f, 0.7f,1.0f);
-     spot.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-     spot.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);*/
-
-     //Mesh Renderer
-   //  render.AddModelsAndShader(Sphere, defaultShader);
-    
-
-    // render.AddModelsAndShader(Grass, defaultShader);
     
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
 
@@ -230,11 +210,8 @@ void ApplicationRenderer::Start()
      
   //   render.selectedModel = Sphere;
 
-     render.AddModelAndShader(dir,lightShader);
-    // render.AddModelsAndShader(spotlight, lightShader);
+     render.AddModelAndShader(dir,SolidColorShader);
 
-     //render.AddTransparentModels(Window, defaultShader);
-     //render.AddTransparentModels(Window2, defaultShader);
 
      //LightRenderer
      lightManager.AddNewLight(directionLight);
@@ -245,8 +222,6 @@ void ApplicationRenderer::Start()
 
    //  PhysicsEngine.AddPhysicsObjects(SpherePhyiscs);
 
-     defaultShader->Bind();
-     defaultShader->setInt("skybox", 0);
 }
 
 void ApplicationRenderer::PreRender()
@@ -275,9 +250,9 @@ void ApplicationRenderer::PreRender()
     defaultShader->setFloat("time", scrollTime);
     defaultShader->setBool("isDepthBuffer", false);
 
-    lightShader->Bind();
-    lightShader->setMat4("projection", _projection);
-    lightShader->setMat4("view", _view);
+    SolidColorShader->Bind();
+    SolidColorShader->setMat4("projection", _projection);
+    SolidColorShader->setMat4("view", _view);
 
     StencilShader->Bind();
     StencilShader->setMat4("projection", _projection);
@@ -305,9 +280,6 @@ void ApplicationRenderer::Render()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-
-        std::cout << "DeltaTime : " << Time::GetInstance().deltaTime << std::endl;
-        std::cout << "DeltaTime2  : " << deltaTime << std::endl;
 
         scrollTime += deltaTime;
 

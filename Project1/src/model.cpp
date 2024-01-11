@@ -38,8 +38,11 @@ void Model::Draw(Shader& shader)
 {
     shader.Bind();
    
-    shader.setMat4("model", transform.GetModelMatrix());
-   
+    if (shader.modelUniform)
+    {
+        shader.setMat4("model", transform.GetModelMatrix());
+    }
+    
     if (!isVisible)
     {
         return;
@@ -49,26 +52,28 @@ void Model::Draw(Shader& shader)
         meshes[i]->SetTransparency(isTransparant);
         meshes[i]->SetCutOff(isCutOut);
         //meshes[i]->meshDraw(shader);
-        meshes[i]->MeshDraw(&shader);
+        meshes[i]->Draw(&shader);
     }
 }
 
 void Model::Draw(Shader* shader)
 {
-    shader->Bind();
-
-    shader->setMat4("model", transform.GetModelMatrix());
 
     if (!isVisible)
     {
         return;
     }
+    shader->Bind();
+    if (shader->modelUniform)
+    {
+        shader->setMat4("model", transform.GetModelMatrix());
+    }
+
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
-        meshes[i]->SetTransparency(isTransparant);
-        meshes[i]->SetCutOff(isCutOut);
-        //meshes[i]->meshDraw(shader);
-        meshes[i]->MeshDraw(shader);
+       // meshes[i]->SetTransparency(isTransparant);
+       // meshes[i]->SetCutOff(isCutOut);
+        meshes[i]->Draw(shader);
     }
 }
 
@@ -187,6 +192,7 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
     {
         if (isLoadTexture)
         {
+           // baseMeshMaterial = new Material();
             aiMaterial* m_aiMaterial = scene->mMaterials[mesh->mMaterialIndex];
 
             baseMeshMaterial->material()->diffuseTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_DIFFUSE, "diffuse_Texture");
@@ -202,12 +208,15 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
         }
         else
         {
-            baseMeshMaterial->material()->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
+
+            baseMeshMaterial = new UnLitMaterial();
+            baseMeshMaterial->unLitMaterial()->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
         }
     }
     else
     {
-      //  meshMaterial->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
+        baseMeshMaterial = new UnLitMaterial();
+        baseMeshMaterial->unLitMaterial()->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
     }
 
 

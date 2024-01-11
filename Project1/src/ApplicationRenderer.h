@@ -51,7 +51,7 @@ private:
 	LightManager lightManager;
 
 	Shader* defaultShader;
-	Shader* lightShader;
+	Shader* SolidColorShader;
 	Shader* StencilShader;
 	Shader* SkyboxShader;
 

@@ -44,8 +44,10 @@ public:
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, BaseMaterial* meshMaterial);
 
     void meshDraw(Shader& shader);
-    void MeshDraw(Shader* shader);
+
     void DrawShadedMesh(Shader* shader);
+    void Draw(Shader* shader);
+    void DrawSolidColorMesh(Shader* shader , glm::vec3 color);
 
 
     void SetTransparency(const bool& isTransparent);

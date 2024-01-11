@@ -125,20 +125,11 @@ void Mesh::meshDraw(Shader& shader)
 
 }
 
-void Mesh::MeshDraw(Shader* shader)
+void Mesh::DrawShadedMesh(Shader* shader)
 {
     shader->Bind();  
-
-    if (shader->blendMode == BlendMode::OPAQUE)
-    {
-
-        meshMaterial->UpdateMaterial(shader);
-
-    }
-   /* else if (shader->blendMode == BlendMode::SOLID)
-    {
-        shader->setVec3("objectColor", glm::vec3(1, 1, 1));
-    }*/
+    meshMaterial->UpdateMaterial(shader);
+    
     VAO->Bind();
     IBO->Bind();
 
@@ -153,12 +144,51 @@ void Mesh::MeshDraw(Shader* shader)
 
 
     GLCALL(glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0));
+
     meshMaterial->material()->diffuseTexture->Unbind();
     meshMaterial->material()->specularTexture->Unbind();
     meshMaterial->material()->alphaTexture->Unbind();
     VAO->Unbind();
 
 
+}
+
+void Mesh::Draw(Shader* shader)
+{
+    if (shader->blendMode == SOLID)
+    {
+        DrawSolidColorMesh(shader , glm::vec4(1));
+    }
+    else if (shader->blendMode == OPAQUE)
+    {
+        DrawShadedMesh(shader);
+    }
+}
+
+void Mesh::DrawSolidColorMesh(Shader* shader, glm::vec3 color)
+{
+   
+
+     if (shader->blendMode == BlendMode::SOLID)
+    {
+        meshMaterial->UpdateMaterial(shader);
+    }
+  
+    VAO->Bind();
+    IBO->Bind();
+
+    if (isWireFrame)
+    {
+        GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
+    }
+    else
+    {
+        GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+    }
+
+
+    GLCALL(glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0));
+    VAO->Unbind();
 }
 
 void Mesh::SetTransparency(const bool& isTransparent)

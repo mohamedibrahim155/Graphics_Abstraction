@@ -3,6 +3,7 @@
 
 class Material;
 class SkyboxMaterial;
+class UnLitMaterial;
 
 class BaseMaterial
 {
@@ -14,6 +15,8 @@ public:
 
 	Material* material();
 	SkyboxMaterial* skyboxMaterial();
+
+	UnLitMaterial* unLitMaterial();
 
 private:
 

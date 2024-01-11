@@ -9,15 +9,9 @@ GraphicsRender::~GraphicsRender()
 	ClearData();	
 }
 
-void GraphicsRender::AddModelsAndShader(Model* model, Shader* Shader)
-{
-	m_Models.push_back(model);
-	m_Shaders.push_back(Shader);
-}
 
-void GraphicsRender::AddAlphaModelsAndShader(Model* model, Shader* Shader)
-{
-}
+
+
 
 void GraphicsRender::AddModelsAndShader(Model& model, Shader& Shader)
 {
@@ -27,7 +21,7 @@ void GraphicsRender::AddModelsAndShader(Model& model, Shader& Shader)
 
 void GraphicsRender::AddModelAndShader(Model* model, Shader* shader)
 {
-	if (shader->blendMode ==OPAQUE || shader->blendMode == ALPHA_CUTOUT)
+	if (shader->blendMode ==OPAQUE || shader->blendMode == ALPHA_CUTOUT || shader->blendMode==SOLID)
 	{
 		modelAndShaderList.push_back(new ModelAndShader(model, shader));
 	}
