@@ -296,12 +296,18 @@ void ApplicationRenderer::Render()
   //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     while (!glfwWindowShouldClose(window))
     {
+
+        Time::GetInstance().SetCurrentTime(glfwGetTime());
         Clear();
 
 
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+
+        std::cout << "DeltaTime : " << Time::GetInstance().deltaTime << std::endl;
+        std::cout << "DeltaTime2  : " << deltaTime << std::endl;
 
         scrollTime += deltaTime;
 
