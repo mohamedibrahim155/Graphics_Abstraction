@@ -25,7 +25,7 @@ void GraphicsRender::AddModelAndShader(Model* model, Shader* shader)
 	{
 		modelAndShaderList.push_back(new ModelAndShader(model, shader));
 	}
-	else if (shader->blendMode == OPAQUE)
+	else if (shader->blendMode == ALPHA_BLEND)
 	{
 		transparentmodelAndShaderList.push_back(new ModelAndShader(model, shader));
 	}

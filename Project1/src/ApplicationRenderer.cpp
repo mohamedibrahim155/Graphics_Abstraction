@@ -150,6 +150,8 @@ void ApplicationRenderer::Start()
     floor3->transform.SetPosition(glm::vec3(-2, 0, 0));
     Model* floor4 = new Model(*floor);
     floor4->transform.SetPosition(glm::vec3(2, 0, 0));
+    floor4->meshes[0]->meshMaterial->material()->useMaskTexture = false;
+    floor4->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(1, 1, 1, 0.5f));
 
    //  Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
 
@@ -214,7 +216,7 @@ void ApplicationRenderer::Start()
      render.AddModelAndShader(floor, defaultShader);
      render.AddModelAndShader(floor2, defaultShader);
      render.AddModelAndShader(floor3, defaultShader);
-     render.AddModelAndShader(floor4, defaultShader);
+     render.AddModelAndShader(floor4, alphaBlendShader);
   
 
 
