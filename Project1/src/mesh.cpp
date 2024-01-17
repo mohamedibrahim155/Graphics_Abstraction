@@ -9,7 +9,7 @@ Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, st
     this->indices = indices;
     this->textures = textures;
 
-    setupMesh();
+    SetupMesh();
 }
 
 Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, BaseMaterial* meshMaterial)
@@ -18,112 +18,33 @@ Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, Ba
     this->indices = indices;
     this->meshMaterial = meshMaterial;
 
-    setupMesh();
+    SetupMesh();
 }
 
-void Mesh::meshDraw(Shader& shader)
+Mesh::~Mesh()
 {
+    delete VBO;
+    delete IBO;
+    delete VAO;
+    delete layout;
+    delete meshMaterial;
 
-    unsigned int diffuseNr = 0;
-    unsigned int specularNr = 0;
-    unsigned int alphaNr = 0;
-    //unsigned int normalNr = 1;
-    //unsigned int emissiveNr = 1;
-   // unsigned int heightNr = 1;
-   
+    vertices.clear();
+    indices.clear();
 
-    for (unsigned int i = 0; i < textures.size(); i++)
+    for (Texture*  texture : textures)
     {
-       GLCALL(glActiveTexture(GL_TEXTURE0 + i));
-        std::string number;
-        std::string name = textures[i]->type;
-        if (name == "material.diffuse")
-        {
-            number = std::to_string(diffuseNr++);
-            name = "diffuse";
-        }
-        else if (name == "material.specular")
-        {
-            number = std::to_string(specularNr++);
-            name = "specular";
-        }
-        else if (name == "material.alphaMask")
-        {
-            number = std::to_string(alphaNr++);
-            name = "alphaMask";
-        }
-
-
-        shader.setFloat("material.shininess", 128);
-
-        if (isTransparancy)
-        {
-           // GLCALL(shader.setFloat("material.alpha", 1.0f));
-            GLCALL(shader.setBool("isMasking", true));
-        }
-        else
-        {
-          //  GLCALL(shader.setFloat("material.alpha", 1.0f));
-           shader.setBool("isMasking", false);
-        }
-
-
-        if (isCutOut)
-        {
-            GLCALL(shader.setBool("isCutout", true));
-        }
-        else
-        {
-            GLCALL(shader.setBool("isCutout", false));
-
-        }
-
-        if (isTextureScrolling)
-        {
-            GLCALL(shader.setBool("isScrollingTexture", true));
-
-        }
-        else
-        {
-            GLCALL(shader.setBool("isScrollingTexture", false));
-
-        }
-
-     
-
-        shader.setInt((name), i);
-         //std::cout << shader.FindUniformLocations((name + number).c_str()) << std::endl;
-      //  GLCALL(glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i));
-
-        GLCALL(glBindTexture(GL_TEXTURE_2D, textures[i]->id));
+        delete texture;
     }
-    GLCALL(glActiveTexture(GL_TEXTURE0));
 
+    textures.clear();
 
-   VAO->Bind();
-   IBO->Bind();
+    triangle.clear();
 
-   if (isWireFrame)
-   {
-       GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
-   }
-   else
-   {
-       GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
-   }
-   
-   GLCALL( glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0));
-   GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
-   VAO->Unbind();
-
-
-  /* if (isTransparancy)
-   {
-       glDisable(GL_BLEND);
-   }
-  */
 
 }
+
+
 
 void Mesh::DrawShadedMesh(Shader* shader)
 {
@@ -191,17 +112,7 @@ void Mesh::DrawSolidColorMesh(Shader* shader, glm::vec3 color)
     VAO->Unbind();
 }
 
-void Mesh::SetTransparency(const bool& isTransparent)
-{
-    this->isTransparancy = isTransparent;
-}
 
-void Mesh::SetCutOff(const bool& isCutOut)
-{
-
-    this->isCutOut = isCutOut;
-
-}
 
 void Mesh::TextureScrolling(const bool& isScroll)
 {
@@ -210,7 +121,7 @@ void Mesh::TextureScrolling(const bool& isScroll)
 
 }
 
-void Mesh::setupMesh()
+void Mesh::SetupMesh()
 {
     CalculateTriangles();
     VAO = new VertexArray();

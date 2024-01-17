@@ -35,35 +35,43 @@ public:
 
     std::vector<Texture*> textures_loaded;
     std::vector<std::shared_ptr<Mesh>> meshes;
+
     std::string directory;
     std::string modelPath;
+    std::string id; //if needed 
+
     Texture* alphaMask;
 
     int offset;
-    std::string id; //if needed 
     float size;
 
     bool gammaCorrection;
     bool isTransparant = false;
     bool isCutOut = false;
-    Transform transform;
     bool isWireFrame;
-    bool isVisible =true;
+    bool isVisible = true;
     bool isLoadTexture;
+    Transform transform;
+
     Model();
     Model(const Model& copyModel);
     Model( std::string const& path, bool isLoadTexture =true, bool isTextureFlip=true, bool isTransparancy= false, bool isCutOut = false);
-    void loadModel(std::string const& path , bool isLoadTexture =true);
+    ~Model();
+    void LoadModel(std::string const& path , bool isLoadTexture =true);
     void Draw(Shader& shader);
     void Draw(Shader* shader);
     
 
 private:
     
-    void processNode(aiNode* node, const aiScene* scene);   
-    std::shared_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene);
+    void ProcessNode(aiNode* node, const aiScene* scene);   
+   
+    std::shared_ptr<Mesh> ProcessMesh(aiMesh* mesh, const aiScene* scene);
+    
     Texture* LoadDefaultTexture(aiTextureType type, std::string typeName);
     Texture* LoadMaterialTexture(aiMaterial* mat, aiTextureType type, std::string typeName);
+
+    std::string TextureType(aiTextureType type);
    
     bool isTextureFlipped = true;
 

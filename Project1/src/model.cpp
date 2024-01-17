@@ -2,7 +2,7 @@
 
 
 
-aiMesh* g_mesh;
+aiMesh* ai_Mesh;
 
 Model::Model()
 {
@@ -28,8 +28,21 @@ Model::Model( std::string const& path, bool isLoadTexture, bool isTextureFlip, b
     this->isTextureFlipped = isTextureFlip;
     this->isTransparant = isTransparancy;
     this->isCutOut = isCutOut;
-    loadModel(path, isLoadTexture);
-    std::cout << path << std::endl;
+    LoadModel(path, isLoadTexture);
+}
+
+Model::~Model()
+{
+    delete alphaMask;
+
+    for (Texture* texture : textures_loaded)
+    {
+        delete texture;
+
+    }
+    textures_loaded.clear();
+
+    meshes.clear();
 }
 
 
@@ -49,9 +62,7 @@ void Model::Draw(Shader& shader)
     }
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
-        meshes[i]->SetTransparency(isTransparant);
-        meshes[i]->SetCutOff(isCutOut);
-        //meshes[i]->meshDraw(shader);
+       
         meshes[i]->Draw(&shader);
     }
 }
@@ -71,13 +82,11 @@ void Model::Draw(Shader* shader)
 
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
-       // meshes[i]->SetTransparency(isTransparant);
-       // meshes[i]->SetCutOff(isCutOut);
         meshes[i]->Draw(shader);
     }
 }
 
-void Model::loadModel(std::string const& path, bool isLoadTexture)
+void Model::LoadModel(std::string const& path, bool isLoadTexture)
 {
     this->isLoadTexture = isLoadTexture;
     this->modelPath = path;
@@ -93,25 +102,26 @@ void Model::loadModel(std::string const& path, bool isLoadTexture)
 
     directory = path.substr(0, path.find_last_of('/'));
 
-    processNode(scene->mRootNode, scene);
+    ProcessNode(scene->mRootNode, scene);
+    std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
 }
 
-void Model::processNode(aiNode* node, const aiScene* scene)
+void Model::ProcessNode(aiNode* node, const aiScene* scene)
 {
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
        
-        g_mesh = scene->mMeshes[node->mMeshes[i]];
-        meshes.push_back(processMesh(g_mesh, scene));
+        ai_Mesh = scene->mMeshes[node->mMeshes[i]];
+        meshes.push_back(ProcessMesh(ai_Mesh, scene));
     }
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        processNode(node->mChildren[i], scene);
+        ProcessNode(node->mChildren[i], scene);
     }
-    std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
+   
 }
 
-std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
+std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
      std::vector<Vertex> vertices;
      std::vector<unsigned int> indices;
@@ -253,8 +263,6 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
      Texture* defaultTexture = new Texture(path);
      defaultTexture->type = typeName.c_str();
-
-     std::cout << "Default Texture Loaded: " << defaultTexture->path << std::endl;
      textures_loaded.push_back(defaultTexture);
      return defaultTexture;
  }
@@ -271,7 +279,7 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
          aiString texString;
          mat->GetTexture(type, i, &texString);
 
-         std::cout << " texutre path : " << texString.C_Str() << std::endl;
+         std::cout << " texutre path : " << texString.C_Str() << "Texture Type : " << TextureType(type) << std::endl;
          std::string filename = std::string(texString.C_Str());
          filename = directory + '/' + filename;
          std::ifstream file(filename);
@@ -298,6 +306,66 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
              return LoadDefaultTexture(type, typeName);
          }
 
+     }
+ }
+
+ std::string Model::TextureType(aiTextureType type)
+ {
+     switch (type)
+     {
+     case aiTextureType_NONE:
+         return  "NO TEXTURE";
+         break;
+     case aiTextureType_DIFFUSE:
+         return  "DIFFUSE";
+         break;
+     case aiTextureType_SPECULAR:
+         return  "SPECULAR";
+         break;
+     case aiTextureType_AMBIENT:
+         break;
+     case aiTextureType_EMISSIVE:
+         break;
+     case aiTextureType_HEIGHT:
+         break;
+     case aiTextureType_NORMALS:
+         break;
+     case aiTextureType_SHININESS:
+         break;
+     case aiTextureType_OPACITY:
+         return "OPACITY";
+         break;
+     case aiTextureType_DISPLACEMENT:
+         break;
+     case aiTextureType_LIGHTMAP:
+         break;
+     case aiTextureType_REFLECTION:
+         break;
+     case aiTextureType_BASE_COLOR:
+         break;
+     case aiTextureType_NORMAL_CAMERA:
+         break;
+     case aiTextureType_EMISSION_COLOR:
+         break;
+     case aiTextureType_METALNESS:
+         break;
+     case aiTextureType_DIFFUSE_ROUGHNESS:
+         break;
+     case aiTextureType_AMBIENT_OCCLUSION:
+         break;
+     case aiTextureType_SHEEN:
+         break;
+     case aiTextureType_CLEARCOAT:
+         break;
+     case aiTextureType_TRANSMISSION:
+         break;
+     case aiTextureType_UNKNOWN:
+         break;
+     case _aiTextureType_Force32Bit:
+         break;
+     default:
+         return "NO TEXTURE";
+         break;
      }
  }
 

@@ -34,7 +34,10 @@ public:
 	{
 
 	}
-	~VertexBufferLayout();
+	~VertexBufferLayout() 
+	{
+		elements.clear();
+	}
 
 	template<typename T>
 	void Push(int count)

@@ -205,9 +205,9 @@ void ApplicationRenderer::Start()
     
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
      Texture* plantAlphaTexture = new Texture();
-     plantAlphaTexture->LoadTexture("Models/Plant.fbm/Plant.fbm/Leaf_Front_1_2_Opacity.png", "opacity_Texture");
+    // plantAlphaTexture->LoadTexture("Models/Plant.fbm/Plant.fbm/Leaf_Front_1_2_Opacity.png", "opacity_Texture");
    //  plantAlphaTexture->LoadTexture("Models/Plant.fbm/Plant.fbm/Leaf_Front_1_2.png", "opacity_Texture");
-         plant->meshes[0]->meshMaterial->material()->alphaTexture = plantAlphaTexture;
+      //   plant->meshes[0]->meshMaterial->material()->alphaTexture = plantAlphaTexture;
  //   plant->meshes[0]->meshMaterial->material()->useMaskTexture = fa;
 
 

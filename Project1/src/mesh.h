@@ -42,16 +42,14 @@ public:
 
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture*>& textures);
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, BaseMaterial* meshMaterial);
-
-    void meshDraw(Shader& shader);
+    ~Mesh();
 
     void DrawShadedMesh(Shader* shader);
     void Draw(Shader* shader);
     void DrawSolidColorMesh(Shader* shader , glm::vec3 color);
 
 
-    void SetTransparency(const bool& isTransparent);
-    void SetCutOff(const bool& isCutOut);
+
     void TextureScrolling(const bool& isScroll);
 
     VertexBuffer* VBO;
@@ -64,10 +62,8 @@ private:
     
     //unsigned int VBO, EBO;
 
-    void setupMesh();
+    void SetupMesh();
     void CalculateTriangles();
-    bool isTransparancy = false;
-    bool isCutOut = false;
     bool isTextureScrolling = false;
 };
 #endif
