@@ -58,6 +58,11 @@ uniform int POINT_LIGHT_ID =1;
 uniform int SPOTLIGHT_ID =2;
 const int LIGHTCOUNT = 15;
 uniform sLight lights[LIGHTCOUNT];
+
+uniform int ShaderBlend;
+uniform bool ObjectBlend;
+uniform float alphaCutOffThreshold;
+
 float temp;
 
 vec4 CalculateLight(vec3 norm, vec3 viewDir );
@@ -91,18 +96,29 @@ void main()
 
      
 
+     if(ShaderBlend ==1)
+     {
+       result.w = 1.0;
+     }
+     else if(ShaderBlend == 3)
+     {
+        if(result.w <alphaCutOffThreshold)
+        {
+         discard;
+        }
+     }
     
 
-      if (isCutout)
-     {
-      
-         if (cutOff.a < 0.1)
-        {
-            discard;
-        }
-        FragColor = result*cutOff.a; 
-     
-     }
+//      if (isCutout)
+//     {
+//      
+//         if (cutOff.a < 0.1)
+//        {
+//            discard;
+//        }
+//        FragColor = result*cutOff.a; 
+//     
+//     }
      
 
      if(isDepthBuffer)
@@ -284,11 +300,15 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir )
        }
 
     }
-     if (isMasking)
+     if (ObjectBlend)
      {
     // temp = texture(alphaMask, TextureCoordinates).r;
        result.w = texture(opacity_Texture, TextureCoordinates).r;
      
+     }
+     else
+     {
+        result.w =  material.baseColor.w;
      }
     
       return result;

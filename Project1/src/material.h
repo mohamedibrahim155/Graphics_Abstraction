@@ -25,7 +25,6 @@ public:
 	
 
 	Material();
-	Material(float shininess);
 	Material(const Material& material);
 	~Material();
 

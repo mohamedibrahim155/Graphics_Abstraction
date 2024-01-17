@@ -254,5 +254,7 @@
     <None Include="Shaders\SkyboxShader.vert" />
     <None Include="Shaders\SkyboxShader.frag" />
     <None Include="Shaders\Light_FragmentShader2.frag" />
+    <None Include="Shaders\DefaultShader_Fragment.frag" />
+    <None Include="Shaders\DefaultShader_Vertex.vert" />
   </ItemGroup>
 </Project>

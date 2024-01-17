@@ -10,13 +10,6 @@ Material::Material()
     ResetMaterial();
 }
 
-Material::Material( float shininess)
-{
-   
-    //this->shininess = shininess;
-   
-   
-}
 
 Material::Material(const Material& material)
 {
@@ -37,8 +30,9 @@ Material::Material(const Material& material)
 
 Material::~Material()
 {
-
-    //need to do 
+    delete diffuseTexture;
+    delete specularTexture;
+    delete alphaTexture;
 }
    
 
@@ -124,6 +118,10 @@ void Material::UpdateMaterial(Shader* shader)
 
     shader->setFloat("material.specularValue", this->GetSpecular());
     shader->setFloat("material.shininess", this->shininess);
+
+    shader->setInt("ShaderBlend", (int)shader->blendMode);
+    shader->setBool("ObjectBlend", this->useMaskTexture);
+    shader->setFloat("alphaCutOffThreshold", this->alphaCutoffThreshold);
 
     if (this->diffuseTexture != nullptr)
     {

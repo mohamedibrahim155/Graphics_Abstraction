@@ -69,6 +69,12 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     SolidColorShader = new Shader("Shaders/SolidColor_Vertex.vert", "Shaders/SolidColor_Fragment.frag", SOLID);
     StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", OPAQUE);
    
+    alphaBlendShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag", ALPHA_BLEND);
+    alphaBlendShader->blendMode = ALPHA_BLEND;
+
+    alphaCutoutShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag", ALPHA_CUTOUT);
+    alphaCutoutShader->blendMode = ALPHA_CUTOUT;
+
     SkyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
     SkyboxShader->modelUniform = false;
 
@@ -103,13 +109,13 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
 void ApplicationRenderer::Start()
 {
-   // GLCALL(glEnable(GL_DEPTH_TEST));
+ //   GLCALL(glEnable(GL_DEPTH_TEST));
     GLCALL(glDepthFunc(GL_LESS));
     GLCALL(glEnable(GL_STENCIL_TEST));
     GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
     GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
-   glEnable(GL_BLEND);
-   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    GLCALL(glEnable(GL_BLEND));
+    GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 
    /* skybox = new Skybox(); 
@@ -180,12 +186,12 @@ void ApplicationRenderer::Start()
      //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
 
      Light directionLight;
-     directionLight.lightType = LightType::SPOT_LIGHT;
+     directionLight.lightType = LightType::DIRECTION_LIGHT;
      directionLight.lightModel = dir;
      directionLight.ambient =  glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
    //  directionLight.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
     // directionLight.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-     directionLight.color = glm::vec4(1, 0, 0, 1.0f);
+     directionLight.color = glm::vec4(1, 1, 1, 1.0f);
      directionLight.linear = 1;
      directionLight.constant = 1;
      directionLight.quadratic = 0.01f;
@@ -196,9 +202,15 @@ void ApplicationRenderer::Start()
 
     
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
+     Texture* plantAlphaTexture = new Texture();
+     plantAlphaTexture->LoadTexture("Models/Plant.fbm/Plant.fbm/Leaf_Front_1_2_Opacity.png", "opacity_Texture");
+   //  plantAlphaTexture->LoadTexture("Models/Plant.fbm/Plant.fbm/Leaf_Front_1_2.png", "opacity_Texture");
+         plant->meshes[0]->meshMaterial->material()->alphaTexture = plantAlphaTexture;
+ //   plant->meshes[0]->meshMaterial->material()->useMaskTexture = fa;
 
-     render.AddModelAndShader(Pokeball, defaultShader);
-     render.AddModelAndShader(plant, defaultShader);
+
+    // render.AddModelAndShader(Pokeball, defaultShader);
+     render.AddModelAndShader(plant, alphaCutoutShader);
      render.AddModelAndShader(floor, defaultShader);
      render.AddModelAndShader(floor2, defaultShader);
      render.AddModelAndShader(floor3, defaultShader);
@@ -249,6 +261,22 @@ void ApplicationRenderer::PreRender()
     defaultShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
     defaultShader->setFloat("time", scrollTime);
     defaultShader->setBool("isDepthBuffer", false);
+
+    alphaBlendShader->Bind();
+    lightManager.UpdateUniformValuesToShader(alphaBlendShader);
+    alphaBlendShader->setMat4("projection", _projection);
+    alphaBlendShader->setMat4("view", _view);
+    alphaBlendShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
+    alphaBlendShader->setFloat("time", scrollTime);
+    alphaBlendShader->setBool("isDepthBuffer", false);
+
+    alphaCutoutShader->Bind();
+    lightManager.UpdateUniformValuesToShader(alphaCutoutShader);
+    alphaCutoutShader->setMat4("projection", _projection);
+    alphaCutoutShader->setMat4("view", _view);
+    alphaCutoutShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
+    alphaCutoutShader->setFloat("time", scrollTime);
+    alphaCutoutShader->setBool("isDepthBuffer", false);
 
     SolidColorShader->Bind();
     SolidColorShader->setMat4("projection", _projection);

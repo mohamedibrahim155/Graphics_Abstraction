@@ -44,18 +44,18 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, BlendMode type)
     checkCompileErrors(vertex, "VERTEX");
     // fragment Shader
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fShaderCode, NULL);
-    glCompileShader(fragment);
+    GLCALL( glShaderSource(fragment, 1, &fShaderCode, NULL));
+    GLCALL(glCompileShader(fragment));
     checkCompileErrors(fragment, "FRAGMENT");
     // shader Program
     ID = glCreateProgram();
-    glAttachShader(ID, vertex);
-    glAttachShader(ID, fragment);
-    glLinkProgram(ID);
+    GLCALL( glAttachShader(ID, vertex));
+    GLCALL(glAttachShader(ID, fragment));
+    GLCALL( glLinkProgram(ID));
     checkCompileErrors(ID, "PROGRAM");
     // delete the shaders as they're linked into our program now and no longer necessary
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
+    GLCALL(glDeleteShader(vertex));
+    GLCALL(glDeleteShader(fragment));
 }
 
 Shader::~Shader()
@@ -148,19 +148,19 @@ void Shader::checkCompileErrors(unsigned int shader, std::string type)
     char infoLog[1024];
     if (type != "PROGRAM")
     {
-        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        GLCALL(   glGetShaderiv(shader, GL_COMPILE_STATUS, &success));
         if (!success)
         {
-            glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+            GLCALL(glGetShaderInfoLog(shader, 1024, NULL, infoLog));
             std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
         }
     }
     else
     {
-        glGetProgramiv(shader, GL_LINK_STATUS, &success);
+        GLCALL(glGetProgramiv(shader, GL_LINK_STATUS, &success));
         if (!success)
         {
-            glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+            GLCALL(glGetProgramInfoLog(shader, 1024, NULL, infoLog));
             std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
         }
     }

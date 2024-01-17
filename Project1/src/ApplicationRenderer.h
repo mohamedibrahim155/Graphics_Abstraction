@@ -52,6 +52,9 @@ private:
 
 	Shader* defaultShader;
 	Shader* SolidColorShader;
+	Shader* alphaBlendShader;
+	Shader* alphaCutoutShader;
+
 	Shader* StencilShader;
 	Shader* SkyboxShader;
 

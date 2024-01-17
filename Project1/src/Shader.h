@@ -14,10 +14,10 @@
 
 enum BlendMode
 {
-    OPAQUE = 0,
-    ALPHA_CUTOUT=1,
-    ALPHA_BLEND=2,
-    SOLID=3
+    OPAQUE = 1,
+    ALPHA_BLEND = 2,
+    ALPHA_CUTOUT = 3,
+    SOLID = 4
 
 };
 
