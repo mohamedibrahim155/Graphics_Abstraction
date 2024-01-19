@@ -62,7 +62,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     }
 
 
-
+    panelManager.StartImGuiPanels(window);
 
   
     defaultShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag");
@@ -299,6 +299,7 @@ void ApplicationRenderer::Render()
   
    // glEnable(GL_BLEND);
   //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   
     while (!glfwWindowShouldClose(window))
     {
 
@@ -316,8 +317,9 @@ void ApplicationRenderer::Render()
         ProcessInput(window);
 
 
-       
+        panelManager.DrawImGuiPanels();
 
+      
 
         PreRender(); //Update call BEFORE  DRAW
         
@@ -326,9 +328,12 @@ void ApplicationRenderer::Render()
 
          PostRender(); // Update Call AFTER  DRAW
 
+         panelManager.RenderImguiPanels();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    panelManager.EndImGuiPanels();
     glfwTerminate();
 }
 

@@ -16,7 +16,7 @@
 #include "Time.h"
 #include "SkyboxMaterial.h"
 #include "GraphicsRender.h"
-
+#include "../ImGui/PanelManager.h"
 
 
 class ApplicationRenderer
@@ -46,6 +46,7 @@ public:
 private:
 	GLFWwindow* window;
 	Camera camera;
+	
 
 	GraphicsRender render;
 	LightManager lightManager;
@@ -61,6 +62,7 @@ private:
 	Skybox* skybox;
 
 	PhysicsEngine PhysicsEngine;
+	PanelManager panelManager;
 
 	 int windowWidth;
 	 int  WindowHeight;
