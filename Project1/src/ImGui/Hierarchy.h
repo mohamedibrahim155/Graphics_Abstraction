@@ -1,14 +1,11 @@
 #pragma once
 #include "../ImGui/BasePanel.h"
 #include <iostream>
-class Inspector : public BasePanel
+class Hierarchy : public BasePanel
 {
-
-
 public:
 
-	void Draw() override;
-
+	void OnRender() override;
 
 };
 

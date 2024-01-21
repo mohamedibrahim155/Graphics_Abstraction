@@ -1,6 +1,6 @@
 #include "Hierarchy.h"
 
-void Hierarchy::Draw()
+void Hierarchy::OnRender()
 {
 
     {

@@ -53,7 +53,20 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
             static_cast<ApplicationRenderer*>(glfwGetWindowUserPointer(window))->MouseScroll(window, xoffset, yoffset);
         });
    
-    
+   
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.FontGlobalScale = 2.0f;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;   
+
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(this->window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
     //Init GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -62,7 +75,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     }
 
 
-    panelManager.StartImGuiPanels(window);
+   
 
   
     defaultShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag");
@@ -295,8 +308,11 @@ void ApplicationRenderer::PreRender()
 
 void ApplicationRenderer::Render()
 {
+   
     Start();
   
+    PanelManager::GetInstance().EditorsInitializate();
+
    // glEnable(GL_BLEND);
   //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    
@@ -304,22 +320,25 @@ void ApplicationRenderer::Render()
     {
 
         Time::GetInstance().SetCurrentTime(glfwGetTime());
-        Clear();
-
-
+       
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-
-
         scrollTime += deltaTime;
 
         ProcessInput(window);
 
+        // Imgui
 
-        panelManager.DrawImGuiPanels();
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
-      
+        PanelManager::GetInstance().Update();
+
+        ImGui::Render();
+
+        Clear();
 
         PreRender(); //Update call BEFORE  DRAW
         
@@ -328,12 +347,17 @@ void ApplicationRenderer::Render()
 
          PostRender(); // Update Call AFTER  DRAW
 
-         panelManager.RenderImguiPanels();
+         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    panelManager.EndImGuiPanels();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(window);
     glfwTerminate();
 }
 

@@ -117,16 +117,16 @@
     <ClCompile Include="src\UnLitMaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\BasePanel.cpp">
+    <ClCompile Include="src\ImGui\BasePanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\Hierarchy.cpp">
+    <ClCompile Include="src\ImGui\Hierarchy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\Inspector.cpp">
+    <ClCompile Include="src\ImGui\Inspector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\PanelManager.cpp">
+    <ClCompile Include="src\ImGui\PanelManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -248,16 +248,16 @@
     <ClInclude Include="src\UnLitMaterial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\BasePanel.h">
+    <ClInclude Include="src\ImGui\BasePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\Hierarchy.h">
+    <ClInclude Include="src\ImGui\Hierarchy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\Inspector.h">
+    <ClInclude Include="src\ImGui\Inspector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\PanelManager.h">
+    <ClInclude Include="src\ImGui\PanelManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

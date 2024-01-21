@@ -1,48 +1,14 @@
 #include "PanelManager.h"
 
-void PanelManager::StartImGuiPanels(GLFWwindow* window)
+
+
+PanelManager& PanelManager::GetInstance()
 {
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
+    static PanelManager instance;
 
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
-
+        return instance;
 }
 
-void PanelManager::DrawImGuiPanels()
-{
-
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-
-	hierarchyPanel->Draw();
-	InspectorPanel->Draw();
-
-    //DrawDockSpace();
-
-}
-
-void PanelManager::RenderImguiPanels()
-{
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-}
-
-void PanelManager::EndImGuiPanels()
-{
-
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-}
 
 void PanelManager::DrawDockSpace()
 {
@@ -124,8 +90,8 @@ void PanelManager::DrawDockSpace()
 
 
 
-        hierarchyPanel->Draw();
-        InspectorPanel->Draw();
+        hierarchyPanel->OnRender();
+        InspectorPanel->OnRender();
 
         ImGui::End();
 
@@ -133,4 +99,44 @@ void PanelManager::DrawDockSpace()
 
 
 
+}
+
+void PanelManager::AddPanel(BasePanel* panel)
+{
+    listOfPanels.push_back(panel);
+}
+
+void PanelManager::RemovePanel(BasePanel* panel)
+{
+    listOfPanels.erase(std::remove(listOfPanels.begin(), listOfPanels.end(), panel), listOfPanels.end());
+}
+
+void PanelManager::EnablePanel(BasePanel* panel)
+{
+    panel->isPanelActive = true;
+}
+
+void PanelManager::DisablePanel(BasePanel* panel)
+{
+    panel->isPanelActive = false;
+
+}
+
+void PanelManager::Update()
+{
+    for (BasePanel* panel : listOfPanels)
+    {
+        if (!panel->isPanelOpen)
+        {
+            continue;
+        }
+
+        panel->OnRender();
+    }
+}
+
+void PanelManager::EditorsInitializate()
+{
+   hierarchyPanel = new Hierarchy();
+   InspectorPanel = new Inspector();
 }

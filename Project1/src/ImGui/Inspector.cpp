@@ -1,6 +1,6 @@
 #include "Inspector.h"
 
-void Inspector::Draw()
+void Inspector::OnRender()
 {
 
     {

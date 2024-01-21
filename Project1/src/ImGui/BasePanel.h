@@ -6,10 +6,13 @@
 class BasePanel
 {
 public:
-	BasePanel();
-	~BasePanel();
 
-	virtual void Draw();
+	bool isPanelActive = true;
+	bool isPanelOpen = true;
+
+
+	BasePanel();
+	virtual void OnRender();
 
 
 };

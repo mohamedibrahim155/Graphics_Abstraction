@@ -141,10 +141,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
-    <ClCompile Include="ImGui\Hierarchy.cpp" />
-    <ClCompile Include="ImGui\BasePanel.cpp" />
-    <ClCompile Include="ImGui\Inspector.cpp" />
-    <ClCompile Include="ImGui\PanelManager.cpp" />
+    <ClCompile Include="src\ImGui\Hierarchy.cpp" />
+    <ClCompile Include="src\ImGui\BasePanel.cpp" />
+    <ClCompile Include="src\ImGui\Inspector.cpp" />
+    <ClCompile Include="src\ImGui\PanelManager.cpp" />
     <ClCompile Include="src\CubeMapTexture.cpp" />
     <ClCompile Include="src\BaseMaterial.cpp" />
     <ClCompile Include="Extern\imGui\imgui.cpp" />
@@ -180,10 +180,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
-    <ClInclude Include="ImGui\Hierarchy.h" />
-    <ClInclude Include="ImGui\BasePanel.h" />
-    <ClInclude Include="ImGui\Inspector.h" />
-    <ClInclude Include="ImGui\PanelManager.h" />
+    <ClInclude Include="src\ImGui\Hierarchy.h" />
+    <ClInclude Include="src\ImGui\BasePanel.h" />
+    <ClInclude Include="src\ImGui\Inspector.h" />
+    <ClInclude Include="src\ImGui\PanelManager.h" />
     <ClInclude Include="src\CubeMapTexture.h" />
     <ClInclude Include="src\BaseMaterial.h" />
     <ClInclude Include="Extern\imGui\imconfig.h" />
