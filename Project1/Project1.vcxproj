@@ -141,7 +141,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
-    <ClCompile Include="src\ImGui\Hierarchy.cpp" />
+    <ClCompile Include="src\ImGui\EditorLayout.cpp" />
+    <ClCompile Include="src\EntityManager\EntityManager.cpp" />
+    <ClCompile Include="src\EntityManager\Entity.cpp" />
+    <ClCompile Include="src\Object.cpp" />
+    <ClCompile Include="src\ImGui\Heirachy.cpp" />
     <ClCompile Include="src\ImGui\BasePanel.cpp" />
     <ClCompile Include="src\ImGui\Inspector.cpp" />
     <ClCompile Include="src\ImGui\PanelManager.cpp" />
@@ -180,7 +184,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
-    <ClInclude Include="src\ImGui\Hierarchy.h" />
+    <ClInclude Include="src\ImGui\EditorLayout.h" />
+    <ClInclude Include="src\EntityManager\EntityManager.h" />
+    <ClInclude Include="src\EntityManager\Entity.h" />
+    <ClInclude Include="src\Object.h" />
+    <ClInclude Include="src\ImGui\Heirachy.h" />
     <ClInclude Include="src\ImGui\BasePanel.h" />
     <ClInclude Include="src\ImGui\Inspector.h" />
     <ClInclude Include="src\ImGui\PanelManager.h" />

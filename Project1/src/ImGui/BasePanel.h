@@ -12,7 +12,7 @@ public:
 
 
 	BasePanel();
-	virtual void OnRender();
+	virtual void OnRender(float windowWidth, float windowHeight) =0;
 
 
 };

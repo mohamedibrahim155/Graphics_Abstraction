@@ -1,6 +1,6 @@
-#include "Hierarchy.h"
+#include "Heirachy.h"
 
-void Hierarchy::OnRender()
+void Heirachy::OnRender(float windowWidth, float windowHeight)
 {
 
     {

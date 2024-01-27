@@ -334,7 +334,7 @@ void ApplicationRenderer::Render()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        PanelManager::GetInstance().Update();
+        PanelManager::GetInstance().Update((float)windowWidth, (float)WindowHeight);
 
         ImGui::Render();
 

@@ -8,7 +8,7 @@ BasePanel::BasePanel()
 
 
 
-void BasePanel::OnRender()
+void BasePanel::OnRender(float windowWidth, float windowHeight)
 {
 
 

@@ -90,8 +90,8 @@ void PanelManager::DrawDockSpace()
 
 
 
-        hierarchyPanel->OnRender();
-        InspectorPanel->OnRender();
+     //   hierarchyPanel->OnRender();
+    //    InspectorPanel->OnRender();
 
         ImGui::End();
 
@@ -122,7 +122,7 @@ void PanelManager::DisablePanel(BasePanel* panel)
 
 }
 
-void PanelManager::Update()
+void PanelManager::Update(float windowWidth, float windowHeight)
 {
     for (BasePanel* panel : listOfPanels)
     {
@@ -131,12 +131,12 @@ void PanelManager::Update()
             continue;
         }
 
-        panel->OnRender();
+        panel->OnRender( windowWidth, windowHeight);
     }
 }
 
 void PanelManager::EditorsInitializate()
 {
-   hierarchyPanel = new Hierarchy();
+   hierarchyPanel = new Heirachy();
    InspectorPanel = new Inspector();
 }

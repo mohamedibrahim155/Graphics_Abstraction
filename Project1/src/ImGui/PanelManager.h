@@ -1,6 +1,6 @@
 #pragma once
 #include "BasePanel.h"
-#include "Hierarchy.h"
+#include "Heirachy.h"
 #include "Inspector.h"
 #include <iostream>
 #include <vector>
@@ -22,7 +22,7 @@ public:
 	void EnablePanel(BasePanel* panel);
 	void DisablePanel(BasePanel* panel);
 
-	void Update();
+	void Update(float windowWidth, float windowHeight);
 
 	void EditorsInitializate();
 

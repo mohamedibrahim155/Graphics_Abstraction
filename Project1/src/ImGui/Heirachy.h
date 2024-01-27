@@ -1,14 +1,11 @@
 #pragma once
 #include "../ImGui/BasePanel.h"
 #include <iostream>
-class Inspector : public BasePanel
+class Heirachy : public BasePanel
 {
-
-
 public:
 
 	void OnRender(float windowWidth, float windowHeight) override;
-
 
 };
 
