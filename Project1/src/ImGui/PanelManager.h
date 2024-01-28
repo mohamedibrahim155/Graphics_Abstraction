@@ -23,10 +23,6 @@ public:
 	void DisablePanel(BasePanel* panel);
 
 	void Update(float windowWidth, float windowHeight);
-
-	void EditorsInitializate();
-
-
 private:
 
 	BasePanel* hierarchyPanel;

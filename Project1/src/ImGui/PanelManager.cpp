@@ -135,8 +135,4 @@ void PanelManager::Update(float windowWidth, float windowHeight)
     }
 }
 
-void PanelManager::EditorsInitializate()
-{
-   hierarchyPanel = new Heirachy();
-   InspectorPanel = new Inspector();
-}
+

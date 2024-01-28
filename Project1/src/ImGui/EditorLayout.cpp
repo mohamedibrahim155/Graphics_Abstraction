@@ -20,8 +20,6 @@ void EditorLayout::SetSelectedObject(Object* object)
 void EditorLayout::InitializeEditors()
 {
     hierarchyPanel = new Heirachy();
-   
     inspectorPanel = new Inspector();
-
 
 }

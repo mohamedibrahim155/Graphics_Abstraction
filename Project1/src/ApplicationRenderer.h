@@ -17,6 +17,7 @@
 #include "SkyboxMaterial.h"
 #include "GraphicsRender.h"
 #include "ImGui/PanelManager.h" 
+#include "ImGui/EditorLayout.h"
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
