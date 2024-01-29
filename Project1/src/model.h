@@ -23,12 +23,12 @@
 #include "Transform.h"
 #include "BaseMaterial.h"
 #include "UnLitMaterial.h"
+#include "EntityManager/Entity.h"
 
 
 
 
-
-class Model
+class Model : public Entity
 {
 public:
 
@@ -51,7 +51,6 @@ public:
     bool isWireFrame;
     bool isVisible = true;
     bool isLoadTexture;
-    Transform transform;
 
     Model();
     Model(const Model& copyModel);
@@ -61,7 +60,8 @@ public:
     void Draw(Shader& shader);
     void Draw(Shader* shader);
     
-
+    virtual void OnPropertyDraw();
+    virtual void OnSceneDraw();
 private:
     
     void ProcessNode(aiNode* node, const aiScene* scene);   
@@ -76,6 +76,11 @@ private:
     bool isTextureFlipped = true;
 
     const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
+
+    // Inherited via Entity
+    void Start() override;
+    void Update(float deltaTime) override;
+    virtual void OnDestroy();
 };
 
 

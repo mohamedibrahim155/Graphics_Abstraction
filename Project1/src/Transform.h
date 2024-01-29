@@ -3,8 +3,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Object.h"
 
-class Transform 
+class Transform : public Object
 {
 public:
 
@@ -35,9 +36,15 @@ public:
     void SetForward(glm::vec3 newForward);
     void SetOrientationFromDirections(glm::vec3 newUp, glm::vec3 newRight);
 
+    // Inherited via Object
+    void OnPropertyDraw() override;
+    void OnSceneDraw() override;
 private:
 
     void UpdateQuaternionFromEuler();
     void UpdateEulerFromQuaternion();
     
+
+
+
 };

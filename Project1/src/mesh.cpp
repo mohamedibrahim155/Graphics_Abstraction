@@ -156,3 +156,12 @@ void Mesh::CalculateTriangles()
         triangle.push_back(tempTri);
     }
 }
+
+void Mesh::OnPropertyDraw()
+{
+    ImGui::InputText("##ObjectName", &name[0], 516);
+}
+
+void Mesh::OnSceneDraw()
+{
+}

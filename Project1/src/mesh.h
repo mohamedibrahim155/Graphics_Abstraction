@@ -22,12 +22,13 @@
 #include "Vertex.h"
 #include "Triangle.h"
 #include "material.h"
+#include "Object.h"
 #define MAX_BONE_INFLUENCE 4
 
 
 
 
-class Mesh
+class Mesh : public Object
 {
 public:
 
@@ -57,6 +58,8 @@ public:
     VertexArray* VAO;
     VertexBufferLayout* layout;
     bool isWireFrame = false;
+    std::string name;
+
 
 private:
     
@@ -65,5 +68,9 @@ private:
     void SetupMesh();
     void CalculateTriangles();
     bool isTextureScrolling = false;
+
+    // Inherited via Object
+    void OnPropertyDraw() override;
+    void OnSceneDraw() override;
 };
 #endif

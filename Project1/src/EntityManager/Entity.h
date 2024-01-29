@@ -4,6 +4,7 @@
 
 
 class EntityManager;
+class EditorLayout;
 
 class Entity : public Object
 {

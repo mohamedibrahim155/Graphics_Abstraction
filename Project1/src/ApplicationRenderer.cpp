@@ -313,6 +313,7 @@ void ApplicationRenderer::Render()
   
     EditorLayout::GetInstance().InitializeEditors();
 
+    Time::GetInstance().lastFrame = glfwGetTime();
    // glEnable(GL_BLEND);
   //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    
@@ -344,6 +345,8 @@ void ApplicationRenderer::Render()
         
          // make models that it should not write in the stencil buffer
          render.Draw();
+
+         EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
 
          PostRender(); // Update Call AFTER  DRAW
 

@@ -7,8 +7,8 @@ class BasePanel
 {
 public:
 
-	bool isPanelActive = true;
 	bool isPanelOpen = true;
+	bool isEnable = true;
 
 
 	BasePanel();

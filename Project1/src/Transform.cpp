@@ -133,3 +133,11 @@ void Transform::UpdateEulerFromQuaternion()
 {
     rotation = glm::degrees(glm::eulerAngles(quaternionRotation));
 }
+
+void Transform::OnPropertyDraw()
+{
+}
+
+void Transform::OnSceneDraw()
+{
+}

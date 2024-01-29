@@ -5,11 +5,3 @@ BasePanel::BasePanel()
 {
 	PanelManager::GetInstance().AddPanel(this);
 }
-
-
-
-void BasePanel::OnRender(float windowWidth, float windowHeight)
-{
-
-
-}

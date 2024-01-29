@@ -113,12 +113,12 @@ void PanelManager::RemovePanel(BasePanel* panel)
 
 void PanelManager::EnablePanel(BasePanel* panel)
 {
-    panel->isPanelActive = true;
+    panel->isPanelOpen = true;
 }
 
 void PanelManager::DisablePanel(BasePanel* panel)
 {
-    panel->isPanelActive = false;
+    panel->isPanelOpen = false;
 
 }
 
@@ -126,7 +126,7 @@ void PanelManager::Update(float windowWidth, float windowHeight)
 {
     for (BasePanel* panel : listOfPanels)
     {
-        if (!panel->isPanelOpen)
+        if (!panel->isEnable)
         {
             continue;
         }

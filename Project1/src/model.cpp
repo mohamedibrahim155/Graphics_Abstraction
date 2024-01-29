@@ -86,6 +86,8 @@ void Model::Draw(Shader* shader)
     }
 }
 
+
+
 void Model::LoadModel(std::string const& path, bool isLoadTexture)
 {
     this->isLoadTexture = isLoadTexture;
@@ -104,6 +106,8 @@ void Model::LoadModel(std::string const& path, bool isLoadTexture)
 
     ProcessNode(scene->mRootNode, scene);
     std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
+
+    InitializeEntity(this);
 }
 
 void Model::ProcessNode(aiNode* node, const aiScene* scene)
@@ -367,6 +371,77 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
          return "NO TEXTURE";
          break;
      }
+ }
+
+ void Model::Start()
+ {
+     int lastSlastPosition = modelPath.find_last_of('/');
+
+     if (lastSlastPosition!= std::string::npos)
+     {
+         name = modelPath.substr(lastSlastPosition + 1);
+     }
+     else
+     {
+         name = modelPath;
+     }
+ }
+
+ void Model::Update(float deltaTime)
+ {
+ }
+
+ void Model::OnDestroy()
+ {
+ }
+
+ void Model::OnPropertyDraw()
+ {
+     Entity::OnPropertyDraw();
+ }
+
+ void Model::OnSceneDraw()
+ {
+     ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow;
+     node_flags |= ImGuiTreeNodeFlags_SpanFullWidth;
+
+     if (isSelected)
+     {
+         node_flags |= ImGuiTreeNodeFlags_Selected;
+     }
+
+     bool node_open = ImGui::TreeNodeEx(name.c_str(), node_flags);
+
+     if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+     {
+        // OnModelSelected();
+     }
+
+
+     if (node_open)
+     {
+         for (std::shared_ptr<Mesh> mesh : meshes)
+         {
+             ImGuiTreeNodeFlags leaf_flags = ImGuiTreeNodeFlags_Leaf;
+             leaf_flags |= ImGuiTreeNodeFlags_NoTreePushOnOpen;
+             leaf_flags |= ImGuiTreeNodeFlags_SpanFullWidth;
+
+             if (mesh->isSelected)
+             {
+                 leaf_flags |= ImGuiTreeNodeFlags_Selected;
+             }
+
+             ImGui::TreeNodeEx(mesh->name.c_str(), leaf_flags);
+             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+             {
+                // Renderer::GetInstance().SetSelectedModel(this);
+               //  EditorLayout::GetInstance().SetSelectedObjects({ mesh->mesh.get(), mesh->material });
+             }
+         }
+
+         ImGui::TreePop();
+     }
+
  }
 
 
