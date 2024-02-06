@@ -4,6 +4,7 @@
 
 #include "Heirachy.h"
 #include "Inspector.h"
+#include "WindowDockingPanel.h"
 
 class EditorLayout
 {
@@ -21,6 +22,7 @@ private:
 
 	Heirachy* hierarchyPanel;
 	Inspector* inspectorPanel;
+	WindowDockingPanel* windowDockingPanel;
 
 	Object* currentSelectedObject = nullptr;
 

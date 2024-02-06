@@ -385,6 +385,14 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
      {
          name = modelPath;
      }
+
+     for (int i = 0; i < meshes.size(); i++)
+     {
+         if (meshes[i]->name.empty())
+         {
+             meshes[i]->name = "mesh " + std::to_string(i + 1);
+         }
+     }
  }
 
  void Model::Update(float deltaTime)

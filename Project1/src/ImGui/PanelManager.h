@@ -25,8 +25,6 @@ public:
 	void Update(float windowWidth, float windowHeight);
 private:
 
-	BasePanel* hierarchyPanel;
-	BasePanel* InspectorPanel;
 
 	bool dockOpen = true;
 

@@ -21,5 +21,6 @@ void EditorLayout::InitializeEditors()
 {
     hierarchyPanel = new Heirachy();
     inspectorPanel = new Inspector();
+    windowDockingPanel = new WindowDockingPanel();
 
 }
