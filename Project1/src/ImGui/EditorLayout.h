@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Object.h"
-
+#include <vector>
 #include "Heirachy.h"
 #include "Inspector.h"
 #include "WindowDockingPanel.h"
@@ -13,9 +13,14 @@ public :
 
 	Object* GetCurrentSelectedObject();
 
-	void SetSelectedObject(Object* object);
 
 	void InitializeEditors();
+
+	void SetSelectedObjects(std::vector<Object*> objects);
+	void SetSelectedObjectsEnable(bool isEnable);
+
+	std::vector<Object*> GetSelectedObjects();
+	
 
 
 private:
@@ -25,6 +30,8 @@ private:
 	WindowDockingPanel* windowDockingPanel;
 
 	Object* currentSelectedObject = nullptr;
+
+	std::vector<Object*> selectedObjectsList;
 
 };
 

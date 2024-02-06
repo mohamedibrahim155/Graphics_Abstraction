@@ -12,10 +12,7 @@ Object* EditorLayout::GetCurrentSelectedObject()
     return currentSelectedObject;
 }
 
-void EditorLayout::SetSelectedObject(Object* object)
-{
-    currentSelectedObject = object;
-}
+
 
 void EditorLayout::InitializeEditors()
 {
@@ -23,4 +20,32 @@ void EditorLayout::InitializeEditors()
     inspectorPanel = new Inspector();
     windowDockingPanel = new WindowDockingPanel();
 
+}
+
+void EditorLayout::SetSelectedObjects(std::vector<Object*> objects)
+{
+    if (!selectedObjectsList.empty())
+    {
+        SetSelectedObjectsEnable(false);
+    }
+
+    selectedObjectsList.clear();
+
+    selectedObjectsList = objects;
+
+    SetSelectedObjectsEnable(true);
+
+}
+
+void EditorLayout::SetSelectedObjectsEnable(bool isEnable)
+{
+    for (Object* object:  selectedObjectsList)
+    {
+        object->isEnabled = isEnable;
+    }
+}
+
+std::vector<Object*> EditorLayout::GetSelectedObjects()
+{
+    return selectedObjectsList;
 }

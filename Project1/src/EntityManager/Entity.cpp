@@ -14,7 +14,7 @@ void Entity::Destroy()
 
 void Entity::OnPropertyDraw()
 {
-	ImGui::InputText("##ObjectName", &name[0], 516);
+	ImGui::InputText("##EntityName", &name[0], 516);
 	ImGui::SameLine();
 	ImGui::InputText("##Tag", &tag[0], 516);
 	transform.OnPropertyDraw();
@@ -24,6 +24,6 @@ void Entity::OnSceneDraw()
 {
 	if (ImGui::Selectable(name.c_str(), &isSelected))
 	{
-		EditorLayout::GetInstance().SetSelectedObject(this);
+		EditorLayout::GetInstance().SetSelectedObjects({ this });
 	}
 }

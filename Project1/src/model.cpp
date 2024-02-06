@@ -1,5 +1,5 @@
 #include "model.h"
-
+#include "ImGui/EditorLayout.h"
 
 
 aiMesh* ai_Mesh;
@@ -443,7 +443,9 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
              if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
              {
                 // Renderer::GetInstance().SetSelectedModel(this);
-               //  EditorLayout::GetInstance().SetSelectedObjects({ mesh->mesh.get(), mesh->material });
+                 
+             
+                 EditorLayout::GetInstance().SetSelectedObjects({ mesh.get() });
              }
          }
 

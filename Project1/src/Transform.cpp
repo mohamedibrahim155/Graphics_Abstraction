@@ -136,6 +136,15 @@ void Transform::UpdateEulerFromQuaternion()
 
 void Transform::OnPropertyDraw()
 {
+    if (!ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        return;
+    }
+
+  //  float positionWidth = 150.0f;
+  //  DrawTransformVector3ImGui("POSITION ", position, 0, positionWidth);
+
+    ImGui::TreePop();
 }
 
 void Transform::OnSceneDraw()

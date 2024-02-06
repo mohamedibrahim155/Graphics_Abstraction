@@ -2,10 +2,12 @@
 #include <string>
 #include <imgui.h>
 #include <imgui_internal.h>
+
+#include "ImGui/ImGuiUtils.h"
 class Object
 {
 public :
-	Object();
+//	Object();
   //  ~Object();
 
 	static unsigned int ID;
