@@ -6,8 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Transform.h"
-
+//#include "Transform.h"
+#include "EntityManager/Entity.h"
 #include <vector>
 
 enum Camera_Movement {
@@ -23,51 +23,27 @@ const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
 
 
-class Camera
+class Camera : public Entity
 {
 public:
     
     // camera options
     float MovementSpeed;
     float MouseSensitivity;
-    float Zoom;
+    float fov;
+  //  float cameraWidth;
+   // float cameraHeight;
 
         // constructor with vectors
-    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f)) : MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM) 
-    {
-       // Position = position;
-      //  WorldUp = up;
-       // Yaw = yaw;
-       // Pitch = pitch;
-
-
-        //Initial Values
-        transform.SetPosition(glm::vec3(0, 0.0f, 0));
-        transform.SetOrientationFromDirections(glm::vec3(0, 1, 0), glm::vec3(0, 1, 0));
-        transform.SetRotation(glm::vec3(0.0f, 180, 0.0f));
-
-
-    }
+    Camera();
+    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f));
         
 
         // constructor with scalar values
-    Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM) 
-    {
-       // Position = glm::vec3(posX, posY, posZ);
-       // WorldUp = glm::vec3(upX, upY, upZ);
-       // Yaw = yaw;
-       // Pitch = pitch;
-
-        //Initial Values
-        transform.SetPosition(glm::vec3(3.0f, 0.0f, -33.0f));
-        transform.SetOrientationFromDirections(glm::vec3(0, 1, 0), glm::vec3(0, 1, 0));
-        transform.SetRotation(glm::vec3(0.0f, 180.0f, 0.0f));
+    Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 
 
-    }
-
-
-    Transform transform;
+   // Transform transform;
 
         // returns the view matrix calculated using Euler Angles and the LookAt Matrix
         glm::mat4 GetViewMatrix();
@@ -88,31 +64,18 @@ public:
 
         Transform* GetTransform();
 
-        void SetTargetPosition(const glm::vec3& targetPos) {
-            targetPosition = targetPos;
-        }
+        // Inherited via Entity
+        void Start() override;
 
-        // Update camera position using lerp
-        void UpdateCameraPosition(float deltaTime) {
-            //Position = glm::mix(Position, targetPosition, lerpSpeed * deltaTime);         
+        void Update(float deltaTime) override;
 
+        void OnDestroy() override;
 
-            updateCameraVectors();
-
-        }
-
-       
-        
+        // Inherited via object
+        void DrawProperties() override;
+        void SceneDraw() override;
 
 private:
-    // calculates the front vector from the Camera's (updated) Euler Angles
-   // void updateCameraVectors();
 
-
-    glm::vec3 targetPosition;
-
-    // Lerp speed for smooth interpolation
-//    float lerpSpeed = 2.0f;  
-   
 };
 #endif

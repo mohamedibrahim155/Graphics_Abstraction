@@ -157,11 +157,11 @@ void Mesh::CalculateTriangles()
     }
 }
 
-void Mesh::OnPropertyDraw()
+void Mesh::DrawProperties()
 {
     ImGui::InputText("##ObjectName", &name[0], 516);
 }
 
-void Mesh::OnSceneDraw()
+void Mesh::SceneDraw()
 {
 }

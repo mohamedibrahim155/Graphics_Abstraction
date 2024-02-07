@@ -3,6 +3,7 @@
 
 ApplicationRenderer::ApplicationRenderer()
 {
+    camera = new Camera(glm::vec3(0));
 }
 
 ApplicationRenderer::~ApplicationRenderer()
@@ -115,7 +116,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     render.AssignStencilShader(StencilShader);
 
 
-    camera.transform.position = glm::vec3(0, 0, - 1.0f);
+    camera->transform.position = glm::vec3(0, 0, - 1.0f);
 }
 
 
@@ -137,7 +138,7 @@ void ApplicationRenderer::Start()
     skybox->SkyboxPrerender();*/
     
 
-    render.AssignCamera(&camera);
+    render.AssignCamera(camera);
 
     Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
    // Model* Sphere = new Model();
@@ -253,13 +254,13 @@ void ApplicationRenderer::Start()
 
 void ApplicationRenderer::PreRender()
 {
-    glm::mat4 _projection = glm::perspective(glm::radians(camera.Zoom), (float)windowWidth / (float)WindowHeight, 0.1f, 100.0f);
-    glm::mat4 _view = camera.GetViewMatrix();
-    glm::mat4 _skyboxview = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+    glm::mat4 _projection = glm::perspective(glm::radians(camera->fov), (float)windowWidth / (float)WindowHeight, 0.1f, 100.0f);
+    glm::mat4 _view = camera->GetViewMatrix();
+    glm::mat4 _skyboxview = glm::mat4(glm::mat3(camera->GetViewMatrix()));
     glDepthFunc(GL_LEQUAL);
     SkyboxShader->Bind();
-    SkyboxShader->setMat4("view", _skyboxview);
     SkyboxShader->setMat4("projection", _projection);
+    SkyboxShader->setMat4("view", _skyboxview);
 
     render.SkyBoxModel->Draw(*SkyboxShader);
     glDepthFunc(GL_LESS);
@@ -273,7 +274,7 @@ void ApplicationRenderer::PreRender()
 
     defaultShader->setMat4("projection", _projection);
     defaultShader->setMat4("view", _view);
-    defaultShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
+    defaultShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     defaultShader->setFloat("time", scrollTime);
     defaultShader->setBool("isDepthBuffer", false);
 
@@ -281,7 +282,7 @@ void ApplicationRenderer::PreRender()
     lightManager.UpdateUniformValuesToShader(alphaBlendShader);
     alphaBlendShader->setMat4("projection", _projection);
     alphaBlendShader->setMat4("view", _view);
-    alphaBlendShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
+    alphaBlendShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaBlendShader->setFloat("time", scrollTime);
     alphaBlendShader->setBool("isDepthBuffer", false);
 
@@ -289,7 +290,7 @@ void ApplicationRenderer::PreRender()
     lightManager.UpdateUniformValuesToShader(alphaCutoutShader);
     alphaCutoutShader->setMat4("projection", _projection);
     alphaCutoutShader->setMat4("view", _view);
-    alphaCutoutShader->setVec3("viewPos", camera.transform.position.x, camera.transform.position.y, camera.transform.position.z);
+    alphaCutoutShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaCutoutShader->setFloat("time", scrollTime);
     alphaCutoutShader->setBool("isDepthBuffer", false);
 
@@ -385,21 +386,21 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
     float cameraSpeed=25;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(FORWARD, deltaTime * cameraSpeed);
+        camera->ProcessKeyboard(FORWARD, deltaTime * cameraSpeed);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(BACKWARD, deltaTime * cameraSpeed);
+        camera->ProcessKeyboard(BACKWARD, deltaTime * cameraSpeed);
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(LEFT, deltaTime * cameraSpeed);
+        camera->ProcessKeyboard(LEFT, deltaTime * cameraSpeed);
 
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        camera.ProcessKeyboard(RIGHT, deltaTime * cameraSpeed);
+        camera->ProcessKeyboard(RIGHT, deltaTime * cameraSpeed);
 
     }
 
@@ -464,11 +465,11 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
      
          if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
          {
-             camera.ProcessMouseMovement(xoffset, yoffset);
+             camera->ProcessMouseMovement(xoffset, yoffset);
          }
  }
 
  void ApplicationRenderer::MouseScroll(GLFWwindow* window, double xoffset, double yoffset)
  {
-     camera.ProcessMouseScroll(static_cast<float>(yoffset));
+     camera->ProcessMouseScroll(static_cast<float>(yoffset));
  }

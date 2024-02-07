@@ -39,6 +39,6 @@ void Heirachy::ShowAllEntities()
 
     for (it = entityManager->listOfEntities.begin(); it != entityManager->listOfEntities.end(); ++it)
     {
-        it->second->OnSceneDraw();
+        it->second->SceneDraw();
     }
 }

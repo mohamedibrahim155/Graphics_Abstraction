@@ -134,19 +134,19 @@ void Transform::UpdateEulerFromQuaternion()
     rotation = glm::degrees(glm::eulerAngles(quaternionRotation));
 }
 
-void Transform::OnPropertyDraw()
+void Transform::DrawProperties()
 {
     if (!ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen))
     {
         return;
     }
 
-  //  float positionWidth = 150.0f;
-  //  DrawTransformVector3ImGui("POSITION ", position, 0, positionWidth);
+   
+    DrawTransformVector3ImGui("POSITION ", position, 0, positionWidth);
 
     ImGui::TreePop();
 }
 
-void Transform::OnSceneDraw()
+void Transform::SceneDraw()
 {
 }

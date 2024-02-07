@@ -52,7 +52,7 @@ public:
 
 private:
 	GLFWwindow* window;
-	Camera camera;
+	Camera* camera;
 	
 
 	GraphicsRender render;

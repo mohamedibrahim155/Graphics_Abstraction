@@ -70,7 +70,7 @@ private:
     bool isTextureScrolling = false;
 
     // Inherited via Object
-    void OnPropertyDraw() override;
-    void OnSceneDraw() override;
+    void DrawProperties() override;
+    void SceneDraw() override;
 };
 #endif

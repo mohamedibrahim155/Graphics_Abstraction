@@ -403,12 +403,12 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
  {
  }
 
- void Model::OnPropertyDraw()
+ void Model::DrawProperties()
  {
-     Entity::OnPropertyDraw();
+     Entity::DrawProperties();
  }
 
- void Model::OnSceneDraw()
+ void Model::SceneDraw()
  {
      ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow;
      node_flags |= ImGuiTreeNodeFlags_SpanFullWidth;
@@ -422,7 +422,8 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 
      if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
      {
-        // OnModelSelected();
+         EditorLayout::GetInstance().SetSelectedObjects({ this });
+
      }
 
 

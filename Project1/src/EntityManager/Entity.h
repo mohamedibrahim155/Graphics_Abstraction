@@ -28,8 +28,8 @@ public:
 	 virtual void Destroy();
 
 	 //Inherited from Object
-	 virtual void OnPropertyDraw();
-	 virtual void OnSceneDraw();
+	 virtual void DrawProperties();
+	 virtual void SceneDraw();
 
 
 };

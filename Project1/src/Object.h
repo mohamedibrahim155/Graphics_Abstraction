@@ -17,7 +17,7 @@ public :
 	bool isSelected = false;
 	bool isEnabled = true;
 
-	virtual void OnPropertyDraw() = 0;
-	virtual void OnSceneDraw() = 0;
+	virtual void DrawProperties() = 0;
+	virtual void SceneDraw() = 0;
 };
 

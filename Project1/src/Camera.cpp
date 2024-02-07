@@ -4,6 +4,52 @@
 
 
 
+Camera::Camera()
+{
+    name = "Camera";
+
+    transform.SetPosition(glm::vec3(glm::vec3(0.0f, 0.0f, 0.0f)));
+
+    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+    transform.SetOrientationFromDirections(up, up);
+
+    transform.SetRotation(glm::vec3(0.0f, 180, 0.0f));
+
+    InitializeEntity(this);
+}
+
+Camera::Camera(glm::vec3 position, glm::vec3 up) : MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), fov(ZOOM)
+{
+    // Position = position;
+   //  WorldUp = up;
+    // Yaw = yaw;
+    // Pitch = pitch;
+
+
+     //Initial Values
+    transform.SetPosition(glm::vec3(position));
+    transform.SetOrientationFromDirections(up, up);
+    transform.SetRotation(glm::vec3(0.0f, 180, 0.0f));
+    name = "Camera";
+    InitializeEntity(this);
+}
+
+Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), fov(ZOOM)
+{
+    // Position = glm::vec3(posX, posY, posZ);
+    // WorldUp = glm::vec3(upX, upY, upZ);
+    // Yaw = yaw;
+    // Pitch = pitch;
+    name = "Camera";
+
+    //Initial Values
+    transform.SetPosition(glm::vec3(posX, posY, posZ));
+    transform.SetOrientationFromDirections(glm::vec3(0, 1, 0), glm::vec3(0, 1, 0));
+    transform.SetRotation(glm::vec3(0.0f, 180.0f, 0.0f));
+
+    InitializeEntity(this);
+}
+
 // returns the view matrix calculated using Euler Angles and the LookAt Matrix
 glm::mat4 Camera::GetViewMatrix()
 {
@@ -57,11 +103,11 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constr
 // processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
 void Camera::ProcessMouseScroll(float yoffset)
 {
-    Zoom -= (float)yoffset;
-    if (Zoom < 1.0f)
-        Zoom = 1.0f;
-    if (Zoom > 45.0f)
-        Zoom = 45.0f;
+    fov -= (float)yoffset;
+    if (fov < 1.0f)
+        fov = 1.0f;
+    if (fov > 45.0f)
+        fov = 45.0f;
 }
 
 
@@ -82,4 +128,25 @@ void Camera::updateCameraVectors()
 Transform* Camera::GetTransform()
 {
     return &transform;
+}
+
+void Camera::Start()
+{
+}
+
+void Camera::Update(float deltaTime)
+{
+}
+
+void Camera::OnDestroy()
+{
+}
+
+void Camera::DrawProperties()
+{
+    Entity::DrawProperties();
+}
+
+void Camera::SceneDraw()
+{
 }

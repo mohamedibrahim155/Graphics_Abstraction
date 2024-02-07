@@ -7,8 +7,8 @@ void Inspector::OnRender(float windowWidth, float windowHeight)
         return;
     }
 
-    windowWidth = 400;
-    windowHeight = 400;
+    //windowWidth = 400;
+  //  windowHeight = 400;
 
     if (!ImGui::Begin("Inspector", &isEnable))
     {
@@ -18,14 +18,12 @@ void Inspector::OnRender(float windowWidth, float windowHeight)
 
     }
    
-    ImGui::SetWindowSize(ImVec2(windowWidth, windowHeight));
-   
-    DrawProperties();
+    DrawEntityProperties();
 
     ImGui::End();
 }
 
-void Inspector::DrawProperties()
+void Inspector::DrawEntityProperties()
 {
     std::vector<Object*> selectedObjects = EditorLayout::GetInstance().GetSelectedObjects();
 
@@ -33,6 +31,6 @@ void Inspector::DrawProperties()
 
     for (Object* obj : selectedObjects)
     {
-        obj->OnPropertyDraw();
+        obj->DrawProperties();
     }
 }

@@ -60,8 +60,8 @@ public:
     void Draw(Shader& shader);
     void Draw(Shader* shader);
     
-    virtual void OnPropertyDraw();
-    virtual void OnSceneDraw();
+    virtual void DrawProperties();
+    virtual void SceneDraw();
 private:
     
     void ProcessNode(aiNode* node, const aiScene* scene);   

@@ -12,18 +12,18 @@ void Entity::Destroy()
 	EntityManager::GetInstance().RemoveEntity(entityID);
 }
 
-void Entity::OnPropertyDraw()
+void Entity::DrawProperties()
 {
-	ImGui::InputText("##EntityName", &name[0], 516);
+	ImGui::InputText("##EntityName", &name[0], 256);
 	ImGui::SameLine();
-	ImGui::InputText("##Tag", &tag[0], 516);
-	transform.OnPropertyDraw();
+	ImGui::InputText("##Tag", &tag[0], 256);
+	transform.DrawProperties();
 }
 
-void Entity::OnSceneDraw()
+void Entity::SceneDraw()
 {
-	if (ImGui::Selectable(name.c_str(), &isSelected))
+	/*if (ImGui::Selectable(name.c_str(), &isSelected))
 	{
 		EditorLayout::GetInstance().SetSelectedObjects({ this });
-	}
+	}*/
 }
