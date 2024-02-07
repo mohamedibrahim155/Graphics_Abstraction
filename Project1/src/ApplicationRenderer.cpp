@@ -3,7 +3,7 @@
 
 ApplicationRenderer::ApplicationRenderer()
 {
-    camera = new Camera(glm::vec3(0));
+    camera = new Camera();
 }
 
 ApplicationRenderer::~ApplicationRenderer()
@@ -115,6 +115,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
     render.AssignStencilShader(StencilShader);
 
+  //  camera->SetCameraType(ORTHOGRAPHIC);
+   // camera->SetProjection();
 
     camera->transform.position = glm::vec3(0, 0, - 1.0f);
 }
@@ -254,7 +256,7 @@ void ApplicationRenderer::Start()
 
 void ApplicationRenderer::PreRender()
 {
-    glm::mat4 _projection = glm::perspective(glm::radians(camera->fov), (float)windowWidth / (float)WindowHeight, 0.1f, 100.0f);
+    glm::mat4 _projection = camera->GetProjectionMatrix();
     glm::mat4 _view = camera->GetViewMatrix();
     glm::mat4 _skyboxview = glm::mat4(glm::mat3(camera->GetViewMatrix()));
     glDepthFunc(GL_LEQUAL);

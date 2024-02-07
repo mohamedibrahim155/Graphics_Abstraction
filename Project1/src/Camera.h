@@ -21,7 +21,17 @@ enum Camera_Movement {
 const float SPEED = 0.5f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
+const float DEFAULT_WIDTH = 1920;
+const float DEFAULT_HEIGHT = 1080;
+const float DEFAULT_NEARPLANE = 0.1f;
+const float DEFAULT_FARPLANE = 100.0f;
 
+
+enum CameraType
+{
+    PERSPECTIVE = 0,
+    ORTHOGRAPHIC = 1
+};
 
 class Camera : public Entity
 {
@@ -31,22 +41,30 @@ public:
     float MovementSpeed;
     float MouseSensitivity;
     float fov;
-  //  float cameraWidth;
-   // float cameraHeight;
+    float cameraWidth;
+    float cameraHeight;
+    float nearPlane;
+    float farPlane;
+
+    CameraType cameraType = PERSPECTIVE;
 
         // constructor with vectors
     Camera();
-    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f));
+    ~Camera();
+   // Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f));
         
 
         // constructor with scalar values
-    Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
+   // Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 
 
    // Transform transform;
 
+
         // returns the view matrix calculated using Euler Angles and the LookAt Matrix
         glm::mat4 GetViewMatrix();
+
+        void SetProjection();
   
 
         // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
@@ -62,7 +80,12 @@ public:
         void updateCameraVectors();
 
 
+        void SetCameraType(const CameraType& type);
+
+        void SetCameraWidthAndHeight(float width, float height);
+
         Transform* GetTransform();
+        glm::mat4 GetProjectionMatrix();
 
         // Inherited via Entity
         void Start() override;
@@ -76,6 +99,6 @@ public:
         void SceneDraw() override;
 
 private:
-
+    glm::mat4 projectionMatrix;
 };
 #endif

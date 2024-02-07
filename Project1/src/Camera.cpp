@@ -15,40 +15,70 @@ Camera::Camera()
 
     transform.SetRotation(glm::vec3(0.0f, 180, 0.0f));
 
+    MovementSpeed = SPEED;
+    MouseSensitivity = SENSITIVITY;
+    fov = ZOOM;
+    nearPlane = DEFAULT_NEARPLANE;
+    farPlane = DEFAULT_FARPLANE;
+
+
+    cameraWidth = DEFAULT_WIDTH;
+    cameraHeight = DEFAULT_HEIGHT;
+
+    SetCameraType(CameraType:: PERSPECTIVE);
+
+
+    SetProjection();
+
     InitializeEntity(this);
 }
 
-Camera::Camera(glm::vec3 position, glm::vec3 up) : MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), fov(ZOOM)
+Camera::~Camera()
 {
-    // Position = position;
-   //  WorldUp = up;
-    // Yaw = yaw;
-    // Pitch = pitch;
-
-
-     //Initial Values
-    transform.SetPosition(glm::vec3(position));
-    transform.SetOrientationFromDirections(up, up);
-    transform.SetRotation(glm::vec3(0.0f, 180, 0.0f));
-    name = "Camera";
-    InitializeEntity(this);
 }
 
-Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), fov(ZOOM)
-{
-    // Position = glm::vec3(posX, posY, posZ);
-    // WorldUp = glm::vec3(upX, upY, upZ);
-    // Yaw = yaw;
-    // Pitch = pitch;
-    name = "Camera";
+//Camera::Camera(glm::vec3 position, glm::vec3 up) : MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), fov(ZOOM)
+//{
+//    // Position = position;
+//   //  WorldUp = up;
+//    // Yaw = yaw;
+//    // Pitch = pitch;
+//
+//
+//     //Initial Values
+//    transform.SetPosition(glm::vec3(position));
+//    transform.SetOrientationFromDirections(up, up);
+//    transform.SetRotation(glm::vec3(0.0f, 180, 0.0f));
+//    name = "Camera";
+//
+//    SetCameraType(CameraType::PERSPECTIVE);
+//
+//    SetProjection();
+//
+//    InitializeEntity(this);
+//}
+//
+//Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), fov(ZOOM)
+//{
+//    // Position = glm::vec3(posX, posY, posZ);
+//    // WorldUp = glm::vec3(upX, upY, upZ);
+//    // Yaw = yaw;
+//    // Pitch = pitch;
+//    name = "Camera";
+//
+//    //Initial Values
+//    transform.SetPosition(glm::vec3(posX, posY, posZ));
+//    transform.SetOrientationFromDirections(glm::vec3(0, 1, 0), glm::vec3(0, 1, 0));
+//    transform.SetRotation(glm::vec3(0.0f, 180.0f, 0.0f));
+//
+//    SetCameraType(CameraType::PERSPECTIVE);
+//
+//    SetProjection();
+//
+//    InitializeEntity(this);
+//}
 
-    //Initial Values
-    transform.SetPosition(glm::vec3(posX, posY, posZ));
-    transform.SetOrientationFromDirections(glm::vec3(0, 1, 0), glm::vec3(0, 1, 0));
-    transform.SetRotation(glm::vec3(0.0f, 180.0f, 0.0f));
 
-    InitializeEntity(this);
-}
 
 // returns the view matrix calculated using Euler Angles and the LookAt Matrix
 glm::mat4 Camera::GetViewMatrix()
@@ -56,6 +86,31 @@ glm::mat4 Camera::GetViewMatrix()
     glm::mat4 viewMat = glm::mat4(1.0f);
     viewMat = glm::lookAt(transform.position, transform.position + transform.GetForward(), transform.GetUp());
     return viewMat;
+}
+
+void Camera::SetProjection()
+{
+ 
+    
+    if (cameraType == PERSPECTIVE)
+    {
+        float aspectRatio = static_cast<float>(cameraWidth) / static_cast<float>(cameraHeight);
+
+       projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
+    }
+    else
+    {
+       
+        float orthoLeft = -cameraWidth / 2.0f;
+        float orthoRight = cameraWidth / 2.0f;
+        float orthoBottom = -cameraHeight / 2.0f;
+        float orthoTop = cameraHeight / 2.0f;
+
+
+        projectionMatrix = glm::ortho(orthoLeft, orthoRight, orthoBottom, orthoTop, nearPlane, farPlane);
+     
+    }
+    
 }
 
 // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
@@ -118,6 +173,7 @@ void Camera::updateCameraVectors()
     front.x = cos(glm::radians(transform.rotation.y)) * cos(glm::radians(transform.rotation.x));
     front.y = sin(glm::radians(transform.rotation.x));
     front.z = sin(glm::radians(transform.rotation.y)) * cos(glm::radians(transform.rotation.x));
+
     transform.SetForward(glm::normalize(front));
 
     
@@ -125,9 +181,25 @@ void Camera::updateCameraVectors()
     
 }
 
+void Camera::SetCameraType(const CameraType& type)
+{
+    this->cameraType = type;
+}
+
+void Camera::SetCameraWidthAndHeight(float width, float height)
+{
+    cameraWidth = width;
+    cameraHeight = height;
+}
+
 Transform* Camera::GetTransform()
 {
     return &transform;
+}
+
+glm::mat4 Camera::GetProjectionMatrix()
+{
+    return projectionMatrix;
 }
 
 void Camera::Start()
