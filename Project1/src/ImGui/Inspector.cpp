@@ -2,7 +2,7 @@
 #include "EditorLayout.h"
 void Inspector::OnRender(float windowWidth, float windowHeight)
 {
-    if (!isEnable)
+    if (!isPanelOpen)
     {
         return;
     }
@@ -10,7 +10,7 @@ void Inspector::OnRender(float windowWidth, float windowHeight)
     //windowWidth = 400;
   //  windowHeight = 400;
 
-    if (!ImGui::Begin("Inspector", &isEnable))
+    if (!ImGui::Begin("Inspector", &isPanelOpen) || !isEnable)
     {
        
         ImGui::End();

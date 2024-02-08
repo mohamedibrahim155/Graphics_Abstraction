@@ -76,8 +76,14 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     }
 
 
-   
+    FrameBufferSpecification specification;
 
+    specification.width = windowWidth;
+    specification.height = WindowHeight;
+
+    frameBuffer = new FrameBuffer(specification);
+
+    EditorLayout::GetInstance().applicationRenderer = this;
   
     defaultShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag");
     SolidColorShader = new Shader("Shaders/SolidColor_Vertex.vert", "Shaders/SolidColor_Fragment.frag", SOLID);
@@ -125,7 +131,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
 void ApplicationRenderer::Start()
 {
- //   GLCALL(glEnable(GL_DEPTH_TEST));
+    GLCALL(glEnable(GL_DEPTH_TEST));
     GLCALL(glDepthFunc(GL_LESS));
     GLCALL(glEnable(GL_STENCIL_TEST));
     GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
@@ -169,30 +175,6 @@ void ApplicationRenderer::Start()
     floor4->meshes[0]->meshMaterial->material()->useMaskTexture = false;
     floor4->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(1, 1, 1, 0.5f));
 
-   //  Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
-
-
-    // Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true,true, true);
-    
-   /*  Model* Window = new Model();
-     Window->alphaMask = new Texture();
-     
-     Window->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png","opacity_Texture");
-     Window->loadModel("Models/Window/Window.obj");
-     Window->isTransparant = true;
-     Window->isCutOut = false;
-
-     Model* Window2 = new Model();
-     Window2->alphaMask = new Texture();
-     Window2->isTransparant = true;
-     Window2->isCutOut = false;
-     Window2->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png", "opacity_Texture");
-     Window2->loadModel((char*)"Models/Window/Window.obj");*/
-   
-   
-     
-
-
      Sphere->transform.position.x += 2;
      Pokeball->transform.position.x -= 2;
     
@@ -221,13 +203,7 @@ void ApplicationRenderer::Start()
     
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
      Texture* plantAlphaTexture = new Texture();
-    // plantAlphaTexture->LoadTexture("Models/Plant.fbm/Plant.fbm/Leaf_Front_1_2_Opacity.png", "opacity_Texture");
-   //  plantAlphaTexture->LoadTexture("Models/Plant.fbm/Plant.fbm/Leaf_Front_1_2.png", "opacity_Texture");
-      //   plant->meshes[0]->meshMaterial->material()->alphaTexture = plantAlphaTexture;
- //   plant->meshes[0]->meshMaterial->material()->useMaskTexture = fa;
 
-
-    // render.AddModelAndShader(Pokeball, defaultShader);
      render.AddModelAndShader(plant, alphaCutoutShader);
      render.AddModelAndShader(floor, defaultShader);
      render.AddModelAndShader(floor2, defaultShader);
@@ -268,7 +244,7 @@ void ApplicationRenderer::PreRender()
     glDepthFunc(GL_LESS);
 
 
-    defaultShader->Bind();
+   // defaultShader->Bind();
     // material.SetMaterialProperties(*defaultShader);
     lightManager.UpdateUniformValuesToShader(defaultShader);
     //  lightManager.UpdateUniformValues(defaultShader->ID);
@@ -325,10 +301,8 @@ void ApplicationRenderer::Render()
 
         Time::GetInstance().SetCurrentTime(glfwGetTime());
        
-        float currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
-        scrollTime += deltaTime;
+      
+        scrollTime += Time::GetInstance().deltaTime;
 
         ProcessInput(window);
 
@@ -337,6 +311,9 @@ void ApplicationRenderer::Render()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+
+
+        frameBuffer->Bind();
 
         PanelManager::GetInstance().Update((float)windowWidth, (float)WindowHeight);
 
@@ -352,6 +329,8 @@ void ApplicationRenderer::Render()
          EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
 
          PostRender(); // Update Call AFTER  DRAW
+
+        frameBuffer->Unbind();
 
          ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -378,6 +357,7 @@ void ApplicationRenderer::Clear()
 {
     GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 0.1f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
+   //glStencilMask(0x00);
 }
 
 void ApplicationRenderer::ProcessInput(GLFWwindow* window)
@@ -388,21 +368,21 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
     float cameraSpeed=25;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-        camera->ProcessKeyboard(FORWARD, deltaTime * cameraSpeed);
+        camera->ProcessKeyboard(FORWARD, Time::GetInstance().deltaTime * cameraSpeed);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        camera->ProcessKeyboard(BACKWARD, deltaTime * cameraSpeed);
+        camera->ProcessKeyboard(BACKWARD, Time::GetInstance().deltaTime * cameraSpeed);
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        camera->ProcessKeyboard(LEFT, deltaTime * cameraSpeed);
+        camera->ProcessKeyboard(LEFT, Time::GetInstance().deltaTime * cameraSpeed);
 
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        camera->ProcessKeyboard(RIGHT, deltaTime * cameraSpeed);
+        camera->ProcessKeyboard(RIGHT, Time::GetInstance().deltaTime * cameraSpeed);
 
     }
 

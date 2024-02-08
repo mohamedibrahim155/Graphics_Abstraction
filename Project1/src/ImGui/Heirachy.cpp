@@ -9,12 +9,12 @@ void Heirachy::OnRender(float windowWidth, float windowHeight)
 {
 
     
-    if (!isEnable)
+    if (!isPanelOpen)
     {
         return;
     }
 
-    if  (!ImGui::Begin("Hierarchy",&isEnable) || !isEnable)
+    if  (!ImGui::Begin("Hierarchy",&isPanelOpen) || !isEnable)
     {
         ImGui::End();
         return;

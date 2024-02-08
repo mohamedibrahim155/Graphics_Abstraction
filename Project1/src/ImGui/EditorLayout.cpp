@@ -1,4 +1,5 @@
 #include "EditorLayout.h"
+#include "../ApplicationRenderer.h"
 
 EditorLayout& EditorLayout::GetInstance()
 {
@@ -19,6 +20,10 @@ void EditorLayout::InitializeEditors()
     hierarchyPanel = new Heirachy();
     inspectorPanel = new Inspector();
     windowDockingPanel = new WindowDockingPanel();
+    sceneViewportPanel = new SceneViewportPanel();
+
+    sceneViewportPanel->frameBuffer = applicationRenderer->frameBuffer;
+
 
 }
 

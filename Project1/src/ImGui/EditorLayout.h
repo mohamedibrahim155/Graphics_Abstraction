@@ -5,7 +5,8 @@
 #include "Heirachy.h"
 #include "Inspector.h"
 #include "WindowDockingPanel.h"
-
+#include "SceneViewportPanel.h"
+class ApplicationRenderer;
 class EditorLayout
 {
 public :
@@ -22,12 +23,13 @@ public :
 	std::vector<Object*> GetSelectedObjects();
 	
 
-
+	ApplicationRenderer* applicationRenderer;
 private:
 
 	Heirachy* hierarchyPanel;
 	Inspector* inspectorPanel;
 	WindowDockingPanel* windowDockingPanel;
+	SceneViewportPanel* sceneViewportPanel;
 
 	Object* currentSelectedObject = nullptr;
 

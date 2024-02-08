@@ -10,7 +10,7 @@ void WindowDockingPanel::OnRender(float windowWidth, float windowHeight)
    */
 
     {
-        isEnable = false;
+      //  isEnable = false;
 
         static bool dockOpen = true;
         static bool opt_fullscreen = true;

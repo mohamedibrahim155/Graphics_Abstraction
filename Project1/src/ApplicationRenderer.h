@@ -22,6 +22,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include "FrameBuffer.h"
 
 #include "EntityManager/EntityManager.h"
 
@@ -48,7 +49,7 @@ public:
 	void ProcessInput(GLFWwindow* window);
 	
 
-
+	FrameBuffer* frameBuffer;
 
 private:
 	GLFWwindow* window;
