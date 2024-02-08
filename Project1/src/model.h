@@ -60,6 +60,10 @@ public:
     
     virtual void DrawProperties();
     virtual void SceneDraw();
+
+    virtual void Start() override;
+    virtual void Update(float deltaTime) override;
+    virtual void OnDestroy();
 private:
     
     void ProcessNode(aiNode* node, const aiScene* scene);   
@@ -75,9 +79,7 @@ private:
     const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
 
     // Inherited via Entity
-    void Start() override;
-    void Update(float deltaTime) override;
-    virtual void OnDestroy();
+
 };
 
 

@@ -185,24 +185,24 @@ void ApplicationRenderer::Start()
     // Model* spotlight = new Model(*Sphere);
      //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
 
-     Light directionLight;
-     directionLight.lightType = LightType::DIRECTION_LIGHT;
-     directionLight.lightModel = dir;
-     directionLight.ambient =  glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+     Light* directionLight = new Light();;
+     directionLight->lightType = LightType::DIRECTION_LIGHT;
+   //  directionLight.lightModel = dir;
+     directionLight->ambient =  glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
    //  directionLight.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
     // directionLight.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-     directionLight.color = glm::vec4(1, 1, 1, 1.0f);
-     directionLight.linear = 1;
-     directionLight.constant = 1;
-     directionLight.quadratic = 0.01f;
-     directionLight.cutOffAngle = 11;
-     directionLight.outerCutOffAngle = 12;
-     directionLight.intensity = 1;
+     directionLight->color = glm::vec4(1, 1, 1, 1.0f);
+     directionLight->linear = 1;
+     directionLight->constant = 1;
+     directionLight->quadratic = 0.01f;
+     directionLight->cutOffAngle = 11;
+     directionLight->outerCutOffAngle = 12;
+     directionLight->intensity = 1;
      dir->transform.SetRotation(glm::vec3(0, 0, 0));
      dir->transform.SetPosition(glm::vec3(0, 0, 2));
 
-     directionLight.Initialize(dir, LightType::DIRECTION_LIGHT, 1);
-     directionLight.SetColor(1, 0, 0, 1);
+     directionLight->Initialize(LightType::DIRECTION_LIGHT, 1);
+     directionLight->SetColor(1, 0, 0, 1);
     
     
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
