@@ -235,13 +235,7 @@ void ApplicationRenderer::PreRender()
     glm::mat4 _projection = camera->GetProjectionMatrix();
     glm::mat4 _view = camera->GetViewMatrix();
     glm::mat4 _skyboxview = glm::mat4(glm::mat3(camera->GetViewMatrix()));
-    glDepthFunc(GL_LEQUAL);
-    SkyboxShader->Bind();
-    SkyboxShader->setMat4("projection", _projection);
-    SkyboxShader->setMat4("view", _skyboxview);
-
-    render.SkyBoxModel->Draw(*SkyboxShader);
-    glDepthFunc(GL_LESS);
+  
 
 
    // defaultShader->Bind();
@@ -279,6 +273,15 @@ void ApplicationRenderer::PreRender()
     StencilShader->Bind();
     StencilShader->setMat4("projection", _projection);
     StencilShader->setMat4("view", _view);
+
+    glDepthFunc(GL_LEQUAL);
+    SkyboxShader->Bind();
+    SkyboxShader->setMat4("projection", _projection);
+    SkyboxShader->setMat4("view", _skyboxview);
+
+    render.SkyBoxModel->Draw(*SkyboxShader);
+    glDepthFunc(GL_LESS);
+
 
     /* ScrollShader->Bind();
        ScrollShader->setMat4("ProjectionMatrix", _projection);*/

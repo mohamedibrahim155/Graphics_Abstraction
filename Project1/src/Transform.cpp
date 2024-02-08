@@ -143,6 +143,10 @@ void Transform::DrawProperties()
 
    
     DrawTransformVector3ImGui("POSITION ", position, 0, positionWidth);
+    DrawTransformVector3ImGui("ROTATION ", rotation, 0, positionWidth);
+    DrawTransformVector3ImGui("SCALE ", scale, 1, positionWidth);
+
+    SetRotation(rotation);
 
     ImGui::TreePop();
 }

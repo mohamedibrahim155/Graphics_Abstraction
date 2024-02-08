@@ -11,7 +11,7 @@ class Entity : public Object
 public:
 
 	std::string entityID;
-	std::string tag;
+	std::string tag = "untagged";
 	std::string name = "EmptyGameObject";
 
 	Transform transform;

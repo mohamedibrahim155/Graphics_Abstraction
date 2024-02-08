@@ -44,7 +44,7 @@ private:
     void UpdateQuaternionFromEuler();
     void UpdateEulerFromQuaternion();
 
-    float positionWidth = 100;
+    float positionWidth = 150;
     float rotationWidth = 100;
     float scaleWidth = 100;
     

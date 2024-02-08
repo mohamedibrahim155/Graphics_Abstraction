@@ -19,16 +19,10 @@ Model::Model(const Model& copyModel)
     isLoadTexture = copyModel.isLoadTexture;
 }
 
-Model::Model( std::string const& path, bool isLoadTexture, bool isTextureFlip, bool isTransparancy, bool isCutOut)
-           
+Model::Model(std::string const& path, bool isLoadTexture)
 {
-
-    this->modelPath = path;
     this->isLoadTexture = isLoadTexture;
-    this->isTextureFlipped = isTextureFlip;
-    this->isTransparant = isTransparancy;
-    this->isCutOut = isCutOut;
-    LoadModel(path, isLoadTexture);
+    LoadModel(path, this->isLoadTexture);
 }
 
 Model::~Model()
@@ -401,6 +395,7 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 
  void Model::OnDestroy()
  {
+
  }
 
  void Model::DrawProperties()

@@ -46,17 +46,15 @@ public:
     float size;
 
     bool gammaCorrection;
-    bool isTransparant = false;
-    bool isCutOut = false;
     bool isWireFrame;
     bool isVisible = true;
     bool isLoadTexture;
 
     Model();
     Model(const Model& copyModel);
-    Model( std::string const& path, bool isLoadTexture =true, bool isTextureFlip=true, bool isTransparancy= false, bool isCutOut = false);
+    Model(std::string const& path, bool isLoadTexture = true);
     ~Model();
-    void LoadModel(std::string const& path , bool isLoadTexture =true);
+    void LoadModel(std::string const& path, bool isLoadTexture = true);
     void Draw(Shader& shader);
     void Draw(Shader* shader);
     
@@ -73,7 +71,6 @@ private:
 
     std::string TextureType(aiTextureType type);
    
-    bool isTextureFlipped = true;
 
     const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
 
