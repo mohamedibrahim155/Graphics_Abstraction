@@ -197,9 +197,13 @@ void ApplicationRenderer::Start()
      directionLight.quadratic = 0.01f;
      directionLight.cutOffAngle = 11;
      directionLight.outerCutOffAngle = 12;
+     directionLight.intensity = 1;
      dir->transform.SetRotation(glm::vec3(0, 0, 0));
      dir->transform.SetPosition(glm::vec3(0, 0, 2));
 
+     directionLight.Initialize(dir, LightType::DIRECTION_LIGHT, 1);
+     directionLight.SetColor(1, 0, 0, 1);
+    
     
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
      Texture* plantAlphaTexture = new Texture();

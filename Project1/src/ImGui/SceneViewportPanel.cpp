@@ -28,7 +28,7 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
     //    ImGui::End();
     //    return;
     //}
-    ImGui::Image((void*)frameBuffer->GetColorAttachmentID(), imageSize, ImVec2{ 0,1 }, ImVec2{ 1,0 });
+    ImGui::Image((void*)frameBuffer->GetRendererID(), imageSize, ImVec2{ 0,1 }, ImVec2{ 1,0 });
 
     ImGui::End();
 

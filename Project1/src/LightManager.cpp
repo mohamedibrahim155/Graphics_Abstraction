@@ -299,7 +299,9 @@ void LightManager::UpdateUniformValuesToShader(Shader* shader)
         shader->setFloat( "lights[" + index + "].constant", lightList[i].constant);
         shader->setFloat( "lights[" + index + "].cutOff", glm::cos(glm::radians(lightList[i].cutOffAngle)));
         shader->setFloat( "lights[" + index + "].outerCutOff", glm::cos(glm::radians(lightList[i].outerCutOffAngle)));
-        shader->setVec4(  "lights[" + index + "].color", lightList[i].color.x, lightList[i].color.y, lightList[i].color.z, lightList[i].color.w);
+
+        float intensity = lightList[i].intensity;
+        shader->setVec4(  "lights[" + index + "].color", lightList[i].color.x * intensity, lightList[i].color.y * intensity, lightList[i].color.z * intensity, lightList[i].color.w);
 
     }
     return;

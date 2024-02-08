@@ -15,6 +15,11 @@ class Light
 {
 public:
     Light();
+    void Initialize(const LightType& type);
+    void Initialize(const LightType& type = LightType::POINT_LIGHT, const float& intensity =0.5f );
+    void Initialize(Model* model,const LightType& type = LightType::POINT_LIGHT, const float& intensity =0.5f );
+    void SetColor(const float x, const float y ,const float z ,const float w);
+    void SetColor(const glm::vec4& color);
     ~Light() { };
 
     glm::vec4 ambient;
@@ -30,7 +35,7 @@ public:
     float constant;
     float linear;
     float quadratic;
-
+    float intensity = 0.5f;
 
     //spot Lights
     float cutOffAngle;
@@ -48,6 +53,9 @@ public:
     GLint ambient_UL;
     GLint position_UL;
     GLint color_UL;
+
+
+
 
 
 private:
