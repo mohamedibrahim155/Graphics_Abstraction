@@ -4,6 +4,7 @@
 #include "Model.h"
 #include <vector>
 
+class LightManager;
 enum LightType
 {
     DIRECTION_LIGHT =0,
@@ -19,40 +20,23 @@ public:
     void Initialize(const LightType& type = LightType::POINT_LIGHT, const float& intensity =0.5f );
     void SetColor(const float x, const float y ,const float z ,const float w);
     void SetColor(const glm::vec4& color);
+    void SetAmbientColor(const glm::vec4& ambient);
+    void SetAttenuation(const float&  constant, const float&  linear, const float&  quadratic);
+    void SetIntensity(const float& intensity);
+    void SetCutoffAngle(float cutOffAngle);
+    void SetOuterCutoffAngle(float OutercutOffAngle);
+    void SetInnerAndOuterCutoffAngle(float cuttOffAngle,float OutercutOffAngle);
+    void SetLightType(const LightType& type = LightType::POINT_LIGHT);
+    void SetNameBaseOnType();
+
+    glm::vec4& GetLightColor();
+    glm::vec4& GetAmbientColor();
+    glm::vec3& GetAttenuation();
+    float& GetIntensityValue();
+    glm::vec2& GetInnerAndOuterAngle();
+
+
     ~Light() { };
-
-    glm::vec4 ambient;
-    glm::vec4 diffuse;
-    glm::vec4 specular;
-    glm::vec3 direction;
-    glm::vec4 color;
-    LightType lightType;
-
-   // Model* lightModel;
-   
-    //for pointLight
-    float constant;
-    float linear;
-    float quadratic;
-    float intensity = 0.5f;
-
-    //spot Lights
-    float cutOffAngle;
-    float outerCutOffAngle;
-
-    GLint cuttOffAngle_UL;
-    GLint outerCutOffAngle_UL;
-    GLint quadratic_UL;
-    GLint linear_UL;
-    GLint constant_UL;
-    GLint lightType_UL;
-    GLint direction_UL;
-    GLint specular_UL;
-    GLint diffuse_UL;
-    GLint ambient_UL;
-    GLint position_UL;
-    GLint color_UL;
-
 
     void DrawProperties() override;
     void SceneDraw() override;
@@ -61,9 +45,24 @@ public:
     void Update(float deltaTime) override;
     void OnDestroy() override;
 
-
+    LightType lightType;
 private:
     Material material;
+
+    glm::vec4 ambient;
+
+    glm::vec4 color;
+    
+
+     //for pointLight
+    float constant;
+    float linear;
+    float quadratic;
+    float intensity = 0.5f;
+
+    //spot Lights
+    float cutOffAngle;
+    float outerCutOffAngle;
 };
 
 

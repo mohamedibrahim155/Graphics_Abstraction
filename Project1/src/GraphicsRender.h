@@ -41,8 +41,11 @@ public:
 	GraphicsRender();
 	~GraphicsRender();
 
+	static GraphicsRender& GetInstance();
+
 
 	void AddModelAndShader(Model* model, Shader* shader);
+	void RemoveModel(Model* model);
 	void AssignStencilShader( Shader* Shader);
 	void AssignCamera(Camera* camera);
 

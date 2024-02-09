@@ -105,16 +105,18 @@ void LightManager::UpdateUniformValuesToShader(Shader* shader)
         std::string index = std::to_string(i);
         shader->setVec3(  "lights[" + index + "].position", lightList[i]->transform.position.x, lightList[i]->transform.position.y, lightList[i]->transform.position.z);
         shader->setVec3(  "lights[" + index + "].direction", lightList[i]->transform.GetForward());
-        shader->setVec4(  "lights[" + index + "].ambient", lightList[i]->ambient.x, lightList[i]->ambient.y, lightList[i]->ambient.z, lightList[i]->ambient.w);
+        shader->setVec4(  "lights[" + index + "].ambient", lightList[i]->GetAmbientColor().x, lightList[i]->GetAmbientColor().y, lightList[i]->GetAmbientColor().z, lightList[i]->GetAmbientColor().w);
         shader->setInt(   "lights[" + index + "].lightType", (int)lightList[i]->lightType);
-        shader->setFloat( "lights[" + index + "].linear", lightList[i]->linear);
-        shader->setFloat( "lights[" + index + "].quadratic", lightList[i]->quadratic);
-        shader->setFloat( "lights[" + index + "].constant", lightList[i]->constant);
-        shader->setFloat( "lights[" + index + "].cutOff", glm::cos(glm::radians(lightList[i]->cutOffAngle)));
-        shader->setFloat( "lights[" + index + "].outerCutOff", glm::cos(glm::radians(lightList[i]->outerCutOffAngle)));
+        shader->setFloat( "lights[" + index + "].linear", lightList[i]->GetAttenuation().x);    // Linear
+        shader->setFloat( "lights[" + index + "].quadratic", lightList[i]->GetAttenuation().y); // Quadratic
+        shader->setFloat( "lights[" + index + "].constant", lightList[i]->GetAttenuation().z);  // Constant
+        shader->setFloat( "lights[" + index + "].cutOff", glm::cos(glm::radians(lightList[i]->GetInnerAndOuterAngle().x)));
+        shader->setFloat( "lights[" + index + "].outerCutOff", glm::cos(glm::radians(lightList[i]->GetInnerAndOuterAngle().y)));
 
-        float intensity = lightList[i]->intensity;
-        shader->setVec4(  "lights[" + index + "].color", lightList[i]->color.x * intensity, lightList[i]->color.y * intensity, lightList[i]->color.z * intensity, lightList[i]->color.w);
+        float intensity = lightList[i]->GetIntensityValue();
+
+        shader->setVec4(  "lights[" + index + "].color", lightList[i]->GetLightColor().x * intensity, lightList[i]->GetLightColor().y * intensity,
+            lightList[i]->GetLightColor().z * intensity, lightList[i]->GetLightColor().w);
 
     }
     return;

@@ -1,62 +1,49 @@
 
 #include "Light.h"
-
+#include "DebugModels.h"
+#include "LightManager.h"
 Light::Light()
 {
-	lightType = DIRECTION_LIGHT;
-	this->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
-	//this->position = glm::vec3(0);
-	this->ambient =  glm::vec4 (0.5f, 0.5f, 0.5f, 1.0f);        //default is low 
-	this->diffuse =  glm::vec4 (0.5f, 0.5f, 0.5f, 1.0f);        //default is half 
-	this->specular = glm::vec4 (0.5f, 0.5f, 0.5f, 1.0f);
-	this->intensity = 0.5f;
-	this->constant= 1.0f;
-	this->linear = 1.0f;
-	this->quadratic= 1.0f;
-	this->color = glm::vec4(1,1 ,1,1);
-	this->cutOffAngle = 12.5f;
-	this->outerCutOffAngle = 15.0f;
+	SetLightType(DIRECTION_LIGHT);
+	SetAmbientColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+	SetIntensity(intensity);
+	SetAttenuation(1, 1, 1);
+	SetColor(1, 1, 1, 1);
+	SetInnerAndOuterCutoffAngle(12.5f, 15);
+
 }
 
 void Light::Initialize(const LightType& type)
 {
-	this->lightType = type;
+	SetLightType(type);
+	SetAmbientColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+	SetIntensity(0.5f);
+	SetAttenuation(1, 1, 1);
+	SetColor(1, 1, 1,1);
+	SetInnerAndOuterCutoffAngle(12.5f, 15);
 
-	this->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
-	//this->position = glm::vec3(0);
-	this->ambient = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);        //default is low 
-	this->diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);        //default is half 
-	this->specular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-	this->intensity = 0.5f;
-	this->constant = 1.0f;
-	this->linear = 1.0f;
-	this->quadratic = 1.0f;
-	this->color = glm::vec4(1, 1, 1, 1);
-	this->cutOffAngle = 12.5f;
-	this->outerCutOffAngle = 15.0f;
-	
-	LoadModel("Models/DefaultSphere/Sphere_1_unit_Radius.ply", false);
+	LoadModel(*DebugModels::GetInstance().defaultSphere);
+
+	SetNameBaseOnType();
+
+	LightManager::GetInstance().AddLight(this);
 }
 
 void Light::Initialize(const LightType& type, const float& intensity)
 {
-	this->lightType = type;
-	this->intensity = intensity;
 
-	this->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
-	//this->position = glm::vec3(0);
-	this->ambient = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);        //default is low 
-	this->diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);        //default is half 
-	this->specular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-	this->constant = 1.0f;
-	this->linear = 1.0f;
-	this->quadratic = 1.0f;
-	this->color = glm::vec4(1, 1, 1, 1);
-	this->cutOffAngle = 12.5f;
-	this->outerCutOffAngle = 15.0f;
+	SetLightType(type);
+	SetAmbientColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+	SetIntensity(intensity);
+	SetAttenuation(1, 1, 1);
+	SetColor(1, 1, 1, 1);
+	SetInnerAndOuterCutoffAngle(12.5f, 15);
 
-	LoadModel("Models/DefaultSphere/Sphere_1_unit_Radius.ply", false);
+	LoadModel(*DebugModels::GetInstance().defaultSphere);
 
+	SetNameBaseOnType();
+
+	LightManager::GetInstance().AddLight(this);
 }
 
 
@@ -68,6 +55,91 @@ void Light::SetColor(const float x, const float y, const float z, const float w)
 void Light::SetColor(const glm::vec4& color)
 {
 	this->color = color;
+}
+
+void Light::SetAmbientColor(const glm::vec4& ambient)
+{
+	this->ambient = ambient;
+}
+
+
+void Light::SetAttenuation(const float& constant, const float& linear, const float& quadratic)
+{
+	this->constant = constant;
+	this->linear = linear;
+	this->quadratic = quadratic;
+}
+
+void Light::SetIntensity(const float& intensity)
+{
+	this->intensity = intensity;
+}
+
+void Light::SetCutoffAngle(float cutOffAngle)
+{
+	this->cutOffAngle = cutOffAngle;
+
+}
+
+void Light::SetOuterCutoffAngle(float OutercutOffAngle)
+{
+	this->outerCutOffAngle = OutercutOffAngle;
+}
+
+void Light::SetInnerAndOuterCutoffAngle(float cuttOffAngle, float OutercutOffAngle)
+{
+	this->cutOffAngle = cuttOffAngle;
+	this->outerCutOffAngle = OutercutOffAngle;
+}
+
+void Light::SetLightType(const LightType& type)
+{
+	this->lightType = type;
+}
+
+void Light::SetNameBaseOnType()
+{
+	switch (lightType)
+	{
+	case DIRECTION_LIGHT:
+		name = "Direction Light";
+		break;
+	case POINT_LIGHT:
+		name = "Point Light";
+
+		break;
+	case SPOT_LIGHT:
+		name = "Spot Light";
+		break;
+
+	}
+}
+
+glm::vec4& Light::GetLightColor()
+{
+	return color;
+}
+
+glm::vec4& Light::GetAmbientColor()
+{
+	return ambient;
+}
+
+glm::vec3& Light::GetAttenuation()  
+{
+	glm::vec3 attenuation = glm::vec3(linear, quadratic, constant);
+	return attenuation;
+}
+
+float& Light::GetIntensityValue()
+{
+	return intensity;
+}
+
+glm::vec2& Light::GetInnerAndOuterAngle()
+{
+	glm::vec2 innerAndOuterAngle = glm::vec2(cutOffAngle, outerCutOffAngle);
+	return innerAndOuterAngle;
 }
 
 void Light::DrawProperties()

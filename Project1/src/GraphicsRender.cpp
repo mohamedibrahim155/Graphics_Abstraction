@@ -9,10 +9,11 @@ GraphicsRender::~GraphicsRender()
 	ClearData();	
 }
 
-
-
-
-
+GraphicsRender& GraphicsRender::GetInstance()
+{
+	static GraphicsRender instance;
+	return instance;
+}
 
 
 void GraphicsRender::AddModelAndShader(Model* model, Shader* shader)
@@ -26,6 +27,35 @@ void GraphicsRender::AddModelAndShader(Model* model, Shader* shader)
 		transparentmodelAndShaderList.push_back(new ModelAndShader(model, shader));
 	}
 	
+}
+
+void GraphicsRender::RemoveModel(Model* _model)
+{
+	for (ModelAndShader* model :  modelAndShaderList)
+	{
+		if (model->model == _model)
+		{
+			delete model->model;
+			delete model->shader;
+
+			modelAndShaderList.erase(std::remove(modelAndShaderList.begin(), modelAndShaderList.end(), model), 
+				modelAndShaderList.end());
+			return;
+		}
+	}
+
+	for (ModelAndShader* model : transparentmodelAndShaderList)
+	{
+		if (model->model == _model)
+		{
+			delete model->model;
+			delete model->shader;
+
+			transparentmodelAndShaderList.erase(std::remove(transparentmodelAndShaderList.begin(), transparentmodelAndShaderList.end(), model),
+				transparentmodelAndShaderList.end());
+			return;
+		}
+	}
 }
 
 

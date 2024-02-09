@@ -51,10 +51,11 @@ public:
     bool isLoadTexture;
 
     Model();
-    Model(const Model& copyModel);
-    Model(std::string const& path, bool isLoadTexture = true);
+    Model(const Model& copyModel, bool isDebugModel = false);
+    Model(std::string const& path, bool isLoadTexture = true, bool isDebugModel = false);
     ~Model();
-    void LoadModel(std::string const& path, bool isLoadTexture = true);
+    void LoadModel(const Model& copyModel, bool isDebugModel = false);
+    void LoadModel(std::string const& path, bool isLoadTexture = true, bool isDebugModel = false);
     void Draw(Shader& shader);
     void Draw(Shader* shader);
     

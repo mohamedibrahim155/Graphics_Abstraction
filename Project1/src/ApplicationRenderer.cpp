@@ -115,6 +115,9 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     render.defaultShader = defaultShader;
     render.solidColorShader = solidColorShader;
 
+    DebugModels::GetInstance().defaultCube = new Model("Models/DefaultCube/DefaultCube.fbx", false, true);
+    DebugModels::GetInstance().defaultSphere = new Model("Models/DefaultSphere/DefaultSphere.fbx", false, true);
+
     Model* skyBoxMod = new Model("Models/DefaultCube/DefaultCube.fbx",false);
 
     skyBoxMod->meshes[0]->meshMaterial = new SkyboxMaterial();
@@ -137,7 +140,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
     render.AssignStencilShader(stencilShader);
-
+    render.AssignCamera(camera);
   //  camera->SetCameraType(ORTHOGRAPHIC);
    // camera->SetProjection();
 
@@ -163,17 +166,7 @@ void ApplicationRenderer::Start()
     skybox->SkyboxPrerender();*/
     
 
-    render.AssignCamera(camera);
-
-    Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
-   // Model* Sphere = new Model();
-
-   // Model* scroll = new Model((char*)"Models/Scroll/scroll.obj", true);
-   // scroll->transform.position.y -= 5;
-   // scroll->meshes[0]->TextureScrolling(true);
-
-
-     Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj");
+   
 
     Model* floor = new Model((char*)"Models/Floor/Floor.fbx");
     floor->transform.SetRotation(glm::vec3(90, 0, 0));
@@ -192,33 +185,27 @@ void ApplicationRenderer::Start()
     floor4->meshes[0]->meshMaterial->material()->useMaskTexture = false;
     floor4->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(1, 1, 1, 0.5f));
 
-     Sphere->transform.position.x += 2;
-     Pokeball->transform.position.x -= 2;
+    
     
 
 
-     Model* dir = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply",false);
-     dir->transform.SetScale(glm::vec3(0.5f));
+     Model* directionLightModel = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply",false, true);
+     directionLightModel->transform.SetScale(glm::vec3(0.5f));
     // Model* spotlight = new Model(*Sphere);
      //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
 
-     Light* directionLight = new Light();;
-     directionLight->lightType = LightType::DIRECTION_LIGHT;
-   //  directionLight.lightModel = dir;
-     directionLight->ambient =  glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-   //  directionLight.diffuse =  glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-    // directionLight.specular = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
-     directionLight->color = glm::vec4(1, 1, 1, 1.0f);
-     directionLight->linear = 1;
-     directionLight->constant = 1;
-     directionLight->quadratic = 0.01f;
-     directionLight->cutOffAngle = 11;
-     directionLight->outerCutOffAngle = 12;
-     directionLight->intensity = 1;
-     dir->transform.SetRotation(glm::vec3(0, 0, 0));
-     dir->transform.SetPosition(glm::vec3(0, 0, 2));
-
+     Light* directionLight = new Light();
      directionLight->Initialize(LightType::DIRECTION_LIGHT, 1);
+   //  directionLight.lightModel = dir;
+     directionLight->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+
+     directionLight->SetColor(glm::vec4(1, 1, 1, 1.0f));
+     directionLight->SetAttenuation(1, 1, 0.01f);
+     directionLight->SetInnerAndOuterCutoffAngle(11, 12);
+
+     directionLightModel->transform.SetRotation(glm::vec3(0, 0, 0));
+     directionLightModel->transform.SetPosition(glm::vec3(0, 0, 2));
+
   //   directionLight->SetColor(1, 0, 0, 1);
     
     
@@ -237,11 +224,11 @@ void ApplicationRenderer::Start()
      
   //   render.selectedModel = Sphere;
 
-     render.AddModelAndShader(dir,solidColorShader);
+     render.AddModelAndShader(directionLightModel,solidColorShader);
 
 
      //LightRenderer
-     LightManager::GetInstance().AddLight(directionLight);
+     //LightManager::GetInstance().AddLight(directionLight);
     // lightManager.AddLight(directionLight);
    //  lightManager.AddNewLight(spot);
    //  lightManager.SetUniforms(defaultShader->ID);

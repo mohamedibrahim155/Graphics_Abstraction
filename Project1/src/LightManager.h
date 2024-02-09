@@ -6,8 +6,7 @@ class LightManager
 public:
 
     static LightManager& GetInstance();
-    LightManager() { }
-    ~LightManager() { }
+   
 
     void SetUniforms(GLuint shaderID);
     void AddLight(Light* light);

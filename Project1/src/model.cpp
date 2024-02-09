@@ -9,7 +9,7 @@ Model::Model()
 
 }
 
-Model::Model(const Model& copyModel)
+Model::Model(const Model& copyModel, bool isDebugModel)
 {
     meshes = copyModel.meshes;
     directory = copyModel.directory;
@@ -17,12 +17,17 @@ Model::Model(const Model& copyModel)
     isWireFrame = copyModel.isWireFrame;
     modelPath = copyModel.modelPath;
     isLoadTexture = copyModel.isLoadTexture;
+
+    if (isDebugModel) return;
+
+    InitializeEntity(this);
 }
 
-Model::Model(std::string const& path, bool isLoadTexture)
+Model::Model(std::string const& path, bool isLoadTexture, bool isDebugModel)
 {
     this->isLoadTexture = isLoadTexture;
-    LoadModel(path, this->isLoadTexture);
+
+    LoadModel(path, this->isLoadTexture, isDebugModel);
 }
 
 Model::~Model()
@@ -38,6 +43,8 @@ Model::~Model()
 
     meshes.clear();
 }
+
+
 
 
 
@@ -81,8 +88,20 @@ void Model::Draw(Shader* shader)
 }
 
 
+void Model::LoadModel(const Model& copyModel, bool isDebugModel)
+{
+    meshes = copyModel.meshes;
+    directory = copyModel.directory;
+    isVisible = copyModel.isVisible;
+    isWireFrame = copyModel.isWireFrame;
+    modelPath = copyModel.modelPath;
+    isLoadTexture = copyModel.isLoadTexture;
 
-void Model::LoadModel(std::string const& path, bool isLoadTexture)
+    if (isDebugModel) return;
+    InitializeEntity(this);
+
+}
+void Model::LoadModel(std::string const& path, bool isLoadTexture, bool isDebugModel)
 {
     this->isLoadTexture = isLoadTexture;
     this->modelPath = path;
@@ -101,6 +120,7 @@ void Model::LoadModel(std::string const& path, bool isLoadTexture)
     ProcessNode(scene->mRootNode, scene);
     std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
 
+    if (isDebugModel) return;
     InitializeEntity(this);
 }
 
