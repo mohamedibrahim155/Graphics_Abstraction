@@ -57,7 +57,7 @@ private:
 	Camera* camera;
 	
 
-	GraphicsRender render;
+	//GraphicsRender render;
 
 	Shader* defaultShader;
 	Shader* solidColorShader;

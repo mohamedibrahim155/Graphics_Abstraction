@@ -2,6 +2,9 @@
 #include "Light.h"
 #include "DebugModels.h"
 #include "LightManager.h"
+#include "GraphicsRender.h"
+#include "ImGui/EditorLayout.h"
+
 Light::Light()
 {
 	SetLightType(DIRECTION_LIGHT);
@@ -22,11 +25,16 @@ void Light::Initialize(const LightType& type)
 	SetColor(1, 1, 1,1);
 	SetInnerAndOuterCutoffAngle(12.5f, 15);
 
-	LoadModel(*DebugModels::GetInstance().defaultSphere);
+	LoadModel(*DebugModels::GetInstance().defaultSphere, false);
+
+	transform.SetScale(glm::vec3(this->lightTransformScale));
 
 	SetNameBaseOnType();
 
 	LightManager::GetInstance().AddLight(this);
+	GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().solidColorShader);
+
+
 }
 
 void Light::Initialize(const LightType& type, const float& intensity)
@@ -39,11 +47,15 @@ void Light::Initialize(const LightType& type, const float& intensity)
 	SetColor(1, 1, 1, 1);
 	SetInnerAndOuterCutoffAngle(12.5f, 15);
 
-	LoadModel(*DebugModels::GetInstance().defaultSphere);
+	LoadModel(*DebugModels::GetInstance().defaultSphere, false);
+
+	transform.SetScale(glm::vec3(this->lightTransformScale));
 
 	SetNameBaseOnType();
 
 	LightManager::GetInstance().AddLight(this);
+	GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().solidColorShader);
+
 }
 
 
@@ -144,10 +156,26 @@ glm::vec2& Light::GetInnerAndOuterAngle()
 
 void Light::DrawProperties()
 {
+	Model::DrawProperties();
 }
 
 void Light::SceneDraw()
 {
+	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_NoTreePushOnOpen;
+	node_flags |= ImGuiTreeNodeFlags_SpanFullWidth;
+	node_flags |= ImGuiTreeNodeFlags_Leaf;
+
+	if (isSelected)
+	{
+		node_flags |= ImGuiTreeNodeFlags_Selected;
+	}
+
+	bool node_open = ImGui::TreeNodeEx(name.c_str(), node_flags);
+
+	if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+	{
+		EditorLayout::GetInstance().SetSelectedObjects({ this });
+	}
 }
 
 void Light::Start()

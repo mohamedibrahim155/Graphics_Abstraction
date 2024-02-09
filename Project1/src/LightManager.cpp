@@ -121,3 +121,8 @@ void LightManager::UpdateUniformValuesToShader(Shader* shader)
     }
     return;
 }
+
+const std::vector<Light*>& LightManager::GetLightList()
+{
+    return lightList;
+}

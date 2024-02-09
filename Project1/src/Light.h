@@ -5,6 +5,8 @@
 #include <vector>
 
 class LightManager;
+class GraphicsRender;
+
 enum LightType
 {
     DIRECTION_LIGHT =0,
@@ -28,6 +30,8 @@ public:
     void SetInnerAndOuterCutoffAngle(float cuttOffAngle,float OutercutOffAngle);
     void SetLightType(const LightType& type = LightType::POINT_LIGHT);
     void SetNameBaseOnType();
+
+
 
     glm::vec4& GetLightColor();
     glm::vec4& GetAmbientColor();
@@ -63,6 +67,8 @@ private:
     //spot Lights
     float cutOffAngle;
     float outerCutOffAngle;
+
+    float lightTransformScale = 0.25f;
 };
 
 

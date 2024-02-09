@@ -112,8 +112,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     skyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
     skyboxShader->modelUniform = false;
 
-    render.defaultShader = defaultShader;
-    render.solidColorShader = solidColorShader;
+    GraphicsRender::GetInstance().defaultShader = defaultShader;
+    GraphicsRender::GetInstance().solidColorShader = solidColorShader;
 
     DebugModels::GetInstance().defaultCube = new Model("Models/DefaultCube/DefaultCube.fbx", false, true);
     DebugModels::GetInstance().defaultSphere = new Model("Models/DefaultSphere/DefaultSphere.fbx", false, true);
@@ -135,12 +135,12 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     };
     _skyBoxMaterial->skyBoxTexture->LoadTexture(faces);
 
-    render.SkyBoxModel = skyBoxMod;
+    GraphicsRender::GetInstance().SkyBoxModel = skyBoxMod;
    // render.AddModelsAndShader(render.SkyBoxModel, SkyboxShader);
 
     //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
-    render.AssignStencilShader(stencilShader);
-    render.AssignCamera(camera);
+    GraphicsRender::GetInstance().AssignStencilShader(stencilShader);
+    GraphicsRender::GetInstance().AssignCamera(camera);
   //  camera->SetCameraType(ORTHOGRAPHIC);
    // camera->SetProjection();
 
@@ -212,11 +212,11 @@ void ApplicationRenderer::Start()
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
      Texture* plantAlphaTexture = new Texture();
 
-     render.AddModelAndShader(plant, alphaCutoutShader);
-     render.AddModelAndShader(floor, defaultShader);
-     render.AddModelAndShader(floor2, defaultShader);
-     render.AddModelAndShader(floor3, defaultShader);
-     render.AddModelAndShader(floor4, alphaBlendShader);
+     GraphicsRender::GetInstance().AddModelAndShader(plant, alphaCutoutShader);
+     GraphicsRender::GetInstance().AddModelAndShader(floor, defaultShader);
+     GraphicsRender::GetInstance().AddModelAndShader(floor2, defaultShader);
+     GraphicsRender::GetInstance().AddModelAndShader(floor3, defaultShader);
+     GraphicsRender::GetInstance().AddModelAndShader(floor4, alphaBlendShader);
   
 
 
@@ -224,7 +224,7 @@ void ApplicationRenderer::Start()
      
   //   render.selectedModel = Sphere;
 
-     render.AddModelAndShader(directionLightModel,solidColorShader);
+     GraphicsRender::GetInstance().AddModelAndShader(directionLightModel,solidColorShader);
 
 
      //LightRenderer
@@ -288,7 +288,7 @@ void ApplicationRenderer::PreRender()
     skyboxShader->setMat4("projection", _projection);
     skyboxShader->setMat4("view", _skyboxview);
 
-    render.SkyBoxModel->Draw
+    GraphicsRender::GetInstance().SkyBoxModel->Draw
     (*skyboxShader);
     glDepthFunc(GL_LESS);
 
@@ -337,7 +337,7 @@ void ApplicationRenderer::Render()
         PreRender(); //Update call BEFORE  DRAW
         
          // make models that it should not write in the stencil buffer
-         render.Draw();
+        GraphicsRender::GetInstance().Draw();
 
          EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
 
@@ -415,7 +415,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
             
              std::cout << "V pressed" << std::endl;
 
-             std::vector<Model*> listOfModels = render.GetModelList();
+             std::vector<Model*> listOfModels = GraphicsRender::GetInstance().GetModelList();
             
           
 
@@ -427,7 +427,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
              }
 
             
-             render.selectedModel = listOfModels[selectedModelCount];
+             GraphicsRender::GetInstance().selectedModel = listOfModels[selectedModelCount];
 
 
          }

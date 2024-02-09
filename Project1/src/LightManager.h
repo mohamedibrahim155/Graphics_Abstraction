@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Light.h"
+
 class LightManager 
 {
 public:
@@ -16,10 +17,11 @@ public:
     void UpdateUniformValues(GLuint shaderID);
     void UpdateUniformValuesToShader(Shader* shader);
     static const unsigned int MAX_LIGHT = 11;
-    Light LightToIlluminate[MAX_LIGHT];
-    std::vector<Light*> lightList;
     
+    const std::vector<Light*>& GetLightList();
 private:
+    std::vector<Light*> lightList;
+
 };
 
 
