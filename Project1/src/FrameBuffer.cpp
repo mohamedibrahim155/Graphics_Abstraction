@@ -42,13 +42,6 @@ unsigned int& FrameBuffer::GetDepthAttachementID()
 void FrameBuffer::Invalidate()
 {
 
-	if (rendererID != 0)
-	{
-		GLCALL(glDeleteFramebuffers(1, &rendererID));
-		GLCALL(glDeleteTextures(1, &colorAttachmentID));
-		GLCALL(glDeleteTextures(1, &depthAttachmentID));
-	}
-
 	GLCALL(glGenFramebuffers(1, &rendererID));
 	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, rendererID));
 
@@ -79,5 +72,11 @@ void FrameBuffer::Resize(unsigned int width, unsigned int height)
 	specification.width = width;
 	specification.height = height;
 
+	if (rendererID != 0)
+	{
+		GLCALL(glDeleteFramebuffers(1, &rendererID));
+		GLCALL(glDeleteTextures(1, &colorAttachmentID));
+		GLCALL(glDeleteTextures(1, &depthAttachmentID));
+	}
 	Invalidate();
 }

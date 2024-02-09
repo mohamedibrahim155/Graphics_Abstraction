@@ -3,9 +3,12 @@
 
 
 
-void LightManager::SetUniformLocations(Light light, Shader& modelShader)
+LightManager& LightManager::GetInstance()
 {
+    static LightManager instance;
+    return instance;
 }
+
 
 void LightManager::SetUniforms(GLuint shaderID)
 {
@@ -29,9 +32,14 @@ void LightManager::SetUniforms(GLuint shaderID)
 
 }
 
-void LightManager::AddNewLight(Light* light)
+void LightManager::AddLight(Light* light)
 {
     lightList.push_back(light);
+}
+
+void LightManager::RemoveLight(Light* light)
+{
+    lightList.erase(std::remove(lightList.begin(), lightList.end(), light), lightList.end());
 }
 
 

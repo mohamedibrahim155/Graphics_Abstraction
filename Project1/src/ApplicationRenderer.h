@@ -57,15 +57,14 @@ private:
 	
 
 	GraphicsRender render;
-	LightManager lightManager;
 
 	Shader* defaultShader;
-	Shader* SolidColorShader;
+	Shader* solidColorShader;
 	Shader* alphaBlendShader;
 	Shader* alphaCutoutShader;
 
-	Shader* StencilShader;
-	Shader* SkyboxShader;
+	Shader* stencilShader;
+	Shader* skyboxShader;
 
 	Skybox* skybox;
 

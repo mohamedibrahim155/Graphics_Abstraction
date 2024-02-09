@@ -20,6 +20,9 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     lastY= WindowHeight / 2.0f;
 
     glfwInit();
+
+
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -75,6 +78,17 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
         return;
     }
 
+    // Query and print OpenGL version
+    const GLubyte* version = glGetString(GL_VERSION);
+    if (version) {
+        std::cout << "OpenGL Version: " << version << std::endl;
+    }
+    else 
+    {
+        std::cerr << "Failed to retrieve OpenGL version\n";
+     
+    }
+
 
     FrameBufferSpecification specification;
 
@@ -86,8 +100,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     EditorLayout::GetInstance().applicationRenderer = this;
   
     defaultShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag");
-    SolidColorShader = new Shader("Shaders/SolidColor_Vertex.vert", "Shaders/SolidColor_Fragment.frag", SOLID);
-    StencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", OPAQUE);
+    solidColorShader = new Shader("Shaders/SolidColor_Vertex.vert", "Shaders/SolidColor_Fragment.frag", SOLID);
+    stencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", OPAQUE);
    
     alphaBlendShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag", ALPHA_BLEND);
     alphaBlendShader->blendMode = ALPHA_BLEND;
@@ -95,8 +109,11 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     alphaCutoutShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag", ALPHA_CUTOUT);
     alphaCutoutShader->blendMode = ALPHA_CUTOUT;
 
-    SkyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
-    SkyboxShader->modelUniform = false;
+    skyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
+    skyboxShader->modelUniform = false;
+
+    render.defaultShader = defaultShader;
+    render.solidColorShader = solidColorShader;
 
     Model* skyBoxMod = new Model("Models/DefaultCube/DefaultCube.fbx",false);
 
@@ -119,7 +136,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
    // render.AddModelsAndShader(render.SkyBoxModel, SkyboxShader);
 
     //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
-    render.AssignStencilShader(StencilShader);
+    render.AssignStencilShader(stencilShader);
 
   //  camera->SetCameraType(ORTHOGRAPHIC);
    // camera->SetProjection();
@@ -202,7 +219,7 @@ void ApplicationRenderer::Start()
      dir->transform.SetPosition(glm::vec3(0, 0, 2));
 
      directionLight->Initialize(LightType::DIRECTION_LIGHT, 1);
-     directionLight->SetColor(1, 0, 0, 1);
+  //   directionLight->SetColor(1, 0, 0, 1);
     
     
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
@@ -220,11 +237,12 @@ void ApplicationRenderer::Start()
      
   //   render.selectedModel = Sphere;
 
-     render.AddModelAndShader(dir,SolidColorShader);
+     render.AddModelAndShader(dir,solidColorShader);
 
 
      //LightRenderer
-     lightManager.AddNewLight(directionLight);
+     LightManager::GetInstance().AddLight(directionLight);
+    // lightManager.AddLight(directionLight);
    //  lightManager.AddNewLight(spot);
    //  lightManager.SetUniforms(defaultShader->ID);
    //  PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
@@ -244,7 +262,7 @@ void ApplicationRenderer::PreRender()
 
    // defaultShader->Bind();
     // material.SetMaterialProperties(*defaultShader);
-    lightManager.UpdateUniformValuesToShader(defaultShader);
+    LightManager::GetInstance().UpdateUniformValuesToShader(defaultShader);
     //  lightManager.UpdateUniformValues(defaultShader->ID);
 
 
@@ -255,7 +273,7 @@ void ApplicationRenderer::PreRender()
     defaultShader->setBool("isDepthBuffer", false);
 
     alphaBlendShader->Bind();
-    lightManager.UpdateUniformValuesToShader(alphaBlendShader);
+    LightManager::GetInstance().UpdateUniformValuesToShader(alphaBlendShader);
     alphaBlendShader->setMat4("projection", _projection);
     alphaBlendShader->setMat4("view", _view);
     alphaBlendShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
@@ -263,27 +281,28 @@ void ApplicationRenderer::PreRender()
     alphaBlendShader->setBool("isDepthBuffer", false);
 
     alphaCutoutShader->Bind();
-    lightManager.UpdateUniformValuesToShader(alphaCutoutShader);
+    LightManager::GetInstance().UpdateUniformValuesToShader(alphaCutoutShader);
     alphaCutoutShader->setMat4("projection", _projection);
     alphaCutoutShader->setMat4("view", _view);
     alphaCutoutShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaCutoutShader->setFloat("time", scrollTime);
     alphaCutoutShader->setBool("isDepthBuffer", false);
 
-    SolidColorShader->Bind();
-    SolidColorShader->setMat4("projection", _projection);
-    SolidColorShader->setMat4("view", _view);
+    solidColorShader->Bind();
+    solidColorShader->setMat4("projection", _projection);
+    solidColorShader->setMat4("view", _view);
 
-    StencilShader->Bind();
-    StencilShader->setMat4("projection", _projection);
-    StencilShader->setMat4("view", _view);
+    stencilShader->Bind();
+    stencilShader->setMat4("projection", _projection);
+    stencilShader->setMat4("view", _view);
 
     glDepthFunc(GL_LEQUAL);
-    SkyboxShader->Bind();
-    SkyboxShader->setMat4("projection", _projection);
-    SkyboxShader->setMat4("view", _skyboxview);
+    skyboxShader->Bind();
+    skyboxShader->setMat4("projection", _projection);
+    skyboxShader->setMat4("view", _skyboxview);
 
-    render.SkyBoxModel->Draw(*SkyboxShader);
+    render.SkyBoxModel->Draw
+    (*skyboxShader);
     glDepthFunc(GL_LESS);
 
 

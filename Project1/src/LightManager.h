@@ -1,14 +1,18 @@
 #pragma once
 
 #include "Light.h"
-class LightManager
+class LightManager 
 {
 public:
+
+    static LightManager& GetInstance();
     LightManager() { }
     ~LightManager() { }
-    void SetUniformLocations(Light light, Shader& modelShader);
+
     void SetUniforms(GLuint shaderID);
-    void AddNewLight(Light* light);
+    void AddLight(Light* light);
+    void RemoveLight(Light* light);
+
     // This is called every frame
     void UpdateUniformValues(GLuint shaderID);
     void UpdateUniformValuesToShader(Shader* shader);

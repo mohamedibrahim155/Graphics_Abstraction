@@ -13,11 +13,7 @@ GraphicsRender::~GraphicsRender()
 
 
 
-void GraphicsRender::AddModelsAndShader(Model& model, Shader& Shader)
-{
-	m_Models.push_back(&model);
-	m_Shaders.push_back(&Shader);
-}
+
 
 void GraphicsRender::AddModelAndShader(Model* model, Shader* shader)
 {
@@ -32,29 +28,24 @@ void GraphicsRender::AddModelAndShader(Model* model, Shader* shader)
 	
 }
 
-void GraphicsRender::AddTransparentModels(Model* model, Shader* Shader)
-{
-	m_transparentModels.push_back(model);
-	m_transparentShaders.push_back(Shader);
 
-}
 
 void GraphicsRender::AssignStencilShader(Shader* Shader)
 {
-	this->m_StencilShader = Shader;
+	this->stencilShader = Shader;
 
 
 }
 
-void GraphicsRender::AssignCamera(Camera* cam)
+void GraphicsRender::AssignCamera(Camera* camera)
 {
 
-	this->cam = cam;
+	this->camera = camera;
 }
 
 void GraphicsRender::SortObject()
 {
-	CompareDistances compareDistance(cam->transform.position);
+	CompareDistances compareDistance(camera->transform.position);
 	std::sort(transparentmodelAndShaderList.begin(), transparentmodelAndShaderList.end(), compareDistance);
 
 
@@ -62,8 +53,16 @@ void GraphicsRender::SortObject()
 
 std::vector<Model*> GraphicsRender::GetModelList()
 {
+	std::vector<ModelAndShader*> list = modelAndShaderList;
+	std::vector<Model*> modelList;
+	modelList.reserve(list.size());
+	
+	for (size_t i = 0; i < list.size(); i++)
+	{
+		modelList.push_back(list[i]->model);
+	}
 
-	return m_Models;
+	return modelList;
 }
 
 
@@ -84,29 +83,29 @@ void GraphicsRender::Draw()
 
 	if (selectedModel != nullptr)
 	{
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glStencilMask(0xFF);
+		GLCALL(glStencilFunc(GL_ALWAYS, 1, 0xFF));
+		GLCALL(glStencilMask(0xFF));
 		glm::vec3 tempScale;
 
 
 		tempScale = selectedModel->transform.scale;
-		selectedModel->Draw(*m_Shaders[0]);
+		selectedModel->Draw(*defaultShader);
 		
-		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-		glStencilMask(0x00);
-		glDisable(GL_DEPTH_TEST);
+		GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
+		GLCALL(glStencilMask(0x00));
+		GLCALL(glDisable(GL_DEPTH_TEST));
 	
 		
 		glm::vec3 scale = selectedModel->transform.scale;
 		
 		selectedModel->transform.SetScale(scale + 0.1f);
-		selectedModel->Draw(*m_StencilShader);
+		selectedModel->Draw(*stencilShader);
 		selectedModel->transform.SetScale(tempScale);
 		
 	}
-	glStencilMask(0xFF);
-	glStencilFunc(GL_ALWAYS, 0, 0xFF);
-	glEnable(GL_DEPTH_TEST);
+	GLCALL(glStencilMask(0xFF));
+	GLCALL(glStencilFunc(GL_ALWAYS, 0, 0xFF));
+	GLCALL(glEnable(GL_DEPTH_TEST));
 
 
 	SortObject();

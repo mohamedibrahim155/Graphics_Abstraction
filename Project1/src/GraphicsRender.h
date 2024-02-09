@@ -41,16 +41,10 @@ public:
 	GraphicsRender();
 	~GraphicsRender();
 
-	void AddModelsAndShader(Model* model, Shader* Shader);
-	void AddAlphaModelsAndShader(Model* model, Shader* Shader);
-	void AddModelsAndShader(Model& model, Shader& Shader);
-	void AddModelAndShader(Model* model, Shader* Shader);
 
-	void AddTransparentModels(Model* model, Shader* Shader);
-	
+	void AddModelAndShader(Model* model, Shader* shader);
 	void AssignStencilShader( Shader* Shader);
-
-	void AssignCamera(Camera* cam);
+	void AssignCamera(Camera* camera);
 
 	void SortObject();
 	
@@ -61,24 +55,22 @@ public:
 
 	Model* selectedModel;
 	Model* SkyBoxModel;
+	Shader* defaultShader;
+	Shader* solidColorShader;
+	
 	
 
 private:
-	Shader* m_StencilShader;
+	Shader* stencilShader;
 
 	void ClearData();
 
-	std::vector<Model*> m_Models;
-	std::vector<Shader*> m_Shaders;
-
-	std::vector<Model*> m_transparentModels;
-	std::vector<Shader*> m_transparentShaders;
 
 
 	std::vector<ModelAndShader*> modelAndShaderList;
 	std::vector<ModelAndShader*> transparentmodelAndShaderList;
 
-	Camera* cam;
+	Camera* camera;
 
 };
 
