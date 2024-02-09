@@ -35,8 +35,8 @@ void GraphicsRender::RemoveModel(Model* _model)
 	{
 		if (model->model == _model)
 		{
-			delete model->model;
-			delete model->shader;
+			//delete model->model;
+			//delete model->shader;
 
 			modelAndShaderList.erase(std::remove(modelAndShaderList.begin(), modelAndShaderList.end(), model), 
 				modelAndShaderList.end());
@@ -48,8 +48,8 @@ void GraphicsRender::RemoveModel(Model* _model)
 	{
 		if (model->model == _model)
 		{
-			delete model->model;
-			delete model->shader;
+			//delete model->model;
+			//delete model->shader;
 
 			transparentmodelAndShaderList.erase(std::remove(transparentmodelAndShaderList.begin(), transparentmodelAndShaderList.end(), model),
 				transparentmodelAndShaderList.end());

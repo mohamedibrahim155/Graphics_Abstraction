@@ -17,12 +17,13 @@ Object* EditorLayout::GetCurrentSelectedObject()
 
 void EditorLayout::InitializeEditors()
 {
+    windowDockingPanel = new WindowDockingPanel();
     hierarchyPanel = new Heirachy();
     inspectorPanel = new Inspector();
-    windowDockingPanel = new WindowDockingPanel();
     sceneViewportPanel = new SceneViewportPanel();
 
     sceneViewportPanel->frameBuffer = applicationRenderer->frameBuffer;
+    sceneViewportPanel->sceneViewportCamera = applicationRenderer->camera;
 
 
 }

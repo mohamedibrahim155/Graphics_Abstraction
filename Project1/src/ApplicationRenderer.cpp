@@ -23,8 +23,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
 
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     window = glfwCreateWindow(width, height, windowName.c_str(), NULL, NULL);
 
@@ -69,7 +69,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     ImGui::StyleColorsDark();
 
     ImGui_ImplGlfw_InitForOpenGL(this->window, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui_ImplOpenGL3_Init("#version 450");
 
     //Init GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -145,6 +145,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
    // camera->SetProjection();
 
     camera->transform.position = glm::vec3(0, 0, - 1.0f);
+
+    isImguiPanelsEnable = true;
 }
 
 
@@ -196,17 +198,14 @@ void ApplicationRenderer::Start()
 
      Light* directionLight = new Light();
      directionLight->Initialize(LightType::DIRECTION_LIGHT, 1);
-   //  directionLight.lightModel = dir;
      directionLight->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
 
      directionLight->SetColor(glm::vec4(1, 1, 1, 1.0f));
      directionLight->SetAttenuation(1, 1, 0.01f);
      directionLight->SetInnerAndOuterCutoffAngle(11, 12);
 
-     directionLightModel->transform.SetRotation(glm::vec3(0, 0, 0));
-     directionLightModel->transform.SetPosition(glm::vec3(0, 0, 2));
-
-  //   directionLight->SetColor(1, 0, 0, 1);
+     directionLight->transform.SetRotation(glm::vec3(0, 0, 5));
+     directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
     
     
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
@@ -217,16 +216,7 @@ void ApplicationRenderer::Start()
      GraphicsRender::GetInstance().AddModelAndShader(floor2, defaultShader);
      GraphicsRender::GetInstance().AddModelAndShader(floor3, defaultShader);
      GraphicsRender::GetInstance().AddModelAndShader(floor4, alphaBlendShader);
-  
-
-
-
-     
-  //   render.selectedModel = Sphere;
-
-     GraphicsRender::GetInstance().AddModelAndShader(directionLightModel,solidColorShader);
-
-
+ 
      //LightRenderer
      //LightManager::GetInstance().AddLight(directionLight);
     // lightManager.AddLight(directionLight);
@@ -328,7 +318,10 @@ void ApplicationRenderer::Render()
 
         frameBuffer->Bind();
 
-        PanelManager::GetInstance().Update((float)windowWidth, (float)WindowHeight);
+        if (isImguiPanelsEnable)
+        {
+            PanelManager::GetInstance().Update((float)windowWidth, (float)WindowHeight);
+        }
 
         ImGui::Render();
 

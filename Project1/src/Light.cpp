@@ -25,7 +25,7 @@ void Light::Initialize(const LightType& type)
 	SetColor(1, 1, 1,1);
 	SetInnerAndOuterCutoffAngle(12.5f, 15);
 
-	LoadModel(*DebugModels::GetInstance().defaultSphere, false);
+	LoadModel(*DebugModels::GetInstance().defaultSphere, true);
 
 	transform.SetScale(glm::vec3(this->lightTransformScale));
 
@@ -47,7 +47,7 @@ void Light::Initialize(const LightType& type, const float& intensity)
 	SetColor(1, 1, 1, 1);
 	SetInnerAndOuterCutoffAngle(12.5f, 15);
 
-	LoadModel(*DebugModels::GetInstance().defaultSphere, false);
+	LoadModel(*DebugModels::GetInstance().defaultSphere, true);
 
 	transform.SetScale(glm::vec3(this->lightTransformScale));
 

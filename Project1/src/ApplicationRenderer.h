@@ -51,10 +51,10 @@ public:
 	
 
 	FrameBuffer* frameBuffer;
-
+	Camera* camera;
 private:
 	GLFWwindow* window;
-	Camera* camera;
+	
 	
 
 	//GraphicsRender render;
@@ -85,6 +85,7 @@ private:
 	 float scrollTime;
 
 	 bool firstMouse;
+	 bool isImguiPanelsEnable = false;
 
 };
 

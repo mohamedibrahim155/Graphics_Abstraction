@@ -79,6 +79,7 @@ public:
    
         void updateCameraVectors();
 
+        void Resize(float width,float height);
 
         void SetCameraType(const CameraType& type);
 

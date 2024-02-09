@@ -7,28 +7,32 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
     {
         return;
     }
-
-    //windowWidth = 400;
-  //  windowHeight = 400;
+    //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 
     if (!ImGui::Begin("SceneView", &isPanelOpen) || !isEnable)
     {
-
         ImGui::End();
+      //  ImGui::PopStyleVar();
         return;
 
     }
 
     ImVec2 viewPortPanelSize = ImGui::GetContentRegionAvail();
 
-    ImVec2 imageSize(windowWidth, windowHeight);
+    if (viewportSize.x!= viewPortPanelSize.x ||viewportSize.y !=viewPortPanelSize.y)
+    {
+        viewportSize = viewPortPanelSize;
 
-    //if (frameBuffer == nullptr);
-    //{
-    //    ImGui::End();
-    //    return;
-    //}
-    ImGui::Image((void*)frameBuffer->GetRendererID(), imageSize, ImVec2{ 0,1 }, ImVec2{ 1,0 });
+        frameBuffer->Resize(viewportSize.x, viewportSize.y);
+        sceneViewportCamera->Resize(viewportSize.x, viewportSize.y);
+    }
+
+   // ImVec2 imageSize = ImVec2(windowWidth, windowHeight);
+
+
+
+
+    ImGui::Image((void*)frameBuffer->GetColorAttachmentID(), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
 
     ImGui::End();
 

@@ -41,6 +41,12 @@ unsigned int& FrameBuffer::GetDepthAttachementID()
 
 void FrameBuffer::Invalidate()
 {
+	if (rendererID != 0)
+	{
+		GLCALL(glDeleteFramebuffers(1, &rendererID));
+		GLCALL(glDeleteTextures(1, &colorAttachmentID));
+		GLCALL(glDeleteTextures(1, &depthAttachmentID));
+	}
 
 	GLCALL(glGenFramebuffers(1, &rendererID));
 	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, rendererID));
@@ -60,6 +66,7 @@ void FrameBuffer::Invalidate()
 
 	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, specification.width, specification.height, 0,
 		GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL));
+	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthAttachmentID, 0));
 
 	GLCALL(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 
@@ -72,11 +79,6 @@ void FrameBuffer::Resize(unsigned int width, unsigned int height)
 	specification.width = width;
 	specification.height = height;
 
-	if (rendererID != 0)
-	{
-		GLCALL(glDeleteFramebuffers(1, &rendererID));
-		GLCALL(glDeleteTextures(1, &colorAttachmentID));
-		GLCALL(glDeleteTextures(1, &depthAttachmentID));
-	}
+
 	Invalidate();
 }

@@ -94,7 +94,7 @@ void Camera::SetProjection()
     
     if (cameraType == PERSPECTIVE)
     {
-        float aspectRatio = static_cast<float>(cameraWidth) / static_cast<float>(cameraHeight);
+        float aspectRatio = (cameraWidth)/(cameraHeight);
 
        projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
     }
@@ -179,6 +179,14 @@ void Camera::updateCameraVectors()
     
 
     
+}
+
+void Camera::Resize(float width, float height)
+{
+    this->cameraWidth = width;
+    this->cameraHeight = height;
+
+    SetProjection();
 }
 
 void Camera::SetCameraType(const CameraType& type)

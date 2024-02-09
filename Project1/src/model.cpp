@@ -1,6 +1,6 @@
 #include "model.h"
 #include "ImGui/EditorLayout.h"
-
+#include "GraphicsRender.h"
 
 aiMesh* ai_Mesh;
 
@@ -99,6 +99,7 @@ void Model::LoadModel(const Model& copyModel, bool isDebugModel)
 
     if (isDebugModel) return;
     InitializeEntity(this);
+
 
 }
 void Model::LoadModel(std::string const& path, bool isLoadTexture, bool isDebugModel)
@@ -415,7 +416,7 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 
  void Model::OnDestroy()
  {
-
+     GraphicsRender::GetInstance().RemoveModel(this);
  }
 
  void Model::DrawProperties()

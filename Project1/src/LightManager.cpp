@@ -103,9 +103,11 @@ void LightManager::UpdateUniformValuesToShader(Shader* shader)
             break;
         }
         std::string index = std::to_string(i);
+        float intensity = lightList[i]->GetIntensityValue();
         shader->setVec3(  "lights[" + index + "].position", lightList[i]->transform.position.x, lightList[i]->transform.position.y, lightList[i]->transform.position.z);
         shader->setVec3(  "lights[" + index + "].direction", lightList[i]->transform.GetForward());
-        shader->setVec4(  "lights[" + index + "].ambient", lightList[i]->GetAmbientColor().x, lightList[i]->GetAmbientColor().y, lightList[i]->GetAmbientColor().z, lightList[i]->GetAmbientColor().w);
+        shader->setVec4(  "lights[" + index + "].ambient", lightList[i]->GetAmbientColor().x * intensity,
+            lightList[i]->GetAmbientColor().y * intensity, lightList[i]->GetAmbientColor().z * intensity, lightList[i]->GetAmbientColor().w);
         shader->setInt(   "lights[" + index + "].lightType", (int)lightList[i]->lightType);
         shader->setFloat( "lights[" + index + "].linear", lightList[i]->GetAttenuation().x);    // Linear
         shader->setFloat( "lights[" + index + "].quadratic", lightList[i]->GetAttenuation().y); // Quadratic
@@ -113,7 +115,7 @@ void LightManager::UpdateUniformValuesToShader(Shader* shader)
         shader->setFloat( "lights[" + index + "].cutOff", glm::cos(glm::radians(lightList[i]->GetInnerAndOuterAngle().x)));
         shader->setFloat( "lights[" + index + "].outerCutOff", glm::cos(glm::radians(lightList[i]->GetInnerAndOuterAngle().y)));
 
-        float intensity = lightList[i]->GetIntensityValue();
+       
 
         shader->setVec4(  "lights[" + index + "].color", lightList[i]->GetLightColor().x * intensity, lightList[i]->GetLightColor().y * intensity,
             lightList[i]->GetLightColor().z * intensity, lightList[i]->GetLightColor().w);
