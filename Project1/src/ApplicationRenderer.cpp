@@ -331,10 +331,14 @@ void ApplicationRenderer::Render()
         PreRender(); //Update call BEFORE  DRAW
         
          // make models that it should not write in the stencil buffer
-        GraphicsRender::GetInstance().Draw();
+       
+        if (isPlayMode)
+        {
+            EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
+        }
+       
 
-         EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
-
+         GraphicsRender::GetInstance().Draw();
          PostRender(); // Update Call AFTER  DRAW
 
         frameBuffer->Unbind();

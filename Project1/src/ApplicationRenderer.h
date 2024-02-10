@@ -52,6 +52,7 @@ public:
 
 	FrameBuffer* frameBuffer;
 	Camera* camera;
+	bool isPlayMode = false;
 private:
 	GLFWwindow* window;
 	

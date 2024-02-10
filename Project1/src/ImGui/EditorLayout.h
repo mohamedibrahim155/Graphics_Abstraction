@@ -6,6 +6,7 @@
 #include "Inspector.h"
 #include "WindowDockingPanel.h"
 #include "SceneViewportPanel.h"
+#include "ToolPanel.h"
 class ApplicationRenderer;
 class EditorLayout
 {
@@ -30,6 +31,7 @@ private:
 	Inspector* inspectorPanel;
 	WindowDockingPanel* windowDockingPanel;
 	SceneViewportPanel* sceneViewportPanel;
+	ToolPanel* toolPanel;
 
 	Object* currentSelectedObject = nullptr;
 

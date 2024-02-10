@@ -21,11 +21,13 @@ void EditorLayout::InitializeEditors()
     hierarchyPanel = new Heirachy();
     inspectorPanel = new Inspector();
     sceneViewportPanel = new SceneViewportPanel();
+  
 
     sceneViewportPanel->frameBuffer = applicationRenderer->frameBuffer;
     sceneViewportPanel->sceneViewportCamera = applicationRenderer->camera;
 
-
+    toolPanel = new ToolPanel();
+    toolPanel->isApplicationPlayMode = &applicationRenderer->isPlayMode;
 }
 
 void EditorLayout::SetSelectedObjects(std::vector<Object*> objects)
