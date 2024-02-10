@@ -15,7 +15,7 @@ void ToolPanel::OnRender(float windowWidth, float windowHeight)
     flag |= ImGuiWindowFlags_MenuBar;
 
     float panelSizeX = windowWidth;
-    float panelSizeY = windowHeight / 40;
+    float panelSizeY = windowHeight / 70;
 
     float panelPosX = 0;
     float panelPosY = 0 + panelSizeY / 10;
@@ -34,7 +34,6 @@ void ToolPanel::OnRender(float windowWidth, float windowHeight)
 
     }
 
-
 	if (ImGui::BeginMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -42,8 +41,6 @@ void ToolPanel::OnRender(float windowWidth, float windowHeight)
 			ImGui::EndMenu();
 
 		}
-
-
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(panelSizeX * 0.5f, 0));
 		ImGui::Spacing();
 		ImGui::PopStyleVar();

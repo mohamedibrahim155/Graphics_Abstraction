@@ -76,6 +76,7 @@ private:
 
     std::string TextureType(aiTextureType type);
    
+    void SetModelName();
 
     const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
 

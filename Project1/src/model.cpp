@@ -18,6 +18,7 @@ Model::Model(const Model& copyModel, bool isDebugModel)
     modelPath = copyModel.modelPath;
     isLoadTexture = copyModel.isLoadTexture;
 
+    SetModelName();
     if (isDebugModel) return;
 
     InitializeEntity(this);
@@ -26,7 +27,6 @@ Model::Model(const Model& copyModel, bool isDebugModel)
 Model::Model(std::string const& path, bool isLoadTexture, bool isDebugModel)
 {
     this->isLoadTexture = isLoadTexture;
-
     LoadModel(path, this->isLoadTexture, isDebugModel);
 }
 
@@ -97,6 +97,8 @@ void Model::LoadModel(const Model& copyModel, bool isDebugModel)
     modelPath = copyModel.modelPath;
     isLoadTexture = copyModel.isLoadTexture;
 
+    SetModelName();
+
     if (isDebugModel) return;
     InitializeEntity(this);
 
@@ -120,6 +122,8 @@ void Model::LoadModel(std::string const& path, bool isLoadTexture, bool isDebugM
 
     ProcessNode(scene->mRootNode, scene);
     std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
+
+    SetModelName();
 
     if (isDebugModel) return;
     InitializeEntity(this);
@@ -248,6 +252,7 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         baseMeshMaterial->unLitMaterial()->SetBaseColor(glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a));
     }
 
+   
 
     return std::make_shared<Mesh>(vertices, indices, baseMeshMaterial);
  }
@@ -388,11 +393,11 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
      }
  }
 
- void Model::Start()
+ void Model::SetModelName()
  {
      int lastSlastPosition = modelPath.find_last_of('/');
 
-     if (lastSlastPosition!= std::string::npos)
+     if (lastSlastPosition != std::string::npos)
      {
          name = modelPath.substr(lastSlastPosition + 1);
      }
@@ -408,6 +413,11 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
              meshes[i]->name = "mesh " + std::to_string(i + 1);
          }
      }
+ }
+
+ void Model::Start()
+ {
+    
  }
 
  void Model::Update(float deltaTime)
