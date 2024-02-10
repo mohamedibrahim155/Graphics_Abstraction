@@ -64,6 +64,7 @@ public:
         // returns the view matrix calculated using Euler Angles and the LookAt Matrix
         glm::mat4 GetViewMatrix();
 
+        void IntializeCamera();
         void SetProjection();
   
 
@@ -101,5 +102,6 @@ public:
 
 private:
     glm::mat4 projectionMatrix;
+    float aspectRatio;
 };
 #endif

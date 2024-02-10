@@ -7,30 +7,8 @@
 Camera::Camera()
 {
     name = "Camera";
-
-    transform.SetPosition(glm::vec3(glm::vec3(0.0f, 0.0f, 0.0f)));
-
-    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-    transform.SetOrientationFromDirections(up, up);
-
-    transform.SetRotation(glm::vec3(0.0f, 180, 0.0f));
-
-    MovementSpeed = SPEED;
-    MouseSensitivity = SENSITIVITY;
-    fov = ZOOM;
-    nearPlane = DEFAULT_NEARPLANE;
-    farPlane = DEFAULT_FARPLANE;
-
-
-    cameraWidth = DEFAULT_WIDTH;
-    cameraHeight = DEFAULT_HEIGHT;
-
-    SetCameraType(CameraType:: PERSPECTIVE);
-
-
-    SetProjection();
-
-    InitializeEntity(this);
+    tag = "Camera";
+    
 }
 
 Camera::~Camera()
@@ -88,13 +66,40 @@ glm::mat4 Camera::GetViewMatrix()
     return viewMat;
 }
 
+void Camera::IntializeCamera()
+{
+    transform.SetPosition(glm::vec3(glm::vec3(0.0f, 0.0f, 0.0f)));
+
+    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+    transform.SetOrientationFromDirections(up, up);
+
+    transform.SetRotation(glm::vec3(0.0f, 180, 0.0f));
+
+    MovementSpeed = SPEED;
+    MouseSensitivity = SENSITIVITY;
+    fov = ZOOM;
+    nearPlane = DEFAULT_NEARPLANE;
+    farPlane = DEFAULT_FARPLANE;
+
+
+    cameraWidth = DEFAULT_WIDTH;
+    cameraHeight = DEFAULT_HEIGHT;
+     
+    SetCameraType(CameraType::PERSPECTIVE);
+
+
+    SetProjection();
+
+    InitializeEntity(this);
+}
+
 void Camera::SetProjection()
 {
- 
+    aspectRatio = cameraWidth / cameraHeight;
     
     if (cameraType == PERSPECTIVE)
     {
-        float aspectRatio = (cameraWidth)/(cameraHeight);
+      
 
        projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
     }
@@ -229,4 +234,5 @@ void Camera::DrawProperties()
 
 void Camera::SceneDraw()
 {
+    Entity::SceneDraw();
 }

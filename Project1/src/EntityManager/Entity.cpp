@@ -22,8 +22,8 @@ void Entity::DrawProperties()
 
 void Entity::SceneDraw()
 {
-	/*if (ImGui::Selectable(name.c_str(), &isSelected))
+	if (ImGui::Selectable(name.c_str(), &isSelected))
 	{
 		EditorLayout::GetInstance().SetSelectedObjects({ this });
-	}*/
+	}
 }

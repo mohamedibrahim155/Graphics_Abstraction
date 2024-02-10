@@ -118,7 +118,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     DebugModels::GetInstance().defaultCube = new Model("Models/DefaultCube/DefaultCube.fbx", false, true);
     DebugModels::GetInstance().defaultSphere = new Model("Models/DefaultSphere/DefaultSphere.fbx", false, true);
 
-    Model* skyBoxMod = new Model("Models/DefaultCube/DefaultCube.fbx",false);
+    Model* skyBoxMod = new Model("Models/DefaultCube/DefaultCube.fbx",false, true);
 
     skyBoxMod->meshes[0]->meshMaterial = new SkyboxMaterial();
 
@@ -144,6 +144,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
   //  camera->SetCameraType(ORTHOGRAPHIC);
    // camera->SetProjection();
 
+    camera->IntializeCamera();
     camera->transform.position = glm::vec3(0, 0, - 1.0f);
 
     isImguiPanelsEnable = true;

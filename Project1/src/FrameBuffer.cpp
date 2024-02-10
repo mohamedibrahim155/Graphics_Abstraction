@@ -48,10 +48,10 @@ void FrameBuffer::Invalidate()
 		GLCALL(glDeleteTextures(1, &depthAttachmentID));
 	}
 
-	GLCALL(glGenFramebuffers(1, &rendererID));
+	GLCALL(glCreateFramebuffers(1, &rendererID));
 	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, rendererID));
 
-	GLCALL(glGenTextures(1, &colorAttachmentID));
+	GLCALL(glCreateTextures(GL_TEXTURE_2D,1, &colorAttachmentID));
 	GLCALL(glBindTexture(GL_TEXTURE_2D, colorAttachmentID));
 	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, specification.width, specification.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr));
 	
@@ -60,12 +60,13 @@ void FrameBuffer::Invalidate()
 
 	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachmentID,0));
 
-	GLCALL(glGenTextures( 1, &depthAttachmentID));
+	GLCALL(glCreateTextures(GL_TEXTURE_2D, 1, &depthAttachmentID));
 	GLCALL(glBindTexture(GL_TEXTURE_2D, depthAttachmentID));
 	//GLCALL(glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, specification.width, specification.height));
 
 	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, specification.width, specification.height, 0,
 		GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL));
+
 	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthAttachmentID, 0));
 
 	GLCALL(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
@@ -76,9 +77,8 @@ void FrameBuffer::Invalidate()
 
 void FrameBuffer::Resize(unsigned int width, unsigned int height)
 {
-	specification.width = width;
-	specification.height = height;
-
+	this->specification.width = width;
+	this->specification.height = height;
 
 	Invalidate();
 }
