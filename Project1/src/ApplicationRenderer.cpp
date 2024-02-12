@@ -402,7 +402,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 
  void ApplicationRenderer::SetViewPort(GLFWwindow* window, int width, int height)
 {
-    glViewport(0, 0, width, height);
+ //   glViewport(0, 0, width, height);
 }
 
  void ApplicationRenderer::KeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods)

@@ -16,6 +16,7 @@ FrameBuffer::~FrameBuffer()
 void FrameBuffer::Bind()
 {
 	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, rendererID));
+	GLCALL(glViewport(0, 0, specification.width, specification.height));
 }
 
 void FrameBuffer::Unbind()
@@ -75,10 +76,10 @@ void FrameBuffer::Invalidate()
 
 }
 
-void FrameBuffer::Resize(unsigned int width, unsigned int height)
+void FrameBuffer::Resize(uint32_t width, uint32_t height)
 {
-	this->specification.width = width;
-	this->specification.height = height;
+	specification.width = width;
+	specification.height = height;
 
 	Invalidate();
 }

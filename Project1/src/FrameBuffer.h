@@ -6,7 +6,7 @@ struct FrameBufferSpecification
 
 	uint32_t  width;
 	uint32_t  height;
-	uint32_t  samples = 1;
+	//uint32_t  samples = 1;
 
 	bool swapChainTarget = false;
 };
@@ -20,7 +20,7 @@ public:
 	void Bind();
 	void Unbind();
 	void Invalidate();
-	void Resize(unsigned int width, unsigned int height);
+	void Resize(uint32_t width, uint32_t height);
 
 	unsigned int& GetColorAttachmentID();
 	unsigned int& GetRendererID();
