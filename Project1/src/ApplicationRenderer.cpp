@@ -94,6 +94,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     specification.width = windowWidth;
     specification.height = WindowHeight;
+    specification.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH };
+    
 
     frameBuffer = new FrameBuffer(specification);
 
