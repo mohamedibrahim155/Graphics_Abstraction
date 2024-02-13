@@ -232,7 +232,9 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
             baseMeshMaterial->material()->specularTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_SPECULAR, "specular_Texture");
             baseMeshMaterial->material()->alphaTexture = LoadMaterialTexture(m_aiMaterial, aiTextureType_OPACITY, "opacity_Texture");
 
-            if (baseMeshMaterial->material()->alphaTexture->path != alphaTextureDefaultPath)
+            Texture* materialTexture = (Texture*)baseMeshMaterial->material()->alphaTexture;
+
+            if (materialTexture->path != alphaTextureDefaultPath)
             {
                 baseMeshMaterial->material()->useMaskTexture = true;
             }

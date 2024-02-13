@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\BaseTexture.cpp" />
+    <ClCompile Include="src\RenderTexture.cpp" />
     <ClCompile Include="src\InputManager\InputManager.cpp" />
     <ClCompile Include="src\DebugModels.cpp" />
     <ClCompile Include="src\FrameBuffer.cpp" />
@@ -191,6 +193,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\BaseTexture.h" />
+    <ClInclude Include="src\RenderTexture.h" />
     <ClInclude Include="src\InputManager\InputManager.h" />
     <ClInclude Include="src\DebugModels.h" />
     <ClInclude Include="src\FrameBuffer.h" />

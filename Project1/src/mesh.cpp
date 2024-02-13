@@ -2,7 +2,7 @@
 #include <string>
 #include "Renderer.h"
 
-Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture*>& textures)
+Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<BaseTexture*>& textures)
 {
     
     this->vertices = vertices;
@@ -32,7 +32,7 @@ Mesh::~Mesh()
     vertices.clear();
     indices.clear();
 
-    for (Texture*  texture : textures)
+    for (BaseTexture*  texture : textures)
     {
         delete texture;
     }
@@ -66,9 +66,9 @@ void Mesh::DrawShadedMesh(Shader* shader)
 
     GLCALL(glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0));
 
-    meshMaterial->material()->diffuseTexture->Unbind();
-    meshMaterial->material()->specularTexture->Unbind();
-    meshMaterial->material()->alphaTexture->Unbind();
+   // ((Texture*)meshMaterial->material()->diffuseTexture)->Unbind();
+   // ((Texture*)meshMaterial->material()->specularTexture)->Unbind();
+  //  ((Texture*)meshMaterial->material()->alphaTexture)->Unbind();
     VAO->Unbind();
 
 

@@ -36,12 +36,12 @@ public:
 
     std::vector<Vertex>       vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture*>      textures;
+    std::vector<BaseTexture*>      textures;
     BaseMaterial* meshMaterial;
     //unsigned int VAO;
     std::vector<Triangles> triangle;
 
-    Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture*>& textures);
+    Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<BaseTexture*>& textures);
     Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, BaseMaterial* meshMaterial);
     ~Mesh();
 
