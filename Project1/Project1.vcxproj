@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\InputManager\InputManager.cpp" />
     <ClCompile Include="src\DebugModels.cpp" />
     <ClCompile Include="src\FrameBuffer.cpp" />
     <ClCompile Include="src\ImGui\SceneViewportPanel.cpp" />
@@ -190,8 +191,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\InputManager\InputManager.h" />
     <ClInclude Include="src\DebugModels.h" />
     <ClInclude Include="src\FrameBuffer.h" />
+    <ClInclude Include="src\InputManager\iInputOberver.h" />
     <ClInclude Include="src\ImGui\SceneViewportPanel.h" />
     <ClInclude Include="src\ImGui\EditorLayout.h" />
     <ClInclude Include="src\EntityManager\EntityManager.h" />

@@ -430,6 +430,19 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 
          }
      
+         if (action == GLFW_PRESS)
+         {
+             InputManager::GetInstance().OnKeyPressed(key);
+         }
+         else if(action == GLFW_RELEASE)
+         {
+             InputManager::GetInstance().OnKeyReleased(key);
+         }
+         else if (action == GLFW_REPEAT)
+         {
+             InputManager::GetInstance().OnkeyHold(key);
+         }
+     
  }
 
  void ApplicationRenderer::MouseCallBack(GLFWwindow* window, double xposIn, double yposIn)
