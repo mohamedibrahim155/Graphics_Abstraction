@@ -6,7 +6,8 @@ class RenderTexture : public BaseTexture
 public:
 
 	RenderTexture() = default;
-
+	RenderTexture(FrameBufferSpecification framebufferSpec);
+	~RenderTexture();
 	// Inherited via BaseTexture
 	void Bind() override;
 	void Unbind() override;
