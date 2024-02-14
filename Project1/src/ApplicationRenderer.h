@@ -12,7 +12,6 @@
 #include"LightManager.h"
 #include "Random.h"
 #include "PhysicsEngine.h"
-#include "Skybox.h"
 #include "Time.h"
 #include "SkyboxMaterial.h"
 #include "GraphicsRender.h"
@@ -40,6 +39,8 @@ public:
 	void MouseScroll(GLFWwindow* window, double xoffset, double yoffset);
 	
 	void WindowInitialize(int width, int height,  std::string windowName ="Window");
+	void InitializeShaders();
+	void InitializeSkybox();
 	
 	void Start();
 	void PreRender();
@@ -53,6 +54,10 @@ public:
 	FrameBuffer* frameBuffer;
 	Camera* camera;
 	bool isPlayMode = false;
+
+	glm::mat4 projection;
+	glm::mat4 view;
+	glm::mat4 skyBoxView;
 private:
 	GLFWwindow* window;
 	
@@ -68,10 +73,12 @@ private:
 	Shader* stencilShader;
 	Shader* skyboxShader;
 
-	Skybox* skybox;
-
 	PhysicsEngine PhysicsEngine;
 	PanelManager* panelManager;
+
+	SkyboxMaterial* skyBoxMaterial;
+
+	Model* skyBoxModel;
 
 	 int windowWidth;
 	 int  WindowHeight;

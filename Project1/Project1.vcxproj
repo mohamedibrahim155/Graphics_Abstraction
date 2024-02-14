@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\CameraManager.cpp" />
     <ClCompile Include="src\BaseTexture.cpp" />
     <ClCompile Include="src\RenderTexture.cpp" />
     <ClCompile Include="src\InputManager\InputManager.cpp" />
@@ -193,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\CameraManager.h" />
     <ClInclude Include="src\BaseTexture.h" />
     <ClInclude Include="src\RenderTexture.h" />
     <ClInclude Include="src\InputManager\InputManager.h" />

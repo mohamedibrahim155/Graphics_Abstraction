@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Camera.h"
-
-
+#include "CameraManager.h"
 
 
 Camera::Camera()
@@ -9,10 +8,13 @@ Camera::Camera()
     name = "Camera";
     tag = "Camera";
     
+    CameraManager::GetInstance().AddCamera(this);
 }
 
 Camera::~Camera()
 {
+    CameraManager::GetInstance().RemoveCamera(this);
+
 }
 
 //Camera::Camera(glm::vec3 position, glm::vec3 up) : MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), fov(ZOOM)
@@ -82,9 +84,8 @@ void Camera::IntializeCamera()
     farPlane = DEFAULT_FARPLANE;
 
 
-    cameraWidth = DEFAULT_WIDTH;
-    cameraHeight = DEFAULT_HEIGHT;
-     
+    SetCameraWidthAndHeight(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
     SetCameraType(CameraType::PERSPECTIVE);
 
 

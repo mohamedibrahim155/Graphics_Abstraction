@@ -59,15 +59,7 @@ void GraphicsRender::RemoveModel(Model* _model)
 }
 
 
-
-void GraphicsRender::AssignStencilShader(Shader* Shader)
-{
-	this->stencilShader = Shader;
-
-
-}
-
-void GraphicsRender::AssignCamera(Camera* camera)
+void GraphicsRender::SetCamera(Camera* camera)
 {
 
 	this->camera = camera;
@@ -97,6 +89,17 @@ std::vector<Model*> GraphicsRender::GetModelList()
 
 
 
+
+void GraphicsRender::InitializeGraphics()
+{
+	GLCALL(glEnable(GL_DEPTH_TEST));
+	GLCALL(glDepthFunc(GL_LESS));
+	GLCALL(glEnable(GL_STENCIL_TEST));
+	GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
+	GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
+	GLCALL(glEnable(GL_BLEND));
+	GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+}
 
 void GraphicsRender::Draw()
 {
@@ -145,6 +148,13 @@ void GraphicsRender::Draw()
 		modelAndShader->model->Draw(modelAndShader->shader);
 	}
 
+}
+
+void GraphicsRender::Clear()
+{
+	GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 0.1f));
+	GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
+	//glStencilMask(0x00);
 }
 
 void GraphicsRender::ClearData()

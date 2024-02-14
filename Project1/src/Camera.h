@@ -9,6 +9,7 @@
 //#include "Transform.h"
 #include "EntityManager/Entity.h"
 #include <vector>
+#include "RenderTexture.h"
 
 enum Camera_Movement {
     FORWARD,
@@ -45,7 +46,7 @@ public:
     float cameraHeight;
     float nearPlane;
     float farPlane;
-
+    RenderTexture* renderTexture = nullptr;
     CameraType cameraType = PERSPECTIVE;
 
         // constructor with vectors

@@ -101,10 +101,31 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     EditorLayout::GetInstance().applicationRenderer = this;
   
+
+    InitializeShaders();
+   
+    GraphicsRender::GetInstance().InitializeGraphics();
+
+    DebugModels::GetInstance().defaultCube = new Model("Models/DefaultCube/DefaultCube.fbx", false, true);
+    DebugModels::GetInstance().defaultSphere = new Model("Models/DefaultSphere/DefaultSphere.fbx", false, true);
+
+    InitializeSkybox();
+
+    GraphicsRender::GetInstance().SetCamera(camera);
+
+    camera->IntializeCamera();
+    camera->transform.position = glm::vec3(0, 0, - 1.0f);
+
+    isImguiPanelsEnable = true;
+}
+
+void ApplicationRenderer::InitializeShaders()
+{
     defaultShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag");
     solidColorShader = new Shader("Shaders/SolidColor_Vertex.vert", "Shaders/SolidColor_Fragment.frag", SOLID);
     stencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", OPAQUE);
-   
+    //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
+
     alphaBlendShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag", ALPHA_BLEND);
     alphaBlendShader->blendMode = ALPHA_BLEND;
 
@@ -116,15 +137,18 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
+    GraphicsRender::GetInstance().stencilShader = stencilShader; 
 
-    DebugModels::GetInstance().defaultCube = new Model("Models/DefaultCube/DefaultCube.fbx", false, true);
-    DebugModels::GetInstance().defaultSphere = new Model("Models/DefaultSphere/DefaultSphere.fbx", false, true);
+   
 
-    Model* skyBoxMod = new Model("Models/DefaultCube/DefaultCube.fbx",false, true);
+}
 
-    skyBoxMod->meshes[0]->meshMaterial = new SkyboxMaterial();
+void ApplicationRenderer::InitializeSkybox()
+{
+    skyBoxModel = new Model("Models/DefaultCube/DefaultCube.fbx", false, true);
+    skyBoxModel->meshes[0]->meshMaterial = new SkyboxMaterial();
 
-    SkyboxMaterial* _skyBoxMaterial = skyBoxMod->meshes[0]->meshMaterial->skyboxMaterial();
+    skyBoxMaterial = skyBoxModel->meshes[0]->meshMaterial->skyboxMaterial();
 
     std::vector<std::string> faces
     {
@@ -135,43 +159,19 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
        ("Textures/skybox/front.jpg"),
        ("Textures/skybox/back.jpg")
     };
-    _skyBoxMaterial->skyBoxTexture->LoadTexture(faces);
 
-    GraphicsRender::GetInstance().SkyBoxModel = skyBoxMod;
-   // render.AddModelsAndShader(render.SkyBoxModel, SkyboxShader);
+    skyBoxMaterial->skyBoxTexture->LoadTexture(faces);
 
-    //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
-    GraphicsRender::GetInstance().AssignStencilShader(stencilShader);
-    GraphicsRender::GetInstance().AssignCamera(camera);
-  //  camera->SetCameraType(ORTHOGRAPHIC);
-   // camera->SetProjection();
-
-    camera->IntializeCamera();
-    camera->transform.position = glm::vec3(0, 0, - 1.0f);
-
-    isImguiPanelsEnable = true;
+    GraphicsRender::GetInstance().SkyBoxModel = skyBoxModel;
 }
 
 
 
 void ApplicationRenderer::Start()
 {
-    GLCALL(glEnable(GL_DEPTH_TEST));
-    GLCALL(glDepthFunc(GL_LESS));
-    GLCALL(glEnable(GL_STENCIL_TEST));
-    GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
-    GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
-    GLCALL(glEnable(GL_BLEND));
-    GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 
-   /* skybox = new Skybox(); 
-    
-    skybox->AssignSkyboxShader(SkyboxShader);
-    skybox->SkyboxPrerender();*/
-    
 
-   
 
     Model* floor = new Model((char*)"Models/Floor/Floor.fbx");
     floor->transform.SetRotation(glm::vec3(90, 0, 0));
@@ -234,55 +234,52 @@ void ApplicationRenderer::Start()
 
 void ApplicationRenderer::PreRender()
 {
-    glm::mat4 _projection = camera->GetProjectionMatrix();
-    glm::mat4 _view = camera->GetViewMatrix();
-    glm::mat4 _skyboxview = glm::mat4(glm::mat3(camera->GetViewMatrix()));
+    projection = camera->GetProjectionMatrix();
+
+    view = camera->GetViewMatrix();
+
+    skyBoxView = glm::mat4(glm::mat3(camera->GetViewMatrix()));
   
 
-
-   // defaultShader->Bind();
-    // material.SetMaterialProperties(*defaultShader);
+    defaultShader->Bind();
     LightManager::GetInstance().UpdateUniformValuesToShader(defaultShader);
-    //  lightManager.UpdateUniformValues(defaultShader->ID);
 
-
-    defaultShader->setMat4("projection", _projection);
-    defaultShader->setMat4("view", _view);
+    defaultShader->setMat4("projection", projection);
+    defaultShader->setMat4("view", view);
     defaultShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     defaultShader->setFloat("time", scrollTime);
     defaultShader->setBool("isDepthBuffer", false);
 
     alphaBlendShader->Bind();
     LightManager::GetInstance().UpdateUniformValuesToShader(alphaBlendShader);
-    alphaBlendShader->setMat4("projection", _projection);
-    alphaBlendShader->setMat4("view", _view);
+    alphaBlendShader->setMat4("projection", projection);
+    alphaBlendShader->setMat4("view", view);
     alphaBlendShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaBlendShader->setFloat("time", scrollTime);
     alphaBlendShader->setBool("isDepthBuffer", false);
 
     alphaCutoutShader->Bind();
     LightManager::GetInstance().UpdateUniformValuesToShader(alphaCutoutShader);
-    alphaCutoutShader->setMat4("projection", _projection);
-    alphaCutoutShader->setMat4("view", _view);
+    alphaCutoutShader->setMat4("projection", projection);
+    alphaCutoutShader->setMat4("view", view);
     alphaCutoutShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaCutoutShader->setFloat("time", scrollTime);
     alphaCutoutShader->setBool("isDepthBuffer", false);
 
     solidColorShader->Bind();
-    solidColorShader->setMat4("projection", _projection);
-    solidColorShader->setMat4("view", _view);
+    solidColorShader->setMat4("projection", projection);
+    solidColorShader->setMat4("view", view);
 
     stencilShader->Bind();
-    stencilShader->setMat4("projection", _projection);
-    stencilShader->setMat4("view", _view);
+    stencilShader->setMat4("projection", projection);
+    stencilShader->setMat4("view", view);
 
     glDepthFunc(GL_LEQUAL);
     skyboxShader->Bind();
-    skyboxShader->setMat4("projection", _projection);
-    skyboxShader->setMat4("view", _skyboxview);
+    skyboxShader->setMat4("projection", projection);
+    skyboxShader->setMat4("view", skyBoxView);
 
-    GraphicsRender::GetInstance().SkyBoxModel->Draw
-    (*skyboxShader);
+    GraphicsRender::GetInstance().SkyBoxModel->Draw(*skyboxShader);
     glDepthFunc(GL_LESS);
 
 
@@ -319,7 +316,7 @@ void ApplicationRenderer::Render()
         ImGui::NewFrame();
 
 
-        frameBuffer->Bind();
+    
 
         if (isImguiPanelsEnable)
         {
@@ -328,9 +325,7 @@ void ApplicationRenderer::Render()
 
         ImGui::Render();
 
-        Clear();
-
-        PreRender(); //Update call BEFORE  DRAW
+        
         
          // make models that it should not write in the stencil buffer
        
@@ -339,11 +334,14 @@ void ApplicationRenderer::Render()
             EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
         }
        
+        frameBuffer->Bind();
 
+        GraphicsRender::GetInstance().Clear();
+         PreRender(); 
          GraphicsRender::GetInstance().Draw();
-         PostRender(); // Update Call AFTER  DRAW
-
         frameBuffer->Unbind();
+
+        PostRender();
 
          ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

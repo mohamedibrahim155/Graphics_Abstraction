@@ -15,6 +15,8 @@ public:
 	void DrawProperties() override;
 	void SceneDraw() override;
 
+	void CreateRenderTexture(FrameBufferSpecification framebufferSpec);
+
 	FrameBuffer* framebuffer = nullptr;
 };
 

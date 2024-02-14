@@ -31,3 +31,8 @@ void RenderTexture::DrawProperties()
 void RenderTexture::SceneDraw()
 {
 }
+
+void RenderTexture::CreateRenderTexture(FrameBufferSpecification framebufferSpec)
+{
+	framebuffer = new FrameBuffer(framebufferSpec);
+}

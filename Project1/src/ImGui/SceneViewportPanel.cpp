@@ -7,7 +7,9 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
     {
         return;
     }
-    //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 
     if (!ImGui::Begin("SceneView", &isPanelOpen) || !isEnable)
     {
@@ -35,6 +37,8 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
     ImGui::Image((void*)frameBuffer->GetColorAttachmentID(), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
 
     ImGui::End();
+
+    ImGui::PopStyleVar();
 
 
 

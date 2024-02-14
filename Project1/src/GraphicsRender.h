@@ -46,25 +46,27 @@ public:
 
 	void AddModelAndShader(Model* model, Shader* shader);
 	void RemoveModel(Model* model);
-	void AssignStencilShader( Shader* Shader);
-	void AssignCamera(Camera* camera);
+
+	void SetCamera(Camera* camera);
 
 	void SortObject();
 	
 	std::vector<Model*> GetModelList();
 
-	
+	void InitializeGraphics();
 	void Draw();
+	void Clear();
+
 
 	Model* selectedModel;
 	Model* SkyBoxModel;
 	Shader* defaultShader;
 	Shader* solidColorShader;
-	
+	Shader* stencilShader;
 	
 
 private:
-	Shader* stencilShader;
+	
 
 	void ClearData();
 
