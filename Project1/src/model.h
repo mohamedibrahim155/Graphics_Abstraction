@@ -58,6 +58,7 @@ public:
     void LoadModel(std::string const& path, bool isLoadTexture = true, bool isDebugModel = false);
     void Draw(Shader& shader);
     void Draw(Shader* shader);
+    void DrawSolidColor(const glm::vec4& color, bool isWireframe = false);
     
     virtual void DrawProperties();
     virtual void SceneDraw();

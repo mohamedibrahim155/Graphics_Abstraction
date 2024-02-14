@@ -59,6 +59,8 @@ public:
 	glm::mat4 projection;
 	glm::mat4 view;
 	glm::mat4 skyBoxView;
+	int windowWidth;
+	int  WindowHeight;
 private:
 	GLFWwindow* window;
 	
@@ -81,8 +83,7 @@ private:
 
 	Model* skyBoxModel;
 
-	 int windowWidth;
-	 int  WindowHeight;
+
 	 int selectedModelCount = 0;
 
 	 float lastX;

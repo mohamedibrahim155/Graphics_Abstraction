@@ -56,7 +56,8 @@ public:
 	void InitializeGraphics();
 	void Draw();
 	void Clear();
-
+	void DrawSphere(glm::vec3 center, float radius, glm::vec4 color);
+	void DrawBox(glm::vec3 center, glm::vec3 dimensions, glm::vec4 color);
 
 	Model* selectedModel;
 	Model* SkyBoxModel;

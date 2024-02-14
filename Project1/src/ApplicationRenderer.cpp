@@ -341,6 +341,7 @@ void ApplicationRenderer::Render()
         GraphicsRender::GetInstance().Clear();
          PreRender(); 
          GraphicsRender::GetInstance().Draw();
+
         sceneViewframeBuffer->Unbind();
 
 
@@ -348,6 +349,7 @@ void ApplicationRenderer::Render()
         GraphicsRender::GetInstance().Clear();
         PreRender();
         GraphicsRender::GetInstance().Draw();
+
         gameframeBuffer->Unbind();
 
         PostRender();

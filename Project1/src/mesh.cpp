@@ -90,9 +90,10 @@ void Mesh::DrawSolidColorMesh(Shader* shader, glm::vec3 color)
 {
    
 
-     if (shader->blendMode == BlendMode::SOLID)
+    if (shader->blendMode == BlendMode::SOLID)
     {
-        meshMaterial->UpdateMaterial(shader);
+        shader->Bind();
+        shader->setVec3("objectColor", color.x, color.y, color.z);
     }
   
     VAO->Bind();

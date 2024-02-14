@@ -1,5 +1,5 @@
 #include "GraphicsRender.h"
-
+#include "DebugModels.h"
 GraphicsRender::GraphicsRender()
 {
 }
@@ -156,6 +156,26 @@ void GraphicsRender::Clear()
 	GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 	//glStencilMask(0x00);
 }
+
+void GraphicsRender::DrawSphere(glm::vec3 center, float radius, glm::vec4 color)
+{
+	Model* model = new Model(*(DebugModels::GetInstance().defaultSphere), true);
+
+	model->transform.SetPosition(center);
+	model->transform.SetScale(glm::vec3(radius));
+	model->DrawSolidColor(color);
+
+}
+
+void GraphicsRender::DrawBox(glm::vec3 center, glm::vec3 dimensions, glm::vec4 color)
+{
+	Model* model = new Model(*(DebugModels::GetInstance().defaultCube), true);
+	model->transform.SetPosition(center);
+	model->transform.SetScale(dimensions);
+	model->DrawSolidColor(color, true);
+}
+
+
 
 void GraphicsRender::ClearData()
 {

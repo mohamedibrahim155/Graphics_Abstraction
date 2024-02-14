@@ -87,6 +87,29 @@ void Model::Draw(Shader* shader)
     }
 }
 
+void Model::DrawSolidColor(const glm::vec4& color, bool isWireframe)
+{
+    if (!isVisible)
+    {
+        return;
+    }
+
+    Shader* solidShader = GraphicsRender::GetInstance().solidColorShader;
+
+    solidShader->Bind();
+    if (solidShader->modelUniform)
+    {
+        solidShader->setMat4("model", transform.GetModelMatrix());
+    }
+    
+    for (unsigned int i = 0; i < meshes.size(); i++)
+    {
+        meshes[i]->isWireFrame = isWireframe;
+        meshes[i]->DrawSolidColorMesh(solidShader, color);
+    }
+}
+
+
 
 void Model::LoadModel(const Model& copyModel, bool isDebugModel)
 {
