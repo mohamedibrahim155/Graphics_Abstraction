@@ -51,7 +51,8 @@ public:
 	void ProcessInput(GLFWwindow* window);
 	
 
-	FrameBuffer* frameBuffer;
+	FrameBuffer* sceneViewframeBuffer;
+	FrameBuffer* gameframeBuffer;
 	Camera* camera;
 	bool isPlayMode = false;
 

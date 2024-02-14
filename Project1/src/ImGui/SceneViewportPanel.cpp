@@ -14,12 +14,14 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
     if (!ImGui::Begin("SceneView", &isPanelOpen) || !isEnable)
     {
         ImGui::End();
-      //  ImGui::PopStyleVar();
+        ImGui::PopStyleVar();
         return;
 
     }
 
     ImVec2 viewPortPanelSize = ImGui::GetContentRegionAvail();
+
+    isHovered = ImGui::IsWindowHovered();
 
     if (viewportSize.x!= viewPortPanelSize.x ||viewportSize.y !=viewPortPanelSize.y)
     {

@@ -97,7 +97,9 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     specification.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH };
     
 
-    frameBuffer = new FrameBuffer(specification);
+    sceneViewframeBuffer = new FrameBuffer(specification);
+
+    gameframeBuffer = new FrameBuffer(specification);
 
     EditorLayout::GetInstance().applicationRenderer = this;
   
@@ -334,12 +336,19 @@ void ApplicationRenderer::Render()
             EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
         }
        
-        frameBuffer->Bind();
+        sceneViewframeBuffer->Bind();
 
         GraphicsRender::GetInstance().Clear();
          PreRender(); 
          GraphicsRender::GetInstance().Draw();
-        frameBuffer->Unbind();
+        sceneViewframeBuffer->Unbind();
+
+
+        gameframeBuffer->Bind();
+        GraphicsRender::GetInstance().Clear();
+        PreRender();
+        GraphicsRender::GetInstance().Draw();
+        gameframeBuffer->Unbind();
 
         PostRender();
 
@@ -377,26 +386,29 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
         glfwSetWindowShouldClose(window, true);
 
     float cameraSpeed=25;
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-    {
-        camera->ProcessKeyboard(FORWARD, Time::GetInstance().deltaTime * cameraSpeed);
-    }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    {
-        camera->ProcessKeyboard(BACKWARD, Time::GetInstance().deltaTime * cameraSpeed);
-    }
 
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    if (EditorLayout::GetInstance().IsViewportHovered())
     {
-        camera->ProcessKeyboard(LEFT, Time::GetInstance().deltaTime * cameraSpeed);
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        {
+            camera->ProcessKeyboard(FORWARD, Time::GetInstance().deltaTime * cameraSpeed);
+        }
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        {
+            camera->ProcessKeyboard(BACKWARD, Time::GetInstance().deltaTime * cameraSpeed);
+        }
 
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        {
+            camera->ProcessKeyboard(LEFT, Time::GetInstance().deltaTime * cameraSpeed);
+
+        }
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        {
+            camera->ProcessKeyboard(RIGHT, Time::GetInstance().deltaTime * cameraSpeed);
+
+        }
     }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-    {
-        camera->ProcessKeyboard(RIGHT, Time::GetInstance().deltaTime * cameraSpeed);
-
-    }
-
 
 }
 
@@ -469,7 +481,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          lastX = xpos;
          lastY = ypos;
      
-         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && EditorLayout::GetInstance().IsViewportHovered())
          {
              camera->ProcessMouseMovement(xoffset, yoffset);
          }

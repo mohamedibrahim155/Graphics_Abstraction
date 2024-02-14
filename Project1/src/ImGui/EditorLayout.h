@@ -7,22 +7,21 @@
 #include "WindowDockingPanel.h"
 #include "SceneViewportPanel.h"
 #include "ToolPanel.h"
+#include "GameViewportPanel.h"
 class ApplicationRenderer;
 class EditorLayout
 {
 public :
 	static EditorLayout& GetInstance();
 
-	Object* GetCurrentSelectedObject();
-
-
 	void InitializeEditors();
-
 	void SetSelectedObjects(std::vector<Object*> objects);
 	void SetSelectedObjectsEnable(bool isEnable);
 
+	bool IsViewportHovered();
+
+	Object* GetCurrentSelectedObject();
 	std::vector<Object*> GetSelectedObjects();
-	
 
 	ApplicationRenderer* applicationRenderer;
 private:
@@ -32,6 +31,7 @@ private:
 	WindowDockingPanel* windowDockingPanel;
 	SceneViewportPanel* sceneViewportPanel;
 	ToolPanel* toolPanel;
+	GameViewportPanel* gameviewportPanel;
 
 	Object* currentSelectedObject = nullptr;
 

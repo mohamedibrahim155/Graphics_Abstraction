@@ -21,13 +21,16 @@ void EditorLayout::InitializeEditors()
     hierarchyPanel = new Heirachy();
     inspectorPanel = new Inspector();
     sceneViewportPanel = new SceneViewportPanel();
-  
-
-    sceneViewportPanel->frameBuffer = applicationRenderer->frameBuffer;
-    sceneViewportPanel->sceneViewportCamera = applicationRenderer->camera;
-
+    gameviewportPanel = new GameViewportPanel();
     toolPanel = new ToolPanel();
+
+    sceneViewportPanel->frameBuffer = applicationRenderer->sceneViewframeBuffer;
+    sceneViewportPanel->sceneViewportCamera = applicationRenderer->camera;
+  
     toolPanel->isApplicationPlayMode = &applicationRenderer->isPlayMode;
+
+    gameviewportPanel->frameBuffer = applicationRenderer->gameframeBuffer;
+    gameviewportPanel->gameViewportResolution = ImVec2(1920, 1080);
 }
 
 void EditorLayout::SetSelectedObjects(std::vector<Object*> objects)
@@ -51,6 +54,11 @@ void EditorLayout::SetSelectedObjectsEnable(bool isEnable)
     {
         object->isEnabled = isEnable;
     }
+}
+
+bool EditorLayout::IsViewportHovered()
+{
+    return sceneViewportPanel->isHovered;
 }
 
 std::vector<Object*> EditorLayout::GetSelectedObjects()
