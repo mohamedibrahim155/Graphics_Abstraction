@@ -66,6 +66,8 @@ public:
         glm::mat4 GetViewMatrix();
 
         void IntializeCamera();
+        void IntializeRenderTexture(FrameBufferSpecification framebufferSpecs);
+
         void SetProjection();
   
 

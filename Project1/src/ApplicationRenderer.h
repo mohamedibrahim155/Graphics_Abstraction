@@ -25,6 +25,7 @@
 #include "DebugModels.h"
 #include "InputManager/InputManager.h"
 #include "EntityManager/EntityManager.h"
+#include "CameraManager.h"
 
 
 class ApplicationRenderer
@@ -54,11 +55,12 @@ public:
 	void EngineGameLoop();
 	void RenderForCamera(Camera* camera, FrameBuffer* framebuffer);
 	
-
+	FrameBufferSpecification specification;
 	FrameBuffer* sceneViewframeBuffer;
 	FrameBuffer* gameframeBuffer;
 	Camera* camera;
 	Camera* gameScenecamera;
+	Camera* renderTextureCamera;
 	bool isPlayMode = false;
 
 	glm::mat4 projection;

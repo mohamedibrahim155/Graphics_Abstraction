@@ -11,6 +11,7 @@ public:
 
 	Model* defaultCube;
 	Model* defaultSphere;
+	Model* defaultQuad;
 
 
 };

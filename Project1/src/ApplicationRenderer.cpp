@@ -7,6 +7,9 @@ ApplicationRenderer::ApplicationRenderer()
 
     gameScenecamera = new Camera();
     gameScenecamera->name = "GameScene Camera";
+
+    renderTextureCamera = new Camera();
+    renderTextureCamera->name = "RenderTexture Camera";
 }
 
 ApplicationRenderer::~ApplicationRenderer()
@@ -113,6 +116,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     DebugModels::GetInstance().defaultCube = new Model("Models/DefaultCube/DefaultCube.fbx", false, true);
     DebugModels::GetInstance().defaultSphere = new Model("Models/DefaultSphere/DefaultSphere.fbx", false, true);
+    DebugModels::GetInstance().defaultQuad = new Model("Models/DefaultQuad/DefaultQuad.fbx", false, true);
 
     InitializeSkybox();
 
@@ -124,6 +128,11 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     gameScenecamera->IntializeCamera();
     gameScenecamera->transform.position = glm::vec3(0, 0, -1.0f);
 
+    renderTextureCamera->IntializeCamera();
+    renderTextureCamera->transform.position = glm::vec3(0, 0, -1.0f);
+
+    renderTextureCamera->IntializeRenderTexture(specification);
+  
     isImguiPanelsEnable = true;
 }
 
@@ -222,7 +231,14 @@ void ApplicationRenderer::Start()
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
      Texture* plantAlphaTexture = new Texture();
 
+     Model* quadWithTexture = new Model("Models/DefaultQuad/DefaultQuad.fbx");
+
+     quadWithTexture->meshes[0]->meshMaterial->material()->diffuseTexture = renderTextureCamera->renderTexture;
+
+
+
      GraphicsRender::GetInstance().AddModelAndShader(plant, alphaCutoutShader);
+     GraphicsRender::GetInstance().AddModelAndShader(quadWithTexture, alphaCutoutShader);
      GraphicsRender::GetInstance().AddModelAndShader(floor, defaultShader);
      GraphicsRender::GetInstance().AddModelAndShader(floor2, defaultShader);
      GraphicsRender::GetInstance().AddModelAndShader(floor3, defaultShader);
@@ -237,6 +253,8 @@ void ApplicationRenderer::Start()
    //  SpherePhyiscs->Initialize(false, true, DYNAMIC);
 
    //  PhysicsEngine.AddPhysicsObjects(SpherePhyiscs);
+
+  
 
 }
 
@@ -357,8 +375,20 @@ void ApplicationRenderer::EngineGraphicsRender()
     RenderForCamera(camera, sceneViewframeBuffer);
 
 
-    RenderForCamera(gameScenecamera, gameframeBuffer);
+    //RenderForCamera(gameScenecamera, gameframeBuffer);
 
+    for (Camera* camera :  CameraManager::GetInstance().GetCameras())
+    {
+        if (camera->renderTexture == nullptr)
+        {
+            RenderForCamera(camera, gameframeBuffer);                  // GAME SCENE CAMERA
+        }
+        else
+        {
+            RenderForCamera(camera, camera->renderTexture->framebuffer); 
+        }
+       
+    }
 
     //gameframeBuffer->Bind();
     //GraphicsRender::GetInstance().Clear();

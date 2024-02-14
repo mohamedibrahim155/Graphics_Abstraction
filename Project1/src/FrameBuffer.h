@@ -63,11 +63,11 @@ public:
 	uint32_t& GetColorAttachmentID(int index = 0);
 	unsigned int& GetRendererID();
 	uint32_t& GetDepthAttachementID();
+	FrameBufferSpecification specification;
 
 private:
 
 	unsigned int rendererID = 0;
-	FrameBufferSpecification specification;
 
 	std::vector<FramebufferTextureSpecification> colorAttachmentSpecifications;
 	FramebufferTextureSpecification depthAttachmentSpec;

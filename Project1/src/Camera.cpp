@@ -94,6 +94,14 @@ void Camera::IntializeCamera()
     InitializeEntity(this);
 }
 
+void Camera::IntializeRenderTexture(FrameBufferSpecification framebufferSpecs)
+{
+    renderTexture = new RenderTexture(framebufferSpecs);
+
+    //framebufferSpecs.width = cameraWidth;
+   // framebufferSpecs.height = cameraHeight;
+}
+
 void Camera::SetProjection()
 {
     aspectRatio = cameraWidth / cameraHeight;
