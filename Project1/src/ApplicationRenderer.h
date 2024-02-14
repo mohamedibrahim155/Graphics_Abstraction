@@ -52,11 +52,13 @@ public:
 
 	void EngineGraphicsRender();
 	void EngineGameLoop();
+	void RenderForCamera(Camera* camera, FrameBuffer* framebuffer);
 	
 
 	FrameBuffer* sceneViewframeBuffer;
 	FrameBuffer* gameframeBuffer;
 	Camera* camera;
+	Camera* gameScenecamera;
 	bool isPlayMode = false;
 
 	glm::mat4 projection;

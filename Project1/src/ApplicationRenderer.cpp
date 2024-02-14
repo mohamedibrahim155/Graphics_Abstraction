@@ -4,6 +4,9 @@
 ApplicationRenderer::ApplicationRenderer()
 {
     camera = new Camera();
+
+    gameScenecamera = new Camera();
+    gameScenecamera->name = "GameScene Camera";
 }
 
 ApplicationRenderer::~ApplicationRenderer()
@@ -117,6 +120,9 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     camera->IntializeCamera();
     camera->transform.position = glm::vec3(0, 0, - 1.0f);
+
+    gameScenecamera->IntializeCamera();
+    gameScenecamera->transform.position = glm::vec3(0, 0, -1.0f);
 
     isImguiPanelsEnable = true;
 }
@@ -341,21 +347,25 @@ void ApplicationRenderer::EngineGraphicsRender()
     ImGui::Render();
 
 
-    sceneViewframeBuffer->Bind();
+    /*sceneViewframeBuffer->Bind();
 
     GraphicsRender::GetInstance().Clear();
     PreRender();
     GraphicsRender::GetInstance().Draw();
 
-    sceneViewframeBuffer->Unbind();
+    sceneViewframeBuffer->Unbind();*/
+    RenderForCamera(camera, sceneViewframeBuffer);
 
 
-    gameframeBuffer->Bind();
-    GraphicsRender::GetInstance().Clear();
-    PreRender();
-    GraphicsRender::GetInstance().Draw();
+    RenderForCamera(gameScenecamera, gameframeBuffer);
 
-    gameframeBuffer->Unbind();
+
+    //gameframeBuffer->Bind();
+    //GraphicsRender::GetInstance().Clear();
+    //PreRender();
+    //GraphicsRender::GetInstance().Draw();
+
+    //gameframeBuffer->Unbind();
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -371,6 +381,77 @@ void ApplicationRenderer::EngineGameLoop()
     }
 
     PostRender();
+}
+void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuffer)
+{
+
+  /*  sceneViewframeBuffer->Bind();
+
+    GraphicsRender::GetInstance().Clear();
+    PreRender();
+    GraphicsRender::GetInstance().Draw();*/
+
+
+    framebuffer->Bind();
+
+    GraphicsRender::GetInstance().Clear();
+
+    projection = camera->GetProjectionMatrix();
+
+    view = camera->GetViewMatrix();
+
+    skyBoxView = glm::mat4(glm::mat3(camera->GetViewMatrix()));
+
+
+    defaultShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(defaultShader);
+
+    defaultShader->setMat4("projection", projection);
+    defaultShader->setMat4("view", view);
+    defaultShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+    defaultShader->setFloat("time", scrollTime);
+    defaultShader->setBool("isDepthBuffer", false);
+
+    alphaBlendShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(alphaBlendShader);
+    alphaBlendShader->setMat4("projection", projection);
+    alphaBlendShader->setMat4("view", view);
+    alphaBlendShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+    alphaBlendShader->setFloat("time", scrollTime);
+    alphaBlendShader->setBool("isDepthBuffer", false);
+
+    alphaCutoutShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(alphaCutoutShader);
+    alphaCutoutShader->setMat4("projection", projection);
+    alphaCutoutShader->setMat4("view", view);
+    alphaCutoutShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+    alphaCutoutShader->setFloat("time", scrollTime);
+    alphaCutoutShader->setBool("isDepthBuffer", false);
+
+    solidColorShader->Bind();
+    solidColorShader->setMat4("projection", projection);
+    solidColorShader->setMat4("view", view);
+
+    stencilShader->Bind();
+    stencilShader->setMat4("projection", projection);
+    stencilShader->setMat4("view", view);
+
+    glDepthFunc(GL_LEQUAL);
+    skyboxShader->Bind();
+    skyboxShader->setMat4("projection", projection);
+    skyboxShader->setMat4("view", skyBoxView);
+
+    GraphicsRender::GetInstance().SkyBoxModel->Draw(*skyboxShader);
+    glDepthFunc(GL_LESS);
+
+    
+    /* ScrollShader->Bind();
+       ScrollShader->setMat4("ProjectionMatrix", _projection);*/
+
+    GraphicsRender::GetInstance().Draw();
+
+    framebuffer->Unbind();
+
 }
 void ApplicationRenderer::PostRender()
 {
