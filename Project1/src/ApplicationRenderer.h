@@ -49,6 +49,9 @@ public:
 	void Clear();
 
 	void ProcessInput(GLFWwindow* window);
+
+	void EngineGraphicsRender();
+	void EngineGameLoop();
 	
 
 	FrameBuffer* sceneViewframeBuffer;

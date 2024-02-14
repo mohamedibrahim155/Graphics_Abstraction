@@ -307,54 +307,12 @@ void ApplicationRenderer::Render()
         Time::GetInstance().SetCurrentTime(glfwGetTime());
        
       
-        scrollTime += Time::GetInstance().deltaTime;
+       // scrollTime += Time::GetInstance().deltaTime;
 
-        ProcessInput(window);
+        EngineGameLoop();
 
-        // Imgui
+        EngineGraphicsRender();
 
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-
-    
-
-        if (isImguiPanelsEnable)
-        {
-            PanelManager::GetInstance().Update((float)windowWidth, (float)WindowHeight);
-        }
-
-        ImGui::Render();
-
-        
-        
-         // make models that it should not write in the stencil buffer
-       
-        if (isPlayMode)
-        {
-            EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
-        }
-       
-        sceneViewframeBuffer->Bind();
-
-        GraphicsRender::GetInstance().Clear();
-         PreRender(); 
-         GraphicsRender::GetInstance().Draw();
-
-        sceneViewframeBuffer->Unbind();
-
-
-        gameframeBuffer->Bind();
-        GraphicsRender::GetInstance().Clear();
-        PreRender();
-        GraphicsRender::GetInstance().Draw();
-
-        gameframeBuffer->Unbind();
-
-        PostRender();
-
-         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -368,6 +326,52 @@ void ApplicationRenderer::Render()
     glfwTerminate();
 }
 
+void ApplicationRenderer::EngineGraphicsRender()
+{
+
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    if (isImguiPanelsEnable)
+    {
+        PanelManager::GetInstance().Update((float)windowWidth, (float)WindowHeight);
+    }
+
+    ImGui::Render();
+
+
+    sceneViewframeBuffer->Bind();
+
+    GraphicsRender::GetInstance().Clear();
+    PreRender();
+    GraphicsRender::GetInstance().Draw();
+
+    sceneViewframeBuffer->Unbind();
+
+
+    gameframeBuffer->Bind();
+    GraphicsRender::GetInstance().Clear();
+    PreRender();
+    GraphicsRender::GetInstance().Draw();
+
+    gameframeBuffer->Unbind();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+}
+
+void ApplicationRenderer::EngineGameLoop()
+{
+    ProcessInput(window);
+
+    if (isPlayMode)
+    {
+        EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
+    }
+
+    PostRender();
+}
 void ApplicationRenderer::PostRender()
 {
    // glDisable(GL_BLEND);
@@ -413,6 +417,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
     }
 
 }
+
 
  void ApplicationRenderer::SetViewPort(GLFWwindow* window, int width, int height)
 {
