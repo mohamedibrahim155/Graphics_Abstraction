@@ -11,7 +11,7 @@ RenderTexture::~RenderTexture()
 
 void RenderTexture::Bind()
 {
-	GLCALL(glBindTexture(GL_TEXTURE_2D, framebuffer->GetRendererID()));
+	GLCALL(glBindTexture(GL_TEXTURE_2D, framebuffer->GetColorAttachmentID()));
 }
 
 void RenderTexture::Unbind()

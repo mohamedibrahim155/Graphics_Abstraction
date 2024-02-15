@@ -122,16 +122,17 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     GraphicsRender::GetInstance().SetCamera(camera);
 
-    camera->IntializeCamera();
+    camera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
     camera->transform.position = glm::vec3(0, 0, - 1.0f);
 
-    gameScenecamera->IntializeCamera();
+    gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
     gameScenecamera->transform.position = glm::vec3(0, 0, -1.0f);
 
-    renderTextureCamera->IntializeCamera();
-    renderTextureCamera->transform.position = glm::vec3(0, 0, -1.0f);
+    renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
+    renderTextureCamera->transform.position = glm::vec3(5, 0, 0);
 
     renderTextureCamera->IntializeRenderTexture(specification);
+   // renderTextureCamera->IntializeRenderTexture(new RenderTexture());
   
     isImguiPanelsEnable = true;
 }
@@ -232,7 +233,7 @@ void ApplicationRenderer::Start()
      Texture* plantAlphaTexture = new Texture();
 
      Model* quadWithTexture = new Model("Models/DefaultQuad/DefaultQuad.fbx");
-
+     quadWithTexture->transform.SetPosition(glm::vec3(5, 0, 0));
      quadWithTexture->meshes[0]->meshMaterial->material()->diffuseTexture = renderTextureCamera->renderTexture;
 
 
@@ -375,7 +376,10 @@ void ApplicationRenderer::EngineGraphicsRender()
     RenderForCamera(camera, sceneViewframeBuffer);
 
 
-    //RenderForCamera(gameScenecamera, gameframeBuffer);
+  /*  RenderForCamera(gameScenecamera, gameframeBuffer);
+
+    RenderForCamera(renderTextureCamera, renderTextureCamera->renderTexture->framebuffer);*/
+
 
     for (Camera* camera :  CameraManager::GetInstance().GetCameras())
     {

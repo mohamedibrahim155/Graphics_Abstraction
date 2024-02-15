@@ -28,7 +28,7 @@ const float DEFAULT_NEARPLANE = 0.1f;
 const float DEFAULT_FARPLANE = 100.0f;
 
 
-enum CameraType
+enum class CameraType
 {
     PERSPECTIVE = 0,
     ORTHOGRAPHIC = 1
@@ -47,7 +47,7 @@ public:
     float nearPlane;
     float farPlane;
     RenderTexture* renderTexture = nullptr;
-    CameraType cameraType = PERSPECTIVE;
+    CameraType cameraType = CameraType::PERSPECTIVE;
 
         // constructor with vectors
     Camera();
@@ -65,7 +65,10 @@ public:
         // returns the view matrix calculated using Euler Angles and the LookAt Matrix
         glm::mat4 GetViewMatrix();
 
-        void IntializeCamera();
+       // void InitializeCamera(const CameraType& cameraType = CameraType::PERSPECTIVE);
+        void InitializeCamera(CameraType cameraType = CameraType::PERSPECTIVE, float fov = ZOOM, float nearPlane = DEFAULT_NEARPLANE, float farPlane = DEFAULT_FARPLANE);
+
+
         void IntializeRenderTexture(FrameBufferSpecification framebufferSpecs);
 
         void SetProjection();

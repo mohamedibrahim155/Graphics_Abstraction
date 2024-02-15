@@ -68,8 +68,35 @@ glm::mat4 Camera::GetViewMatrix()
     return viewMat;
 }
 
-void Camera::IntializeCamera()
+//void Camera::InitializeCamera(const CameraType& cameraType)
+//{
+//    transform.SetPosition(glm::vec3(glm::vec3(0.0f, 0.0f, 0.0f)));
+//
+//    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+//    transform.SetOrientationFromDirections(up, up);
+//
+//    transform.SetRotation(glm::vec3(0.0f, 180, 0.0f));
+//
+//    MovementSpeed = SPEED;
+//    MouseSensitivity = SENSITIVITY;
+//    fov = ZOOM;
+//    nearPlane = DEFAULT_NEARPLANE;
+//    farPlane = DEFAULT_FARPLANE;
+//
+//
+//    SetCameraWidthAndHeight(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+//
+//    SetCameraType(cameraType);
+//
+//
+//    SetProjection();
+//
+//    InitializeEntity(this);
+//}
+
+void Camera::InitializeCamera(CameraType cameraType, float fov, float nearPlane, float farPlane)
 {
+
     transform.SetPosition(glm::vec3(glm::vec3(0.0f, 0.0f, 0.0f)));
 
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -79,9 +106,9 @@ void Camera::IntializeCamera()
 
     MovementSpeed = SPEED;
     MouseSensitivity = SENSITIVITY;
-    fov = ZOOM;
-    nearPlane = DEFAULT_NEARPLANE;
-    farPlane = DEFAULT_FARPLANE;
+    this->fov = fov;
+    this->nearPlane = nearPlane;
+    this->farPlane = farPlane;
 
 
     SetCameraWidthAndHeight(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -98,15 +125,14 @@ void Camera::IntializeRenderTexture(FrameBufferSpecification framebufferSpecs)
 {
     renderTexture = new RenderTexture(framebufferSpecs);
 
-    //framebufferSpecs.width = cameraWidth;
-   // framebufferSpecs.height = cameraHeight;
+
 }
 
 void Camera::SetProjection()
 {
     aspectRatio = cameraWidth / cameraHeight;
     
-    if (cameraType == PERSPECTIVE)
+    if (cameraType == CameraType::PERSPECTIVE)
     {
       
 
