@@ -141,6 +141,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\Quad.cpp" />
+    <ClCompile Include="src\PostProcessing\ChromaticEffect.cpp" />
+    <ClCompile Include="src\PostProcessing\BaseEffect.cpp" />
+    <ClCompile Include="src\PostProcessing\PostProcessing.cpp" />
     <ClCompile Include="src\ImGui\GameViewportPanel.cpp" />
     <ClCompile Include="src\CameraManager.cpp" />
     <ClCompile Include="src\BaseTexture.cpp" />
@@ -195,6 +199,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\Quad.h" />
+    <ClInclude Include="src\PostProcessing\ChromaticEffect.h" />
+    <ClInclude Include="src\PostProcessing\BaseEffect.h" />
+    <ClInclude Include="src\PostProcessing\PostProcessing.h" />
     <ClInclude Include="src\ImGui\GameViewportPanel.h" />
     <ClInclude Include="src\CameraManager.h" />
     <ClInclude Include="src\BaseTexture.h" />
@@ -259,6 +267,8 @@
     <None Include="Shaders\color.vert" />
     <None Include="Shaders\DefaultShader_Fragment.frag" />
     <None Include="Shaders\DefaultShader_Vertex.vert" />
+    <None Include="Shaders\PostProcessing\Chromatic.frag" />
+    <None Include="Shaders\PostProcessing\Chromatic.vert" />
     <None Include="Shaders\lighting.frag" />
     <None Include="Shaders\lighting.vert" />
     <None Include="Shaders\Light_FragmentShader2.frag" />

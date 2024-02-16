@@ -189,7 +189,7 @@ void ApplicationRenderer::Start()
 {
 
 
-
+    gameScenecamera->postprocessing.InitializePostProcessing();
 
     Model* floor = new Model((char*)"Models/Floor/Floor.fbx");
     floor->transform.SetRotation(glm::vec3(90, 0, 0));
@@ -386,6 +386,11 @@ void ApplicationRenderer::EngineGraphicsRender()
         if (camera->renderTexture == nullptr)
         {
             RenderForCamera(camera, gameframeBuffer);                  // GAME SCENE CAMERA
+
+            if (camera->postprocessing.isPostProccesingEnabled)
+            {
+                camera->postprocessing.ApplyPostprocessing(gameframeBuffer);
+            }
         }
         else
         {

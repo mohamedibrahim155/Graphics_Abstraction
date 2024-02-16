@@ -10,6 +10,7 @@
 #include "EntityManager/Entity.h"
 #include <vector>
 #include "RenderTexture.h"
+#include "PostProcessing/PostProcessing.h"
 
 enum Camera_Movement {
     FORWARD,
@@ -48,6 +49,7 @@ public:
     float farPlane;
     RenderTexture* renderTexture = nullptr;
     CameraType cameraType = CameraType::PERSPECTIVE;
+    PostProcessing postprocessing;
 
         // constructor with vectors
     Camera();
