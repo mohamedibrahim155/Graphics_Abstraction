@@ -473,6 +473,8 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 
      if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
      {
+         GraphicsRender::GetInstance().SetSelectedModel(this);
+
          EditorLayout::GetInstance().SetSelectedObjects({ this });
 
      }
@@ -494,8 +496,7 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
              ImGui::TreeNodeEx(mesh->name.c_str(), leaf_flags);
              if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
              {
-                // Renderer::GetInstance().SetSelectedModel(this);
-                 
+                 GraphicsRender::GetInstance().SetSelectedModel(this);
              
                  EditorLayout::GetInstance().SetSelectedObjects({ mesh.get() });
              }

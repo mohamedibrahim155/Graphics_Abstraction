@@ -64,7 +64,7 @@ public:
 	Shader* defaultShader;
 	Shader* solidColorShader;
 	Shader* stencilShader;
-	
+	void SetSelectedModel(Model* model);
 
 private:
 	

@@ -116,29 +116,35 @@ void GraphicsRender::Draw()
 
 	if (selectedModel != nullptr)
 	{
+		// First pass: Render the model normally and write to the stencil buffer
 		GLCALL(glStencilFunc(GL_ALWAYS, 1, 0xFF));
 		GLCALL(glStencilMask(0xFF));
-		glm::vec3 tempScale;
-
-
-		tempScale = selectedModel->transform.scale;
 		selectedModel->Draw(*defaultShader);
-		
+
+		// Second pass: Render the model with a slightly larger scale to create an outline
 		GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
 		GLCALL(glStencilMask(0x00));
 		GLCALL(glDisable(GL_DEPTH_TEST));
-	
-		
-		glm::vec3 scale = selectedModel->transform.scale;
-		
-		selectedModel->transform.SetScale(scale + 0.1f);
+
+		glm::vec3 tempScale = selectedModel->transform.scale;
+
+		selectedModel->transform.scale.x += selectedModel->transform.scale.x * 0.01f;
+		selectedModel->transform.scale.y += selectedModel->transform.scale.y * 0.01f;
+		selectedModel->transform.scale.z += selectedModel->transform.scale.z * 0.01f;
+
+		//selectedModel->transform.SetScale(tempScale * 1.025f);
+
+		// Draw the model with the stencil shader
 		selectedModel->Draw(*stencilShader);
+
+		// Restore the original scale
 		selectedModel->transform.SetScale(tempScale);
-		
+
+		// Enable depth test and clear stencil buffer
+		GLCALL(glEnable(GL_DEPTH_TEST));
+		GLCALL(glStencilMask(0xFF));
+		GLCALL(glStencilFunc(GL_ALWAYS, 0, 0xFF));
 	}
-	GLCALL(glStencilMask(0xFF));
-	GLCALL(glStencilFunc(GL_ALWAYS, 0, 0xFF));
-	GLCALL(glEnable(GL_DEPTH_TEST));
 
 
 	SortObject();
@@ -176,6 +182,11 @@ void GraphicsRender::DrawBox(glm::vec3 center, glm::vec3 dimensions, glm::vec4 c
 }
 
 
+
+void GraphicsRender::SetSelectedModel(Model* model)
+{
+	selectedModel = model;
+}
 
 void GraphicsRender::ClearData()
 {
