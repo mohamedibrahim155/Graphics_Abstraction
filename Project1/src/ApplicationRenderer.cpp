@@ -100,7 +100,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     specification.width = windowWidth;
     specification.height = WindowHeight;
-    specification.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH };
+    specification.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH };
     
 
     sceneViewframeBuffer = new FrameBuffer(specification);
@@ -387,10 +387,7 @@ void ApplicationRenderer::EngineGraphicsRender()
         {
             RenderForCamera(camera, gameframeBuffer);                  // GAME SCENE CAMERA
 
-            if (camera->postprocessing.isPostProccesingEnabled)
-            {
-                camera->postprocessing.ApplyPostprocessing(gameframeBuffer);
-            }
+           
         }
         else
         {
@@ -490,6 +487,16 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     GraphicsRender::GetInstance().Draw();
 
     framebuffer->Unbind();
+
+    if (camera->isPostprocessing)
+    {
+       // if (camera->postprocessing.isPostProccesingEnabled)
+        {
+            camera->postprocessing.ApplyPostprocessing(framebuffer);
+        }
+    }
+
+
 
 }
 void ApplicationRenderer::PostRender()

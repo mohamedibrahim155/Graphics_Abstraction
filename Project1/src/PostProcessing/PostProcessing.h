@@ -1,7 +1,8 @@
 #pragma once
 //#include "BaseEffect.h"
 #include "ChromaticEffect.h"
-class PostProcessing
+#include "PixelizationEffect.h"
+class PostProcessing : public Object
 {
 public:
 
@@ -15,13 +16,22 @@ public:
      void RemoveEffect(BaseEffect* effect);
 	 bool isPostProccesingEnabled = false;
 
+	 // Inherited via Object
+	 void DrawProperties() override;
+
+	 void SceneDraw() override;
+
 private:
 
 	std::vector<BaseEffect*> listOfeffects;
 
 	ChromaticEffect* chromatic;
+	PixelizationEffect* pixelization;
 
 
 	
+
+
+
 };
 

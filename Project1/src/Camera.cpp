@@ -265,9 +265,20 @@ void Camera::OnDestroy()
 void Camera::DrawProperties()
 {
     Entity::DrawProperties();
+
+    ImGui::NewLine();
+    ImGui::Checkbox("Post processing", &isPostprocessing);
+
+    if (isPostprocessing)
+    {
+        postprocessing.DrawProperties();
+    }
+
 }
 
 void Camera::SceneDraw()
 {
     Entity::SceneDraw();
+   // postprocessing.SceneDraw();
+
 }

@@ -2,26 +2,22 @@
 #include "BaseEffect.h"
 #include "../Shader.h"
 #include "../Quad.h"
-
-
-class ChromaticEffect : public BaseEffect
+class PixelizationEffect : public BaseEffect
 {
-public :
+public:
+	PixelizationEffect();
 
-	ChromaticEffect();
-	~ChromaticEffect();
-	void InitializeChromaticEffect();
+	void InitializeEffect();
 	// Inherited via BaseEffect
 	void ApplyEffect(FrameBuffer* frameBuffer) override;
 	void DrawProperties() override;
 	void SceneDraw() override;
 
-	Shader* chromaticShader = nullptr;
-private:
+	Shader* pixelShader;
 
-	Quad quad;
-	float aberrationValue = 10;
+private :
+
 	float time = 0;
-
+	Quad quad;
 };
 

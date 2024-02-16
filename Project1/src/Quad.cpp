@@ -1,5 +1,11 @@
 #include "Quad.h"
 
+Quad& Quad::GetInstance()
+{
+    static Quad instance;
+    return instance;
+}
+
 void Quad::RenderQuad()
 {
     if (quadVAO == 0)

@@ -47,6 +47,7 @@ public:
     float cameraHeight;
     float nearPlane;
     float farPlane;
+    bool isPostprocessing = false;
     RenderTexture* renderTexture = nullptr;
     CameraType cameraType = CameraType::PERSPECTIVE;
     PostProcessing postprocessing;

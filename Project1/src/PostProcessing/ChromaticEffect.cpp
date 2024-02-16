@@ -1,17 +1,16 @@
 #include "ChromaticEffect.h"
 #include "../Renderer.h"
-#include "PostProcessing.h"
 #include"../Time.h"
 ChromaticEffect::ChromaticEffect()
 {
+	name = "Chromatic";
 	InitializeChromaticEffect();
 }
 
 void ChromaticEffect::InitializeChromaticEffect()
 {
+
 	chromaticShader = new Shader("Shaders/PostProcessing/Chromatic.vert", "Shaders/PostProcessing/Chromatic.frag");
-
-
 }
 
 
@@ -29,8 +28,8 @@ void ChromaticEffect::ApplyEffect(FrameBuffer* frameBuffer)
 	chromaticShader->setFloat("time", time);   // abreation
 	GLCALL(glBindTexture(GL_TEXTURE_2D, frameBuffer->GetColorAttachmentID()));
 
-	quad.RenderQuad();
-	//chromaticShader->Unbind();
+	Quad::GetInstance().RenderQuad();
+	chromaticShader->Unbind();
 
 	frameBuffer->Unbind();
 
@@ -38,6 +37,21 @@ void ChromaticEffect::ApplyEffect(FrameBuffer* frameBuffer)
 
 void ChromaticEffect::DrawProperties()
 {
+	ImGui::Text(name.c_str());
+	ImGui::SameLine();
+	ImGui::Checkbox("###Chromatic", &isEnabled);
+	if (isEnabled)
+	{
+		if (!ImGui::TreeNodeEx("properties", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			return;
+		}
+		ImGui::Text("Aberration Amount");
+		ImGui::SameLine();
+		ImGui::InputFloat("###amount", &aberrationValue);
+		ImGui::TreePop();
+	}
+	
 }
 
 void ChromaticEffect::SceneDraw()
