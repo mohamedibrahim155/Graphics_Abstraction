@@ -2,22 +2,25 @@
 #include "BaseEffect.h"
 #include "../Shader.h"
 #include "../Quad.h"
-class PixelizationEffect : public BaseEffect
+#include "SinglePassEffect.h"
+class PixelizationEffect : public SinglePassEffect
 {
 public:
 	PixelizationEffect();
 
-	void InitializeEffect();
+	//void InitializeEffect();
 	// Inherited via BaseEffect
-	void ApplyEffect(FrameBuffer* frameBuffer) override;
+	//void ApplyEffect(FrameBuffer* frameBuffer) override;
 	void DrawProperties() override;
 	void SceneDraw() override;
-
+	// Inherited via SinglePassEffect
+	void InitializeEffect(const std::string& vertex, const std::string& fragment) override;
+	void SetShaderUniforms() override;
 	Shader* pixelShader;
 
 private :
 
-	float time = 0;
-	Quad quad;
+	//float time = 0;
+	
 };
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "../Shader.h"
 #include "../FrameBuffer.h"
 #include "../Object.h"
 class BaseEffect : public Object

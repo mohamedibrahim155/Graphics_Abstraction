@@ -1,45 +1,19 @@
 #include "ChromaticEffect.h"
 #include "../Renderer.h"
 #include"../Time.h"
+#include "../GraphicsRender.h"
 ChromaticEffect::ChromaticEffect()
 {
 	name = "Chromatic";
-	InitializeChromaticEffect();
-}
+	//InitializeChromaticEffect();
 
-void ChromaticEffect::InitializeChromaticEffect()
-{
-
-	chromaticShader = new Shader("Shaders/PostProcessing/Chromatic.vert", "Shaders/PostProcessing/Chromatic.frag");
-}
-
-
-
-void ChromaticEffect::ApplyEffect(FrameBuffer* frameBuffer)
-{
-	time += Time::GetInstance().deltaTime;
-	frameBuffer->Bind();
-
-	chromaticShader->Bind();
-
-	GLCALL(glActiveTexture(GL_TEXTURE0));
-	chromaticShader->setInt("sceneTexture", 0);  // Scene texture from framebuffer
-	chromaticShader->setFloat("aberration", aberrationValue);   // abreation
-	chromaticShader->setFloat("time", time);   // abreation
-	GLCALL(glBindTexture(GL_TEXTURE_2D, frameBuffer->GetColorAttachmentID()));
-
-	Quad::GetInstance().RenderQuad();
-	chromaticShader->Unbind();
-
-	frameBuffer->Unbind();
-
+	InitializeEffect("Shaders/PostProcessing/Chromatic.vert", "Shaders/PostProcessing/Chromatic.frag");
 }
 
 void ChromaticEffect::DrawProperties()
 {
-	ImGui::Text(name.c_str());
-	ImGui::SameLine();
-	ImGui::Checkbox("###Chromatic", &isEnabled);
+	SinglePassEffect::DrawProperties();
+
 	if (isEnabled)
 	{
 		if (!ImGui::TreeNodeEx("properties", ImGuiTreeNodeFlags_DefaultOpen))
@@ -56,4 +30,20 @@ void ChromaticEffect::DrawProperties()
 
 void ChromaticEffect::SceneDraw()
 {
+}
+
+void ChromaticEffect::InitializeEffect(const std::string& vertex, const std::string& fragment)
+{
+	shader = new Shader(vertex.c_str(), fragment.c_str());
+
+}
+
+void ChromaticEffect::SetShaderUniforms()
+{
+
+	shader->setInt("sceneTexture", 0);  // Scene texture from framebuffer
+	shader->setFloat("aberration", aberrationValue);   // abreation
+	shader->setFloat("time", time);   // abreation
+
+
 }

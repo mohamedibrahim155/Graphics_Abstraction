@@ -1,27 +1,26 @@
 #pragma once
 #include "BaseEffect.h"
-#include "../Shader.h"
 #include "../Quad.h"
+#include "SinglePassEffect.h"
 
-
-class ChromaticEffect : public BaseEffect
+class ChromaticEffect : public SinglePassEffect
 {
 public :
 
 	ChromaticEffect();
-	~ChromaticEffect();
-	void InitializeChromaticEffect();
+	
 	// Inherited via BaseEffect
-	void ApplyEffect(FrameBuffer* frameBuffer) override;
+	//void ApplyEffect(FrameBuffer* frameBuffer) override;
 	void DrawProperties() override;
 	void SceneDraw() override;
+	void InitializeEffect(const std::string& vertex, const std::string& fragment) override;
 
-	Shader* chromaticShader = nullptr;
+	void SetShaderUniforms() override;
+	FrameBuffer* chromaticFramebuffer;
 private:
-
-	Quad quad;
 	float aberrationValue = 10;
-	float time = 0;
+
+
 
 };
 

@@ -4,54 +4,35 @@ PixelizationEffect::PixelizationEffect()
 {
 	name = "Pixelization";
 	
-	InitializeEffect();
+	InitializeEffect("Shaders/PostProcessing/Pixelization.vert", "Shaders/PostProcessing/Pixelization.frag");
 }
 
-void PixelizationEffect::InitializeEffect()
-{
-	pixelShader = new Shader("Shaders/PostProcessing/Pixelization.vert", "Shaders/PostProcessing/Pixelization.frag");
-
-}
-
-void PixelizationEffect::ApplyEffect(FrameBuffer* frameBuffer)
-{
-	
-	time += Time::GetInstance().deltaTime;
-	frameBuffer->Bind();
-
-	pixelShader->Bind();
-
-	GLCALL(glActiveTexture(GL_TEXTURE0));
-	pixelShader->setInt("sceneTexture", 0);  // Scene texture from framebuffer
-	//pixelShader->setFloat("aberration", aberrationValue);   // abreation
-	pixelShader->setFloat("time", time);  
-	GLCALL(glBindTexture(GL_TEXTURE_2D, frameBuffer->GetColorAttachmentID(1)));
-
-	Quad::GetInstance().RenderQuad();
-	pixelShader->Unbind();
-
-	frameBuffer->Unbind();
-	
-}
 
 void PixelizationEffect::DrawProperties()
 {
-	ImGui::Text(name.c_str());
-	ImGui::SameLine();
-	ImGui::Checkbox("###pixelization", &isEnabled);
+	SinglePassEffect::DrawProperties();
+
 	if (isEnabled)
 	{
 		if (!ImGui::TreeNodeEx("properties", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			return;
 		}
-		//ImGui::Text("Aberration Amount");
-		//ImGui::SameLine();
-		//ImGui::InputFloat("###amount", &aberrationValue);
 		ImGui::TreePop();
 	}
 }
 
 void PixelizationEffect::SceneDraw()
 {
+}
+
+void PixelizationEffect::InitializeEffect(const std::string& vertex, const std::string& fragment)
+{
+	shader = new Shader(vertex.c_str(), fragment.c_str());
+}
+
+void PixelizationEffect::SetShaderUniforms()
+{
+	shader->setInt("sceneTexture", 0);  // Scene texture from framebuffer
+	shader->setFloat("time", time);
 }
