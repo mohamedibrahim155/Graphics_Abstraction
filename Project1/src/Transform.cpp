@@ -39,20 +39,18 @@ void Transform::SetRotation( const glm::vec3& axis)
 
 glm::mat4 Transform::GetModelMatrix() const 
 {
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    glm::mat4 rotation = glm::mat4_cast(quaternionRotation);
 
-    modelMatrix = glm::translate(modelMatrix, position);
 
+    return  glm::translate(glm::mat4(1.0f), position) *  rotation *
+         glm::scale(glm::mat4(1.0f), scale);
    /* modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation.x), glm::vec3(1, 0, 0));
     modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation.y), glm::vec3(0, 1, 0));
     modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation.z), glm::vec3(0, 0, 1));
     modelMatrix = glm::scale(modelMatrix, scale);*/
 
-    modelMatrix = modelMatrix * glm::mat4_cast(quaternionRotation);
+    
 
-    modelMatrix = glm::scale(modelMatrix, scale);
-
-    return modelMatrix;
 }
 
 glm::mat4 Transform::GetModelInverseMatrix() const

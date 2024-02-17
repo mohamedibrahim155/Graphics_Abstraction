@@ -105,7 +105,7 @@ void GraphicsRender::Draw()
 {
 
 
-	glStencilMask(0x00);
+	//glStencilMask(0x00);
 
 	for (ModelAndShader* modelAndShader : modelAndShaderList)
 	{
@@ -113,6 +113,17 @@ void GraphicsRender::Draw()
 
 		modelAndShader->model->Draw(modelAndShader->shader);
 	}
+
+
+
+	SortObject();
+
+	for (ModelAndShader* modelAndShader :  transparentmodelAndShaderList)
+	{
+		if (modelAndShader->model == selectedModel)  continue;
+		modelAndShader->model->Draw(modelAndShader->shader);
+	}
+
 
 	if (selectedModel != nullptr)
 	{
@@ -144,14 +155,6 @@ void GraphicsRender::Draw()
 		GLCALL(glEnable(GL_DEPTH_TEST));
 		GLCALL(glStencilMask(0xFF));
 		GLCALL(glStencilFunc(GL_ALWAYS, 0, 0xFF));
-	}
-
-
-	SortObject();
-
-	for (ModelAndShader* modelAndShader :  transparentmodelAndShaderList)
-	{
-		modelAndShader->model->Draw(modelAndShader->shader);
 	}
 
 }
@@ -186,6 +189,11 @@ void GraphicsRender::DrawBox(glm::vec3 center, glm::vec3 dimensions, glm::vec4 c
 void GraphicsRender::SetSelectedModel(Model* model)
 {
 	selectedModel = model;
+}
+
+Model* GraphicsRender::GetSelectedModel()
+{
+	return selectedModel;
 }
 
 void GraphicsRender::ClearData()

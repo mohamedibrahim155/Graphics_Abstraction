@@ -39,7 +39,7 @@ static void AttachColorTexture(uint32_t id, int samples, GLenum format, uint32_t
 	}
 	else
 	{
-		GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr));
+		GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_FLOAT, nullptr));
 
 		//GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_FLOAT, nullptr));
 

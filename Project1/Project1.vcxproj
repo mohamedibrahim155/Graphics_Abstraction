@@ -141,6 +141,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="Extern\imGui\ImCurveEdit.cpp" />
+    <ClCompile Include="Extern\imGui\ImGradient.cpp" />
+    <ClCompile Include="Extern\imGui\ImGuizmo.cpp" />
+    <ClCompile Include="Extern\imGui\ImSequencer.cpp" />
+    <ClCompile Include="src\Math.cpp" />
     <ClCompile Include="src\PostProcessing\SinglePassEffect.cpp" />
     <ClCompile Include="src\PostProcessing\PixelizationEffect.cpp" />
     <ClCompile Include="src\Quad.cpp" />
@@ -201,6 +206,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="Extern\imGui\ImCurveEdit.h" />
+    <ClInclude Include="Extern\imGui\ImGradient.h" />
+    <ClInclude Include="Extern\imGui\ImGuizmo.h" />
+    <ClInclude Include="Extern\imGui\ImSequencer.h" />
+    <ClInclude Include="Extern\imGui\ImZoomSlider.h" />
+    <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\PostProcessing\SinglePassEffect.h" />
     <ClInclude Include="src\PostProcessing\PixelizationEffect.h" />
     <ClInclude Include="src\Quad.h" />

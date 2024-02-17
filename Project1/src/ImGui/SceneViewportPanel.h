@@ -2,6 +2,7 @@
 #include "../FrameBuffer.h"
 #include "BasePanel.h"
 #include "../Camera.h"
+#include "ImGuizmo.h"
 class SceneViewportPanel : public BasePanel
 {
 public:

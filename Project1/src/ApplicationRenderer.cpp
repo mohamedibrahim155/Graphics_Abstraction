@@ -77,6 +77,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     ImGui_ImplGlfw_InitForOpenGL(this->window, true);
     ImGui_ImplOpenGL3_Init("#version 450");
+   // ImGui_ImplOpenGL3_Init("#version 130");
 
     //Init GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -360,6 +361,7 @@ void ApplicationRenderer::EngineGraphicsRender()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+    ImGuizmo::BeginFrame();
 
     if (isImguiPanelsEnable)
     {
