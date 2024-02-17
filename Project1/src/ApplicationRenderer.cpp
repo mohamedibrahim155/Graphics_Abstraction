@@ -368,7 +368,7 @@ void ApplicationRenderer::EngineGraphicsRender()
         PanelManager::GetInstance().Update((float)windowWidth, (float)WindowHeight);
     }
 
-    ImGui::Render();
+   
 
 
     /*sceneViewframeBuffer->Bind();
@@ -407,7 +407,7 @@ void ApplicationRenderer::EngineGraphicsRender()
     //GraphicsRender::GetInstance().Draw();
 
     //gameframeBuffer->Unbind();
-
+    ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 }

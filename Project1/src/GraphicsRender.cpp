@@ -130,7 +130,7 @@ void GraphicsRender::Draw()
 		// First pass: Render the model normally and write to the stencil buffer
 		GLCALL(glStencilFunc(GL_ALWAYS, 1, 0xFF));
 		GLCALL(glStencilMask(0xFF));
-		selectedModel->Draw(*defaultShader);
+		selectedModel->Draw(defaultShader);
 
 		// Second pass: Render the model with a slightly larger scale to create an outline
 		GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
@@ -146,7 +146,7 @@ void GraphicsRender::Draw()
 		//selectedModel->transform.SetScale(tempScale * 1.025f);
 
 		// Draw the model with the stencil shader
-		selectedModel->Draw(*stencilShader);
+		selectedModel->DrawSolidColor(glm::vec4(0.75f,0.25f,0,1));
 
 		// Restore the original scale
 		selectedModel->transform.SetScale(tempScale);
@@ -163,7 +163,7 @@ void GraphicsRender::Clear()
 {
 	GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 1));
 	GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
-	glStencilMask(0x00);
+	GLCALL(glStencilMask(0x00));
 }
 
 void GraphicsRender::DrawSphere(glm::vec3 center, float radius, glm::vec4 color)
@@ -187,6 +187,7 @@ void GraphicsRender::DrawBox(glm::vec3 center, glm::vec3 dimensions, glm::vec4 c
 
 
 void GraphicsRender::SetSelectedModel(Model* model)
+
 {
 	selectedModel = model;
 }

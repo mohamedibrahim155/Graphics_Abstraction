@@ -12,7 +12,7 @@ public:
 	FrameBuffer* frameBuffer = nullptr;
 
 	ImVec2 viewportSize;
-
+	ImGuizmo::OPERATION gizmoType = ImGuizmo::OPERATION::TRANSLATE;
 	Camera* sceneViewportCamera;
 };
 
