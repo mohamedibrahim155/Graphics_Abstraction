@@ -50,7 +50,7 @@ public:
     bool isPostprocessing = false;
     RenderTexture* renderTexture = nullptr;
     CameraType cameraType = CameraType::PERSPECTIVE;
-    PostProcessing postprocessing;
+    PostProcessing* postprocessing;
 
         // constructor with vectors
     Camera();

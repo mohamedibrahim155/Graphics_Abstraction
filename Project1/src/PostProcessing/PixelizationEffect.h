@@ -7,6 +7,7 @@ class PixelizationEffect : public SinglePassEffect
 {
 public:
 	PixelizationEffect();
+	PixelizationEffect(float width, float height);
 
 	//void InitializeEffect();
 	// Inherited via BaseEffect

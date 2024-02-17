@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseEffect.h"
 #include "../Quad.h"
+#include "../FrameBuffer.h"
 class SinglePassEffect : public BaseEffect
 {
 public:
@@ -18,7 +19,11 @@ public:
 	virtual void SetShaderUniforms() = 0;
 
 	Shader* shader;
-
+	Shader* finalShader;
+	FrameBuffer* singlepassFramebuffer;
+	glm::vec2 framebufferWidthAndHeight = { 1920,1080 };
 	float time;
+
+
 };
 

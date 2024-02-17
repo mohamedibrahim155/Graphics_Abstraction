@@ -8,6 +8,7 @@ class ChromaticEffect : public SinglePassEffect
 public :
 
 	ChromaticEffect();
+	ChromaticEffect(float width , float height);
 	
 	// Inherited via BaseEffect
 	//void ApplyEffect(FrameBuffer* frameBuffer) override;

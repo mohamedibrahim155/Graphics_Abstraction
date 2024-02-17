@@ -118,7 +118,11 @@ void Camera::InitializeCamera(CameraType cameraType, float fov, float nearPlane,
 
     SetProjection();
 
+    postprocessing = new PostProcessing(glm::vec2(cameraWidth, cameraHeight));
+
     InitializeEntity(this);
+
+ 
 }
 
 void Camera::IntializeRenderTexture(FrameBufferSpecification framebufferSpecs)
@@ -271,7 +275,7 @@ void Camera::DrawProperties()
 
     if (isPostprocessing)
     {
-        postprocessing.DrawProperties();
+        postprocessing->DrawProperties();
     }
 
 }

@@ -7,7 +7,9 @@ class PostProcessing : public Object
 public:
 
 	PostProcessing();
+	PostProcessing(const glm::vec2& cameraWidthAndHeight);
 	~PostProcessing();
+	void SetCameraWidthAndHeight(const glm::vec2& value);
 	void InitializePostProcessing();
 
 	void ApplyPostprocessing(FrameBuffer* framebuffer);
@@ -28,9 +30,9 @@ private:
 	ChromaticEffect* chromatic;
 	PixelizationEffect* pixelization;
 
-
+	Shader* finalShader;
 	
-
+	glm::vec2 cameraWidthAndHeight;
 
 
 };

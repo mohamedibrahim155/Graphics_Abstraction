@@ -413,5 +413,7 @@
     <None Include="Shaders\PostProcessing\Chromatic.frag" />
     <None Include="Shaders\PostProcessing\Pixelization.vert" />
     <None Include="Shaders\PostProcessing\Pixelization.frag" />
+    <None Include="Shaders\PostProcessing\FinalOutputShader.vert" />
+    <None Include="Shaders\PostProcessing\FinalOutputShader.frag" />
   </ItemGroup>
 </Project>

@@ -4,18 +4,32 @@ PostProcessing::PostProcessing()
 {
 }
 
+PostProcessing::PostProcessing(const glm::vec2& cameraWidthAndHeight)
+{
+	SetCameraWidthAndHeight(cameraWidthAndHeight);
+}
+
 PostProcessing::~PostProcessing()
 {
+}
+
+void PostProcessing::SetCameraWidthAndHeight(const glm::vec2& value)
+{
+	cameraWidthAndHeight = value;
 }
 
 void PostProcessing::InitializePostProcessing()
 {
 	isPostProccesingEnabled = true;
 
-	chromatic = new ChromaticEffect();
-	pixelization = new PixelizationEffect();
+	finalShader = new Shader("Shaders/PostProcessing/FinalOutputShader.vert", "Shaders/PostProcessing/FinalOutputShader.frag");
 
+	chromatic = new ChromaticEffect(cameraWidthAndHeight.x, cameraWidthAndHeight.y);
+	chromatic->finalShader = finalShader;
 	AddEffect(chromatic);
+
+	pixelization = new PixelizationEffect(cameraWidthAndHeight.x, cameraWidthAndHeight.y);
+	pixelization->finalShader = finalShader;
 	AddEffect(pixelization);
 }
 
