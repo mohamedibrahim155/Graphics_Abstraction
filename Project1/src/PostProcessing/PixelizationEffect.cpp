@@ -23,8 +23,8 @@ void PixelizationEffect::InitializeEffect(const std::string& vertex, const std::
 
 	FrameBufferSpecification specification;
 
-	specification.width = 1920;
-	specification.height = 1080;
+	specification.width = framebufferWidthAndHeight.x;
+	specification.height = framebufferWidthAndHeight.y;
 
 	specification.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH };
 

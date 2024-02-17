@@ -25,7 +25,7 @@ void EditorLayout::InitializeEditors()
     toolPanel = new ToolPanel();
 
     sceneViewportPanel->frameBuffer = applicationRenderer->sceneViewframeBuffer;
-    sceneViewportPanel->sceneViewportCamera = applicationRenderer->camera;
+    sceneViewportPanel->sceneViewportCamera = applicationRenderer->sceneViewcamera;
   
     toolPanel->isApplicationPlayMode = &applicationRenderer->isPlayMode;
 

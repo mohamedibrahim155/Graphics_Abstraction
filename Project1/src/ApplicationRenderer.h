@@ -58,7 +58,7 @@ public:
 	FrameBufferSpecification specification;
 	FrameBuffer* sceneViewframeBuffer;
 	FrameBuffer* gameframeBuffer;
-	Camera* camera;
+	Camera* sceneViewcamera;
 	Camera* gameScenecamera;
 	Camera* renderTextureCamera;
 	bool isPlayMode = false;

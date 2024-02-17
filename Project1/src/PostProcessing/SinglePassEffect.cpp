@@ -17,23 +17,26 @@ void SinglePassEffect::ApplyEffect(FrameBuffer* frameBuffer)
 	time += Time::GetInstance().deltaTime;
 
 	singlepassFramebuffer->Bind();
-
+	
 	GraphicsRender::GetInstance().Clear();
-
+	
 	shader->Bind();
 	GLCALL(glActiveTexture(GL_TEXTURE0));
+
 	SetShaderUniforms();
+
 	GLCALL(glBindTexture(GL_TEXTURE_2D, frameBuffer->GetColorAttachmentID()));
+
 	Quad::GetInstance().RenderQuad();
-
-	shader->Unbind();
-
-
+	
+	//shader->Unbind();
+	
 	singlepassFramebuffer->Unbind();
 
 
 	
 	frameBuffer->Bind();
+
 	GraphicsRender::GetInstance().Clear();
 	
 	finalShader->Bind();
@@ -46,10 +49,9 @@ void SinglePassEffect::ApplyEffect(FrameBuffer* frameBuffer)
 	finalShader->setInt("effectTexture", 1);
 	GLCALL(glBindTexture(GL_TEXTURE_2D, singlepassFramebuffer->GetColorAttachmentID()));
 
-	//SetShaderUniforms();
 	Quad::GetInstance().RenderQuad();
 
-	finalShader->Unbind();
+	//finalShader->Unbind();
 
 	frameBuffer->Unbind();
 }
