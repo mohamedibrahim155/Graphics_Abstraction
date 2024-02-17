@@ -3,10 +3,11 @@
 #include "BasePanel.h"
 #include "../Camera.h"
 #include "ImGuizmo.h"
-class SceneViewportPanel : public BasePanel
+#include"../InputManager/InputManager.h"
+class SceneViewportPanel : public BasePanel, public iInputObserver
 {
 public:
-	// Inherited via BasePanel
+	SceneViewportPanel();
 	void OnRender(float windowWidth, float windowHeight) override;
 
 	FrameBuffer* frameBuffer = nullptr;
@@ -14,5 +15,10 @@ public:
 	ImVec2 viewportSize;
 	ImGuizmo::OPERATION gizmoType = ImGuizmo::OPERATION::TRANSLATE;
 	Camera* sceneViewportCamera;
+
+	// Inherited via iInputObserver
+	void OnKeyPressed(const int& key) override;
+	void OnKeyReleased(const int& key) override;
+	void OnKeyHold(const int& key) override;
 };
 

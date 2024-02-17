@@ -1,6 +1,10 @@
 #include "SceneViewportPanel.h"
 #include "../GraphicsRender.h"
 #include "../Math.h"
+SceneViewportPanel::SceneViewportPanel()
+{
+    InputManager::GetInstance().AddObserver(this);
+}
 void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
 {
    // isEnable = false;
@@ -63,7 +67,14 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
             glm::vec3 position, rotation, scale;
             MathUtils::Math::DecomposeTransform(transform, position, rotation, scale);
 
+
+           // glm::vec3 deltaRotation = rotation - selectedModel->transform.rotation;
+
+
             selectedModel->transform.SetPosition(position);
+           // selectedModel->transform.rotation += deltaRotation;
+
+           // selectedModel->transform.SetRotation(selectedModel->transform.rotation + deltaRotation)
             selectedModel->transform.SetScale(scale);
         }
 
@@ -81,4 +92,32 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
 
 
 
+}
+
+void SceneViewportPanel::OnKeyPressed(const int& key)
+{
+    if (!isHovered)
+    {
+        return;
+    }
+    if (key == GLFW_KEY_W)
+    {
+        gizmoType = ImGuizmo::OPERATION::TRANSLATE;
+    }
+    else if (key == GLFW_KEY_E)
+    {
+        gizmoType = ImGuizmo::OPERATION::ROTATE;
+    }
+    else if (key == GLFW_KEY_R)
+    {
+        gizmoType = ImGuizmo::OPERATION::SCALE;
+    }
+}
+
+void SceneViewportPanel::OnKeyReleased(const int& key)
+{
+}
+
+void SceneViewportPanel::OnKeyHold(const int& key)
+{
 }
