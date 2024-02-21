@@ -188,8 +188,8 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\mesh.cpp" />
-    <ClCompile Include="src\PhysicsEngine.cpp" />
-    <ClCompile Include="src\PhysicsObject.cpp" />
+    <ClCompile Include="src\Physics\PhysicsEngine.cpp" />
+    <ClCompile Include="src\Physics\PhysicsObject.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\model.cpp" />
@@ -258,9 +258,9 @@
     <ClInclude Include="src\mesh.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\model.h" />
-    <ClInclude Include="src\PhysicsCollisionTypes.h" />
-    <ClInclude Include="src\PhysicsEngine.h" />
-    <ClInclude Include="src\PhysicsObject.h" />
+    <ClInclude Include="src\Physics\PhysicsCollisionTypes.h" />
+    <ClInclude Include="src\Physics\PhysicsEngine.h" />
+    <ClInclude Include="src\Physics\PhysicsObject.h" />
     <ClInclude Include="src\Random.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />

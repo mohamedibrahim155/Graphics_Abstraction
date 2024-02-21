@@ -1,5 +1,5 @@
 #pragma once
-#include "model.h"
+#include "../model.h"
 #include "PhysicsCollisionTypes.h"
 #include <functional>
 

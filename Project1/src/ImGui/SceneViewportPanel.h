@@ -2,7 +2,7 @@
 #include "../FrameBuffer.h"
 #include "BasePanel.h"
 #include "../Camera.h"
-#include "ImGuizmo.h"
+#include <ImGuizmo.h>
 #include"../InputManager/InputManager.h"
 class SceneViewportPanel : public BasePanel, public iInputObserver
 {

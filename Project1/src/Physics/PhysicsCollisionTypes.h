@@ -7,8 +7,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
-#include "Vertex.h"
-#include "Triangle.h"
+#include "../Vertex.h"
+#include "../Triangle.h"
 
 
 

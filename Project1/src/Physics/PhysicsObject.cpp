@@ -1,5 +1,5 @@
 #include "PhysicsObject.h"
-#include "Triangle.h"
+#include "../Triangle.h"
 
 
 std::vector<glm::vec3> collisionPoint;

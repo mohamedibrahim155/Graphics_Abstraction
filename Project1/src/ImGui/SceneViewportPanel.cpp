@@ -43,7 +43,7 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
 
 
 
-    Model* selectedModel = GraphicsRender::GetInstance().selectedModel;
+    Model* selectedModel = GraphicsRender::GetInstance().GetSelectedModel();
 
     if (selectedModel != nullptr)
     {

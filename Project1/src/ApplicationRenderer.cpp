@@ -131,7 +131,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     gameScenecamera->transform.position = glm::vec3(0, 0, -1.0f);
 
     renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
-    renderTextureCamera->transform.position = glm::vec3(5, 0, 0);
+    renderTextureCamera->transform.position = glm::vec3(0, 0, -1.0f);
 
     renderTextureCamera->IntializeRenderTexture(specification);
    // renderTextureCamera->IntializeRenderTexture(new RenderTexture());

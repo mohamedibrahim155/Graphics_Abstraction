@@ -93,10 +93,10 @@
     <ClCompile Include="src\GraphicsRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\PhysicsObject.cpp">
+    <ClCompile Include="src\Physics\PhysicsObject.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="src\PhysicsEngine.cpp">
+    <ClCompile Include="src\Physics\PhysicsEngine.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="src\Skybox.cpp">
@@ -293,13 +293,13 @@
     <ClInclude Include="src\GraphicsRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\PhysicsCollisionTypes.h">
+    <ClInclude Include="src\Physics\PhysicsCollisionTypes.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="src\PhysicsEngine.h">
+    <ClInclude Include="src\Physics\PhysicsEngine.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="src\PhysicsObject.h">
+    <ClInclude Include="src\Physics\PhysicsObject.h">
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="src\Vertex.h">
