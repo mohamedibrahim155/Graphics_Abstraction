@@ -146,6 +146,9 @@
     <ClCompile Include="Extern\imGui\ImGuizmo.cpp" />
     <ClCompile Include="Extern\imGui\ImSequencer.cpp" />
     <ClCompile Include="src\Math.cpp" />
+    <ClCompile Include="src\Physics\BvhNode.cpp" />
+    <ClCompile Include="src\Physics\BvhTree.cpp" />
+    <ClCompile Include="src\Physics\PhysicsCollisionTypes.cpp" />
     <ClCompile Include="src\PostProcessing\SinglePassEffect.cpp" />
     <ClCompile Include="src\PostProcessing\PixelizationEffect.cpp" />
     <ClCompile Include="src\Quad.cpp" />
@@ -212,6 +215,8 @@
     <ClInclude Include="Extern\imGui\ImSequencer.h" />
     <ClInclude Include="Extern\imGui\ImZoomSlider.h" />
     <ClInclude Include="src\Math.h" />
+    <ClInclude Include="src\Physics\BvhNode.h" />
+    <ClInclude Include="src\Physics\BvhTree.h" />
     <ClInclude Include="src\PostProcessing\SinglePassEffect.h" />
     <ClInclude Include="src\PostProcessing\PixelizationEffect.h" />
     <ClInclude Include="src\Quad.h" />
