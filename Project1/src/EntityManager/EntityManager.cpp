@@ -113,7 +113,7 @@ void EntityManager::Render()
     {
         for (std::pair<const std::string&, Entity*> item : listOfEntities)
         {
-           // if (item.second->isEnabled)
+            if (item.second->isEnabled)
             {
                 item.second->Render();
             }
