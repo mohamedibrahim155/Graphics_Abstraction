@@ -508,7 +508,6 @@ void ApplicationRenderer::PostRender()
 {
    // glDisable(GL_BLEND);
 
- //   PhysicsEngine.UpdatePhysics(deltaTime);
 }
 
 void ApplicationRenderer::Clear()

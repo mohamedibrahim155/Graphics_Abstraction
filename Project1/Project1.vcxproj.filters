@@ -93,12 +93,6 @@
     <ClCompile Include="src\GraphicsRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Physics\PhysicsObject.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Physics\PhysicsEngine.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
     <ClCompile Include="src\Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -207,15 +201,6 @@
     <ClCompile Include="src\Math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Physics\BvhNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Physics\BvhTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Physics\PhysicsCollisionTypes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -301,15 +286,6 @@
     </ClInclude>
     <ClInclude Include="src\GraphicsRender.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Physics\PhysicsCollisionTypes.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Physics\PhysicsEngine.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Physics\PhysicsObject.h">
-      <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="src\Vertex.h">
       <Filter>Header Files</Filter>
@@ -429,12 +405,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Physics\BvhNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Physics\BvhTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

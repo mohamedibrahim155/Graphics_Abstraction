@@ -11,7 +11,6 @@
 #include "Transform.h"
 #include"LightManager.h"
 #include "Random.h"
-#include "Physics/PhysicsEngine.h"
 #include "Time.h"
 #include "SkyboxMaterial.h"
 #include "GraphicsRender.h"
@@ -84,8 +83,6 @@ private:
 	Shader* stencilShader;
 	Shader* skyboxShader;
 
-	PhysicsEngine PhysicsEngine;
-	PanelManager* panelManager;
 
 	SkyboxMaterial* skyBoxMaterial;
 
