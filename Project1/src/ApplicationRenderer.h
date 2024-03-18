@@ -26,8 +26,8 @@
 #include "InputManager/InputManager.h"
 #include "EntityManager/EntityManager.h"
 #include "CameraManager.h"
-
-
+#include "SkinnedMeshRenderer.h"
+#include "CharacterAnimation/CharacterAnimation.h"
 class ApplicationRenderer
 {
 public:
@@ -79,6 +79,7 @@ private:
 	Shader* solidColorShader;
 	Shader* alphaBlendShader;
 	Shader* alphaCutoutShader;
+	Shader* animationShader;
 
 	Shader* stencilShader;
 	Shader* skyboxShader;

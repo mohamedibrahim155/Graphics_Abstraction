@@ -24,7 +24,7 @@
 #include "BaseMaterial.h"
 #include "UnLitMaterial.h"
 #include "EntityManager/Entity.h"
-
+#include "Animation/Bone/Bone.h"
 
 
 
@@ -41,6 +41,8 @@ public:
     std::string id; //if needed 
 
     Texture* alphaMask;
+    glm::mat4 globalInverseTransformedMatrix;
+
 
     int offset;
     float size;
@@ -55,9 +57,9 @@ public:
     Model(std::string const& path, bool isLoadTexture = true, bool isDebugModel = false);
     ~Model();
     void LoadModel(const Model& copyModel, bool isDebugModel = false);
-    void LoadModel(std::string const& path, bool isLoadTexture = true, bool isDebugModel = false);
+    virtual void LoadModel(std::string const& path, bool isLoadTexture = true, bool isDebugModel = false);
     void Draw(Shader& shader);
-    void Draw(Shader* shader);
+    virtual void Draw(Shader* shader);
     void DrawSolidColor(const glm::vec4& color, bool isWireframe = false);
     
     virtual void DrawProperties();
@@ -67,18 +69,19 @@ public:
     virtual void Update(float deltaTime) override;
     virtual void Render();
     virtual void OnDestroy();
-private:
-    
-    void ProcessNode(aiNode* node, const aiScene* scene);   
-   
-    std::shared_ptr<Mesh> ProcessMesh(aiMesh* mesh, const aiScene* scene);
-    
+
+    virtual std::shared_ptr<Mesh> ProcessMesh(aiMesh* mesh, const aiScene* scene);
+    std::map<std::string, int> boneIDMap;
+
+
+protected:
+
     Texture* LoadDefaultTexture(aiTextureType type, std::string typeName);
     Texture* LoadMaterialTexture(aiMaterial* mat, aiTextureType type, std::string typeName);
 
     std::string TextureType(aiTextureType type);
    
-    void SetModelName();
+    
 
     const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
 
@@ -86,7 +89,11 @@ private:
 
 
     // Inherited via Entity
-  
+    glm::mat4 GlobalInverseTransformation;
+    void ProcessNode(aiNode* node, const aiScene* scene);
+    void SetModelName();
+
+    void SetDefaultVertexBoneData(Vertex& vertex);
 
 };
 

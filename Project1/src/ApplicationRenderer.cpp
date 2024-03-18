@@ -125,10 +125,12 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     GraphicsRender::GetInstance().SetCamera(sceneViewcamera);
 
     sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
-    sceneViewcamera->transform.position = glm::vec3(0, 0, - 1.0f);
+    sceneViewcamera->transform.position = glm::vec3(0, 1.00, 5);
+    sceneViewcamera->transform.SetRotation(glm::vec3(0));
 
     gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
-    gameScenecamera->transform.position = glm::vec3(0, 0, -1.0f);
+    gameScenecamera->transform.position = glm::vec3(0, 1.00, 5);
+    gameScenecamera->transform.SetRotation(glm::vec3(0));
 
     renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
     renderTextureCamera->transform.position = glm::vec3(0, 0, -1.0f);
@@ -142,6 +144,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 void ApplicationRenderer::InitializeShaders()
 {
     defaultShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag");
+   
     solidColorShader = new Shader("Shaders/SolidColor_Vertex.vert", "Shaders/SolidColor_Fragment.frag", SOLID);
     stencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", OPAQUE);
     //ScrollShader = new Shader("Shaders/ScrollTexture.vert", "Shaders/ScrollTexture.frag");
@@ -155,9 +158,13 @@ void ApplicationRenderer::InitializeShaders()
     skyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
     skyboxShader->modelUniform = false;
 
+    animationShader = new Shader("Shaders/AnimationShader.vert", "Shaders/AnimationShader.frag");
+    animationShader->blendMode = OPAQUE;
+
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
     GraphicsRender::GetInstance().stencilShader = stencilShader; 
+    GraphicsRender::GetInstance().animationShader = animationShader;
 
    
 
@@ -195,31 +202,7 @@ void ApplicationRenderer::Start()
 
     gameScenecamera->postprocessing->InitializePostProcessing();
 
-    Model* floor = new Model((char*)"Models/Floor/Floor.fbx");
-    floor->transform.SetRotation(glm::vec3(90, 0, 0));
-    floor->transform.SetPosition(glm::vec3(0, -2, 0));
-   
-    Model* floor2 = new Model(*floor);
-    floor2->transform.SetRotation(glm::vec3(90, 0, 0));
-    floor2->transform.SetPosition(glm::vec3(0, 2, 0));
-   
-   
-    Model* floor3 = new Model(*floor);
-   
-    floor3->transform.SetPosition(glm::vec3(-2, 0, 0));
-    Model* floor4 = new Model(*floor);
-    floor4->transform.SetPosition(glm::vec3(2, 0, 0));
-    floor4->meshes[0]->meshMaterial->material()->useMaskTexture = false;
-    floor4->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(1, 1, 1, 0.5f));
-
-    
-    
-
-
-     Model* directionLightModel = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply",false, true);
-     directionLightModel->transform.SetScale(glm::vec3(0.5f));
-    // Model* spotlight = new Model(*Sphere);
-     //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
+ 
 
      Light* directionLight = new Light();
      directionLight->Initialize(LightType::DIRECTION_LIGHT, 1);
@@ -232,34 +215,25 @@ void ApplicationRenderer::Start()
      directionLight->transform.SetRotation(glm::vec3(0, 0, 5));
      directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
     
-    
-     Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
-     Texture* plantAlphaTexture = new Texture();
-
-     Model* quadWithTexture = new Model("Models/DefaultQuad/DefaultQuad.fbx");
-     quadWithTexture->transform.SetPosition(glm::vec3(5, 0, 0));
-     quadWithTexture->meshes[0]->meshMaterial->material()->diffuseTexture = renderTextureCamera->renderTexture;
 
 
-
-     GraphicsRender::GetInstance().AddModelAndShader(plant, alphaCutoutShader);
-     GraphicsRender::GetInstance().AddModelAndShader(quadWithTexture, alphaCutoutShader);
-     GraphicsRender::GetInstance().AddModelAndShader(floor, defaultShader);
-     GraphicsRender::GetInstance().AddModelAndShader(floor2, defaultShader);
-     GraphicsRender::GetInstance().AddModelAndShader(floor3, defaultShader);
-     GraphicsRender::GetInstance().AddModelAndShader(floor4, alphaBlendShader);
+   //  Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
  
-     //LightRenderer
-     //LightManager::GetInstance().AddLight(directionLight);
-    // lightManager.AddLight(directionLight);
-   //  lightManager.AddNewLight(spot);
-   //  lightManager.SetUniforms(defaultShader->ID);
-   //  PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
-   //  SpherePhyiscs->Initialize(false, true, DYNAMIC);
+     //Model* characterModel = new Model("Models/Character/X Bot.fbx");
+     //characterModel->name = "CharacterModel";
+     //characterModel->transform.SetScale(glm::vec3(0.01f));
 
-   //  PhysicsEngine.AddPhysicsObjects(SpherePhyiscs);
+    // Model* characterModel = new Model("Models/Character/Adventurer Aland@Idle.fbx");
+     //GraphicsRender::GetInstance().AddModelAndShader(characterModel, defaultShader);
 
-  
+    // SkinnedMeshRenderer* xBot = new SkinnedMeshRenderer("Models/Character/X Bot.fbx");
+    // xBot->transform.SetScale(glm::vec3(0.01f));
+    //
+    // xBot->LoadAnimation("Models/Character/Rumba Dancing.fbx");
+    //
+    // GraphicsRender::GetInstance().AddModelAndShader(xBot, animationShader);
+
+     CharacterAnimation* character = new CharacterAnimation();
 
 }
 
@@ -280,6 +254,14 @@ void ApplicationRenderer::PreRender()
     defaultShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
     defaultShader->setFloat("time", scrollTime);
     defaultShader->setBool("isDepthBuffer", false);
+
+    animationShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(animationShader);
+
+    animationShader->setMat4("projection", projection);
+    animationShader->setMat4("view", view);
+    animationShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
+    animationShader->setBool("isDepthBuffer", false);
 
     alphaBlendShader->Bind();
     LightManager::GetInstance().UpdateUniformValuesToShader(alphaBlendShader);
@@ -453,6 +435,14 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultShader->setFloat("time", scrollTime);
     defaultShader->setBool("isDepthBuffer", false);
 
+    animationShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(animationShader);
+    animationShader->setMat4("projection", projection);
+    animationShader->setMat4("view", view);
+    animationShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
+    animationShader->setBool("isDepthBuffer", false);
+
+
     alphaBlendShader->Bind();
     LightManager::GetInstance().UpdateUniformValuesToShader(alphaBlendShader);
     alphaBlendShader->setMat4("projection", projection);
@@ -482,7 +472,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     skyboxShader->setMat4("projection", projection);
     skyboxShader->setMat4("view", skyBoxView);
 
-    GraphicsRender::GetInstance().SkyBoxModel->Draw(*skyboxShader);
+    GraphicsRender::GetInstance().SkyBoxModel->Draw(skyboxShader);
     glDepthFunc(GL_LESS);
 
     
