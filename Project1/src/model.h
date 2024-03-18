@@ -24,7 +24,7 @@
 #include "BaseMaterial.h"
 #include "UnLitMaterial.h"
 #include "EntityManager/Entity.h"
-#include "Animation/Bone/Bone.h"
+
 
 
 
@@ -41,7 +41,7 @@ public:
     std::string id; //if needed 
 
     Texture* alphaMask;
-    glm::mat4 globalInverseTransformedMatrix;
+
 
 
     int offset;
@@ -71,7 +71,7 @@ public:
     virtual void OnDestroy();
 
     virtual std::shared_ptr<Mesh> ProcessMesh(aiMesh* mesh, const aiScene* scene);
-    std::map<std::string, int> boneIDMap;
+
 
 
 protected:
@@ -80,21 +80,11 @@ protected:
     Texture* LoadMaterialTexture(aiMaterial* mat, aiTextureType type, std::string typeName);
 
     std::string TextureType(aiTextureType type);
-   
-    
 
-    const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
-
-    // Inherited via Entity
-
-
-    // Inherited via Entity
-    glm::mat4 GlobalInverseTransformation;
     void ProcessNode(aiNode* node, const aiScene* scene);
     void SetModelName();
 
-    void SetDefaultVertexBoneData(Vertex& vertex);
-
+    const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
 };
 
 

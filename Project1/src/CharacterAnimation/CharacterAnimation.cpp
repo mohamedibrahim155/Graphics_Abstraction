@@ -10,11 +10,11 @@ CharacterAnimation::CharacterAnimation()
    // characterMesh->transform.SetScale(glm::vec3(0.01f));
 
     //characterMesh->LoadAnimation("Models/Character/Rumba Dancing.fbx");
-    LoadAnimation("Models/Character/Rumba Dancing.fbx");
-    LoadAnimation("Models/Character/Punching Bag.fbx");
-    LoadAnimation("Models/Character/Mma Kick.fbx");
-    LoadAnimation("Models/Character/Snake Hip Hop Dance.fbx");
-    LoadAnimation("Models/Character/Waving.fbx");
+    LoadAnimation("Models/Character/Rumba Dancing.fbx" , "Dance1");
+    LoadAnimation("Models/Character/Punching Bag.fbx","Punching");
+    LoadAnimation("Models/Character/Mma Kick.fbx","Kick");
+    LoadAnimation("Models/Character/Snake Hip Hop Dance.fbx", "Dance2");
+    LoadAnimation("Models/Character/Waving.fbx","Wave");
 
     GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().animationShader);
 
@@ -29,28 +29,32 @@ void CharacterAnimation::OnKeyPressed(const int& key)
 {
     if (key == GLFW_KEY_SPACE)
     {
-        isPlaying = !isPlaying;
+        isAnimationPlay = !isAnimationPlay;
     }
     if (key == GLFW_KEY_1)
     {
-        ChangeAnimation(0);
+        PlayAnimation("Dance1");
     }
     if (key == GLFW_KEY_2)
     {
-        ChangeAnimation(1);
+        PlayAnimation("Punching");
+
     }
 
     if (key == GLFW_KEY_3)
     {
-        ChangeAnimation(2);
+        PlayAnimation("Kick");
+
     }
     if (key == GLFW_KEY_4)
     {
-        ChangeAnimation(3);
+        PlayAnimation("Dance2");
+
     }
     if (key == GLFW_KEY_5)
     {
-        ChangeAnimation(4);
+        PlayAnimation("Wave");
+
     }
 }
 
@@ -78,7 +82,18 @@ void CharacterAnimation::Start()
 
 void CharacterAnimation::Update(float deltaTime)
 {
-    SkinnedMeshRenderer::Update(deltaTime);
+    if (!isAnimationPlay) return;
+
+    if (deltaTime > 1.0f / 60.0f) { deltaTime = 1.0f / 60.0f; }
+
+    timeStep += deltaTime * 40;
+
+    if (timeStep >= GetCurrentAnimation()->Duration)
+    {
+        timeStep = 0;
+    }
+
+    UpdateSkeletonAnimation(deltaTime);
 }
 
 void CharacterAnimation::Render()

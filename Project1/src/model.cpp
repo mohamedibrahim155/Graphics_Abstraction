@@ -178,8 +178,6 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
      std::vector<unsigned int> indices;
      std::vector<Texture*> textures;
 
-     std::vector<BoneWeightInfo> boneWeightInfos;
-
 
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
@@ -191,7 +189,6 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         vector.z = mesh->mVertices[i].z;
         vertex.Position = vector;
 
-        SetDefaultVertexBoneData(vertex);
 
         // normals
         if (mesh->HasNormals())
@@ -217,7 +214,6 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         else
         {
             vertex.TexCoords = glm::vec2(0.0f, 0.0f);
-
         }
 
         if (mesh->HasVertexColors(0))
@@ -230,45 +226,11 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
             vertex.vRgb = glm::vec4(1.0f, 1.0f, 1.0f,1.0f);
         }
 
-        //vertex.BoneID = glm::vec4(0);
-        //vertex.BoneWeight = glm::vec4(0.0f);
+        vertex.BoneID = glm::vec4(0);
+        vertex.BoneWeight = glm::vec4(0.0f);
 
-  
-   
         vertices.push_back(vertex);
     }
-
-    
-    //if (mesh->HasBones())
-    //{
-    //    boneWeightInfos.resize(mesh->mNumVertices);
-    //    for (unsigned int i = 0; i < mesh->mNumBones; ++i)
-    //    {
-    //        aiBone* bone = mesh->mBones[i];
-    //        std::string name(bone->mName.C_Str(), bone->mName.length); //	'\0'
-    //        boneIDMap.insert(std::pair<std::string, int>(name, listOfBoneInfo.size()));
-    //        BoneInfo boneInfo;
-    //        AssimpToGLM(bone->mOffsetMatrix, boneInfo.boneOffset);
-    //        listOfBoneInfo.emplace_back(boneInfo);
-    //        for (int weightIdx = 0; weightIdx < bone->mNumWeights; ++weightIdx)
-    //        {
-    //            aiVertexWeight& vertexWeight = bone->mWeights[weightIdx];
-    //           
-    //            BoneWeightInfo& boneInfo = boneWeightInfos[vertexWeight.mVertexId];
-    //            for (int infoIdx = 0; infoIdx < 4; ++infoIdx)
-    //            {
-    //                if (boneInfo.boneWeight[infoIdx] == 0.f)  /// xyzw of boneIDs
-    //                {
-    //                    boneInfo.boneID[infoIdx] = i; // boneIndex
-    //                    boneInfo.boneWeight[infoIdx] = vertexWeight.mWeight;
-    //                    break;
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-
-    unsigned int vertArrayIndex = 0;
 
     for (unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
@@ -277,54 +239,6 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         for (unsigned int j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
     }
-
-    // process materials
-
-    /*if (mesh->HasBones())
-    {
-        for (unsigned int i = 0; i < vertices.size(); i++)
-        {
-            std::cout << "Bone ID : " << boneWeightInfos[i].boneID[0]
-                << " " << boneWeightInfos[i].boneID[1]
-                << " " << boneWeightInfos[i].boneID[2]
-                << " " << boneWeightInfos[i].boneID[3] << std::endl;
-            vertices[i].BoneID = boneWeightInfos[i].boneID;
-            vertices[i].BoneWeight = boneWeightInfos[i].boneWeight;
-        }
-    }*/
-   
-    
-    if (scene->mNumAnimations > 0)
-    {
-
-        aiAnimation* animation = scene->mAnimations[0];
-
-          std ::string animation_name = animation->mName.C_Str();
-          double animation_Duration = animation->mDuration;
-          double tickesPerSecond = animation->mTicksPerSecond;
-
-        for (int i = 0; i < animation->mNumChannels; i++)
-        {
-            aiNodeAnim* assimpNodeAnim = animation->mChannels[i];
-
-            for (int i = 0; i < assimpNodeAnim->mNumPositionKeys; i++)
-            {
-                aiVectorKey& p = assimpNodeAnim->mPositionKeys[i];
-            }
-
-            for (int i = 0; i < assimpNodeAnim->mNumScalingKeys; ++i)
-            {
-                aiVectorKey& s = assimpNodeAnim->mScalingKeys[i];
-            }
-
-            for (int i = 0; i < assimpNodeAnim->mNumRotationKeys; ++i)
-            {
-                aiQuatKey& q = assimpNodeAnim->mRotationKeys[i];
-            }
-        }
-
-    }
-
 
 
     aiColor4D baseColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -527,14 +441,7 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
      }
  }
 
- void Model::SetDefaultVertexBoneData(Vertex& vertex)
- {
-     for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
-     {
-         vertex.BoneID[i] = -1;
-         vertex.BoneWeight[i] = 0.0f;
-     }
- }
+
 
  void Model::Render()
  {
