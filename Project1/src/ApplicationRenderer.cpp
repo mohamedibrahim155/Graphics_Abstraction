@@ -329,6 +329,8 @@ void ApplicationRenderer::Render()
         glfwPollEvents();
     }
 
+    ShutDown();
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
@@ -505,6 +507,10 @@ void ApplicationRenderer::Clear()
     GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 0.1f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
    //glStencilMask(0x00);
+}
+
+void ApplicationRenderer::ShutDown()
+{
 }
 
 void ApplicationRenderer::ProcessInput(GLFWwindow* window)

@@ -48,6 +48,7 @@ public:
 	void Render();
 	void PostRender();
 	void Clear();
+	void ShutDown();
 
 	void ProcessInput(GLFWwindow* window);
 
